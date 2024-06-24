@@ -1,5 +1,16 @@
-Hello world
+To-do List
+- Authentication (JWT)
+- Mapper
+- DTO
+- Onion Architeture
+- Docker e Docker Compose
+- Trabalhar com imagem
+- ProblemDetails
+- RavenDB
+- SQL Server
+- Validação
+- Encriptação
 
-Testando repo compartilhado
-
-aaaaaa
+Classes:
+	User
+	Task
