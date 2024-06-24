@@ -10,7 +10,3 @@ To-do List
 - SQL Server
 - Validação
 - Encriptação
-
-Classes:
-	User
-	Task
