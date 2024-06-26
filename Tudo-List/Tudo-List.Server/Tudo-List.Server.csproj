@@ -15,12 +15,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
-      <Version>8.*-*</Version>
+      <Version>8.0.6</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Tudo-List.Application\Tudo-List.Application.csproj" />
+    <ProjectReference Include="..\..\Tudo-List.Domain.Core\Tudo-List.Domain.Core.csproj" />
+    <ProjectReference Include="..\..\Tudo-List.Domain.Services\Tudo-List.Domain.Services.csproj" />
+    <ProjectReference Include="..\..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
+    <ProjectReference Include="..\..\Tudo-list.Infrastructure\Tudo-list.Infrastructure.csproj" />
     <ProjectReference Include="..\tudo-list.client\Tudo-List.Client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

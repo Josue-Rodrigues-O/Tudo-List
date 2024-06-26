@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tudo-List.Domain.Core\Tudo-List.Domain.Core.csproj" />
+    <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
