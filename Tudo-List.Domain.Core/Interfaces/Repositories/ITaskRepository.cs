@@ -1,8 +1,8 @@
-﻿using Task = Tudo_List.Domain.Entities.Task;
+﻿using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Domain.Core.Interfaces.Repositories
 {
-    public interface ITaskRepository : IBaseRepository<Task>
+    public interface ITaskRepository : IRepository<TodoListItem>
     {
     }
 }

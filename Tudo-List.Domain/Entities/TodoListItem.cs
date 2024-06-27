@@ -2,7 +2,7 @@
 
 namespace Tudo_List.Domain.Entities
 {
-    public class Task
+    public class TodoListItem
     {
         public int Id { get; set; }
         public string Title { get; set; }
