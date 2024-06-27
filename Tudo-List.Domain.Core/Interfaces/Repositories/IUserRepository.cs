@@ -2,7 +2,7 @@
 
 namespace Tudo_List.Domain.Core.Interfaces.Repositories
 {
-    public interface IUserRepository : IBaseRepository<User>
+    public interface IUserRepository : IRepository<User>
     {
     }
 }

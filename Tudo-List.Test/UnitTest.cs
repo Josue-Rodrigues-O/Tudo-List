@@ -1,9 +1,9 @@
 namespace Tudo_List.Test
 {
-    public class Test
+    public class UnitTest
     {
         [Fact]
-        public void Test1()
+        public void Test()
         {
 
         }
