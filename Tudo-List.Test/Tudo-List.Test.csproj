@@ -18,6 +18,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Tudo-List.Application\Tudo-List.Application.csproj" />
+    <ProjectReference Include="..\Tudo-List.Domain.Core\Tudo-List.Domain.Core.csproj" />
+    <ProjectReference Include="..\Tudo-List.Domain.Services\Tudo-List.Domain.Services.csproj" />
+    <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
+    <ProjectReference Include="..\Tudo-list.Infrastructure\Tudo-list.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 

@@ -8,11 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
+    <Compile Remove="Validation\**" />
+    <EmbeddedResource Remove="Validation\**" />
+    <None Remove="Validation\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validation\" />
+    <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
   </ItemGroup>
 
 </Project>
