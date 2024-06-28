@@ -1,22 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using Tudo_list.Infrastructure.Context;
+using Tudo_list.Infrastructure.CrossCutting.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    const string connection = "SqlServer";
-    const string envServer = "DB_SERVER";
-    const string envDatabase = "DB_DATABASE";
-
-    var connectionString = builder.Configuration.GetConnectionString(connection)
-        .Replace($"{{{envServer}}}", Environment.GetEnvironmentVariable(envServer))
-        .Replace($"{{{envDatabase}}}", Environment.GetEnvironmentVariable(envDatabase));
-
-    options.UseSqlServer(connectionString);
-});
+builder.Services.AddMapper(builder.Configuration.GetConnectionString("SqlServer"));
 
 var app = builder.Build();
 

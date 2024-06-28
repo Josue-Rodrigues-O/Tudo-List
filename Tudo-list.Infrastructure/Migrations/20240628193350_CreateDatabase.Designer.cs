@@ -12,8 +12,8 @@ using Tudo_list.Infrastructure.Context;
 namespace Tudo_list.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240628190033_TaskIdIsNowUUID")]
-    partial class TaskIdIsNowUUID
+    [Migration("20240628193350_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,6 +66,9 @@ namespace Tudo_list.Infrastructure.Migrations
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PasswordStrategy")
+                        .HasColumnType("int");
 
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");

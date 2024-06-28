@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Entities
 {
@@ -12,5 +13,9 @@ namespace Tudo_List.Domain.Entities
 
         [JsonIgnore]
         public string? Salt { get; set; }
+        
+        [JsonIgnore]
+        public PasswordStrategyEnum PasswordStrategy { get; set; }
+
     }
 }

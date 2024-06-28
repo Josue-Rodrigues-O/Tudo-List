@@ -64,6 +64,9 @@ namespace Tudo_list.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PasswordStrategy")
+                        .HasColumnType("int");
+
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
