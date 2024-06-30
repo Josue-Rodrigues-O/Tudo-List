@@ -1,0 +1,13 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    height: 30rem;
+    width: 50rem;
+    background-color: blueviolet;
+}

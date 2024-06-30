@@ -4,10 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SignInSignUpComponent } from './pages/sign-in-sign-up/sign-in-sign-up.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SignInSignUpComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
