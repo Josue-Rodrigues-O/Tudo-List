@@ -8,35 +8,37 @@ namespace Tudo_list.Infrastructure.Repositories
     {
         private readonly ApplicationDbContext _context = context;
 
+        public IEnumerable<User> GetAll()
+        {
+            return _context.Users;
+        }
+
+        public User Get(int id)
+        {
+            return GetUser(id);
+        }
+
         public void Save(User user)
         {
             _context.Users.Add(user);
             _context.SaveChanges();
         }
 
-        public IEnumerable<User> GetAll()
-        {
-            return _context.Users;
-        }
-
-        public User GetById(int id)
-        {
-            return GetUser(id);
-        }
-
         public void Update(User entity)
         {
-            throw new NotImplementedException();
+            _context.Users.Update(entity);
         }
 
-        public void Delete(User entity)
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var user = GetUser(id);
+            _context.Users.Remove(user);
+            _context.SaveChanges();
         }
 
         private User GetUser(int id)
         {
-            var user = _context.Users.Find(id) ?? throw new KeyNotFoundException();
+            var user = _context.Users.Find(id) ?? throw new KeyNotFoundException(nameof(User));
             return user;
         }
     }

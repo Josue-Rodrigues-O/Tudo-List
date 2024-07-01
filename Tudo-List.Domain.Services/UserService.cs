@@ -8,19 +8,19 @@ namespace Tudo_List.Domain.Services
     {
         private readonly IUserRepository _repository = repository;
 
-        public void Register(User user)
-        {
-            throw new NotImplementedException();
-        }
-
         public IEnumerable<User> GetAll()
         {
             return _repository.GetAll();
         }
 
-        public User GetById(int id)
+        public User Get(int id)
         {
-            return _repository.GetById(id);
+            return _repository.Get(id);
+        }
+
+        public void Register(User user)
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(User user)
