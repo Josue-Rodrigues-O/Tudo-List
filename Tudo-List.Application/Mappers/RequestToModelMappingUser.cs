@@ -8,9 +8,9 @@ namespace Tudo_List.Application.Mappers
     {
         public RequestToModelMappingUser()
         {
-            CreateMap<RegisterRequest, User>();
+            CreateMap<RegisterUserRequest, User>();
 
-            CreateMap<UpdateRequest, User>()
+            CreateMap<UpdateUserRequest, User>()
                 .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>
                     {
