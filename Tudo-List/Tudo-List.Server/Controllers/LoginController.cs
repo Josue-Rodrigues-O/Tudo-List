@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Tudo_List.Application.Models.Users;
 using Tudo_List.Domain.Core.Interfaces.Services;
 
 namespace Tudo_List.Server.Controllers
@@ -9,10 +11,25 @@ namespace Tudo_List.Server.Controllers
     {
         private readonly IUserService _userService = userService;
 
-        [HttpGet]
-        public IActionResult Teste()
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public Task<IActionResult> Login([FromBody] AuthenticateRequest model)
         {
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(x => x.Errors)
+                    .Select(x => x.ErrorMessage)
+                    .ToArray();
+
+                return Task
+                        .FromResult<IActionResult>(BadRequest(new
+                        {
+                            Errors = errors
+                        }));
+            }
+
+            return Task.FromResult<IActionResult>(Ok());
         }
     }
 }
