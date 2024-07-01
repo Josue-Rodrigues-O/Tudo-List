@@ -70,6 +70,10 @@ namespace Tudo_list.Infrastructure.Migrations
                     b.Property<string>("Salt")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
