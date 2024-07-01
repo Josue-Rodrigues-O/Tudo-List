@@ -13,24 +13,24 @@ namespace Tudo_List.Domain.Services
             return _repository.GetAll();
         }
 
-        public User Get(int id)
+        public User GetById(int id)
         {
             return _repository.Get(id);
         }
 
         public void Register(User user)
         {
-            throw new NotImplementedException();
+            _repository.Register(user);
         }
 
         public void Update(User user)
         {
-            throw new NotImplementedException();
+            _repository.Update(user);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            _repository.Delete(id);
         }
     }
 }

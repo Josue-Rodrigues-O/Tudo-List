@@ -2,7 +2,7 @@
 
 namespace Tudo_List.Domain.Core.Interfaces.Repositories
 {
-    public interface ITaskRepository : IRepository<TodoListItem>
+    public interface ITodoListItemRepository : IRepository<TodoListItem>
     {
     }
 }

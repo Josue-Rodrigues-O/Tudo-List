@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tudo_list.Infrastructure.Context;
 using Tudo_list.Infrastructure.Repositories;
+using Tudo_List.Application;
+using Tudo_List.Application.Interfaces;
 using Tudo_List.Application.Mappers;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -48,6 +50,13 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         public static IServiceCollection AddDomainServices(this IServiceCollection servicesCollection)
         {
             servicesCollection.TryAddScoped<IUserService, UserService>();
+
+            return servicesCollection;
+        }
+        
+        public static IServiceCollection AddApplicationServices(this IServiceCollection servicesCollection)
+        {
+            servicesCollection.TryAddScoped<IUserApplication, UserApplication>();
 
             return servicesCollection;
         }

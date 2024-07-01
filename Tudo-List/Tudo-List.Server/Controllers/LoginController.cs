@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Models.Users;
 using Tudo_List.Domain.Core.Interfaces.Services;
+using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController(IUserService userService) : ControllerBase
+    public class LoginController(IUserService userService) : ApiController
     {
         private readonly IUserService _userService = userService;
 

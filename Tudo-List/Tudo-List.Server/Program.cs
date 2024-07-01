@@ -8,6 +8,7 @@ builder.Services.AddAutoMapper();
 builder.Services.AddDatabaseContext(builder.Configuration.GetConnectionString("SqlServer"));
 builder.Services.AddRepositories();
 builder.Services.AddDomainServices();
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 

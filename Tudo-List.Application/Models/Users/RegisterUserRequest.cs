@@ -2,7 +2,7 @@
 
 namespace Tudo_List.Application.Models.Users
 {
-    public class RegisterRequest
+    public class RegisterUserRequest
     {
         [Required(ErrorMessage = "The Username is Required!")]
         public string UserName { get; set; }

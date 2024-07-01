@@ -18,7 +18,7 @@ namespace Tudo_list.Infrastructure.Repositories
             return GetUser(id);
         }
 
-        public void Save(User user)
+        public void Register(User user)
         {
             _context.Users.Add(user);
             _context.SaveChanges();
