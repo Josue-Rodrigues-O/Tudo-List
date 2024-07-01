@@ -4,7 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddMapper(builder.Configuration.GetConnectionString("SqlServer"));
+builder.Services.AddAutoMapper();
+builder.Services.AddDatabaseContext(builder.Configuration.GetConnectionString("SqlServer"));
+builder.Services.AddRepositories();
+builder.Services.AddDomainServices();
 
 var app = builder.Build();
 
