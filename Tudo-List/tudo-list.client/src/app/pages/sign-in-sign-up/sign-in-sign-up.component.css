@@ -58,7 +58,7 @@ input {
     border-radius: 50pt;
 }
 
-.label {
+label {
     font-size: 1rem;
     color: gray;
     font-style: italic;
@@ -73,6 +73,12 @@ input:focus~label {
     top: -80%;
     font-style: normal;
     color: #40AFFF;
+}
+
+.label-top {
+    top: -80%;
+    font-style: normal;
+    color: #000;
 }
 
 a {
