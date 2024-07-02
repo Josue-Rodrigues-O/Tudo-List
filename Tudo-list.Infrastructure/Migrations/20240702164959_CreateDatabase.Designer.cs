@@ -12,8 +12,8 @@ using Tudo_list.Infrastructure.Context;
 namespace Tudo_list.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240701214145_CreateDatabases")]
-    partial class CreateDatabases
+    [Migration("20240702164959_CreateDatabase")]
+    partial class CreateDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,8 +27,9 @@ namespace Tudo_list.Infrastructure.Migrations
 
             modelBuilder.Entity("Tudo_List.Domain.Entities.TodoListItem", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");

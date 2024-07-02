@@ -10,6 +10,6 @@ namespace Tudo_list.Infrastructure.Context
         }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<TodoListItem> Tasks { get; set; }
+        public DbSet<TodoListItem> TodoListItems { get; set; }
     }
 }

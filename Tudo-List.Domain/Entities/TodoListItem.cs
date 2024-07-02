@@ -1,11 +1,10 @@
-﻿using System.Text.Json.Serialization;
-using Tudo_List.Domain.Enums;
+﻿using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Entities
 {
     public class TodoListItem
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string? Description { get; set; }
         public Status Status { get; set; }

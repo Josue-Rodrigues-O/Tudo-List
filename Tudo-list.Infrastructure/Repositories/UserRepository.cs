@@ -27,6 +27,7 @@ namespace Tudo_list.Infrastructure.Repositories
         public void Update(User entity)
         {
             _context.Users.Update(entity);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
