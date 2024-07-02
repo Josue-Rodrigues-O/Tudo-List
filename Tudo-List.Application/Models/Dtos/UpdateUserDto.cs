@@ -1,6 +1,6 @@
-﻿namespace Tudo_List.Application.Models.Requests
+﻿namespace Tudo_List.Application.Models.Dtos
 {
-    public class UpdateUserRequest
+    public class UpdateUserDto
     {
         public string Email { get; set; }
         public string Name { get; set; }

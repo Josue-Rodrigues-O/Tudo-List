@@ -19,7 +19,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         {
             var mappingConfig = new MapperConfiguration(x => 
             {
-                x.AddProfile(new RequestToModelMappingUser());
+                x.AddProfile(new DtoToUserMapping());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

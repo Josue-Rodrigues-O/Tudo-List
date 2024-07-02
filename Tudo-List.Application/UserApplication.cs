@@ -22,12 +22,12 @@ namespace Tudo_List.Application
             return _mapper.Map<UserDto>(_userService.GetById(id));
         }
 
-        public void Register(RegisterUserRequest model)
+        public void Register(RegisterUserDto model)
         {
             _userService.Register(_mapper.Map<User>(model));
         }
 
-        public void Update(UpdateUserRequest model)
+        public void Update(UpdateUserDto model)
         {
             _userService.Update(_mapper.Map<User>(model));
         }

@@ -39,7 +39,7 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Register([FromBody] RegisterUserRequest model)
+        public IActionResult Register([FromBody] RegisterUserDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -52,7 +52,7 @@ namespace Tudo_List.Server.Controllers.V1
         [Route("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Update([FromBody] UpdateUserRequest model)
+        public IActionResult Update([FromBody] UpdateUserDto model)
         {
             _userApplication.Update(model);
             return NoContent();

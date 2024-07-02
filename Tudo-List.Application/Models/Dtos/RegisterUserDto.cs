@@ -2,7 +2,7 @@
 
 namespace Tudo_List.Application.Models.Requests
 {
-    public class RegisterUserRequest
+    public class RegisterUserDto
     {
         [Required(ErrorMessage = "Email is Required!")]
         public string Email { get; set; }
