@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Tudo_List.Domain.Extensions
+namespace Tudo_List.Domain.Helpers
 {
     public static class EnumHelper
     {

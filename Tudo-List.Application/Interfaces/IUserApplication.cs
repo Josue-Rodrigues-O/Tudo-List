@@ -1,12 +1,12 @@
-﻿using Tudo_List.Application.Models.Users;
-using Tudo_List.Domain.Entities;
+﻿using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Application.Models.Requests;
 
 namespace Tudo_List.Application.Interfaces
 {
     public interface IUserApplication
     {
-        IEnumerable<User> GetAll();
-        User GetById(int id);
+        IEnumerable<UserDto> GetAll();
+        UserDto GetById(int id);
         void Register(RegisterUserRequest model);
         void Update(UpdateUserRequest model);
         void Delete(int id);

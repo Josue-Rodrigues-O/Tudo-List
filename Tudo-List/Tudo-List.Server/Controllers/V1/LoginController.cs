@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Tudo_List.Application.Models.Users;
+﻿using Microsoft.AspNetCore.Mvc;
+using Tudo_List.Application.Models.Auth;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
@@ -14,9 +13,8 @@ namespace Tudo_List.Server.Controllers.V1
     {
         private readonly IUserService _userService = userService;
 
-        [AllowAnonymous]
-        [HttpPost("login")]
-        public Task<IActionResult> Login([FromBody] AuthenticateRequest model)
+        [HttpPost]
+        public Task<IActionResult> Login([FromBody] LoginRequest model)
         {
             if (!ModelState.IsValid)
             {

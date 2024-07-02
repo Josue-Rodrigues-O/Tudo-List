@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+
 </Project>

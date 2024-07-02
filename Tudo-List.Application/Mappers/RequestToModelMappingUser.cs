@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Tudo_List.Application.Models.Users;
+using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Application.Models.Requests;
 using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Application.Mappers
@@ -8,22 +9,28 @@ namespace Tudo_List.Application.Mappers
     {
         public RequestToModelMappingUser()
         {
-            CreateMap<RegisterUserRequest, User>();
+            CreateMap<UserDto, User>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.Salt, opt => opt.Ignore())
+                .ForMember(dest => dest.PasswordStrategy, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<RegisterUserRequest, User>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.Salt, opt => opt.Ignore())
+                .ForMember(dest => dest.PasswordStrategy, opt => opt.Ignore());
 
             CreateMap<UpdateUserRequest, User>()
-                .ForAllMembers(x => x.Condition(
-                    (src, dest, prop) =>
-                    {
-                        var isInvalidString = (prop.GetType() == typeof(string) && string.IsNullOrWhiteSpace((string)prop));
-
-                        if (prop is null)
-                            return false;
-
-                        if (isInvalidString)
-                            return false;
-
-                        return true;
-                    }));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.Salt, opt => opt.Ignore())
+                .ForMember(dest => dest.PasswordStrategy, opt => opt.Ignore());
         }
     }
 }
