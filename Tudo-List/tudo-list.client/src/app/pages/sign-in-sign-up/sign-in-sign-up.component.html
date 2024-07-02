@@ -6,19 +6,24 @@
             </div>
             <div class="inputs">
                 <div>
-                    <input id="idInputEmail" name="email" type="text" [required]="true" [(ngModel)]="user.email" />
-                    <label for="idInputEmail" class="label">E-mail</label>
+                    <label #labelEmail for="idInputEmail">E-mail</label>
+                    <input id="idInputEmail" type="text" name="email" (blur)="estilizarLabel(labelEmail, user.email)"
+                        (click)="estilizarLabel(labelEmail, user.email)" [required]="true" [(ngModel)]="user.email" />
                 </div>
 
                 <div>
-                    <input id="idInputPassword" name="password" type="password" [required]="true" [(ngModel)]="user.password" />
-                    <label for="idInputPassword" class="label">Password</label>
+                    <label #labelPassword for="idInputPassword" class="">Password</label>
+                    <input (blur)="estilizarLabel(labelPassword, user.password)"
+                        (click)="estilizarLabel(labelPassword, user.password)" id="idInputPassword" name="password"
+                        type="password" [required]="true" [(ngModel)]="user.password" />
                 </div>
 
                 @if(!isSignIn){
                 <div>
-                    <input id="idInputConfirmPassword" (focusout)="onFocusOut('idInputConfirmPassword', user.confirmPassword)" name="confirm-password" type="password" [required]="true" [(ngModel)]="user.confirmPassword" />
-                    <label for="idInputConfirmPassword" class="label">Confirm password</label>
+                    <label #labelConfirmPassword for="idInputConfirmPassword" class="">Confirm password</label>
+                    <input (blur)="estilizarLabel(labelConfirmPassword, user.confirmPassword)"
+                        (click)="estilizarLabel(labelConfirmPassword, user.confirmPassword)" id="idInputConfirmPassword"
+                        name="confirm-password" type="password" [required]="true" [(ngModel)]="user.confirmPassword" />
                 </div>
                 }
             </div>
@@ -29,7 +34,9 @@
                 }
             </div>
             <div>
-                <p>{{ signUpSignIn }}<a class="sign-up-link" (click)="onClickTextSignUpSignIn()">{{actionSignUpSignIn}}</a></p>
+                <p>{{ signUpSignIn }}
+                    <a class="sign-up-link" (click)="onClickTextSignUpSignIn()">{{actionSignUpSignIn}}</a>
+                </p>
             </div>
         </form>
         <img [class]="classImg" src="../../../assets/images/background_image.jpg" />

@@ -36,7 +36,7 @@ export class SignInSignUpComponent {
     var newClassForm: string = 'form-sign-in';
     var newClassimg: string = 'form-sign-in';
     if (this.isSignIn) {
-      newClassForm += ' ' + 'animate-form-right';
+      newClassForm = `${newClassForm} animate-form-right`;
       newClassimg += ' ' + 'animate-img-left';
     } else {
       newClassForm += ' ' + 'animate-form-left';
@@ -48,17 +48,11 @@ export class SignInSignUpComponent {
 
   onClickButtonSigninSignUp() {
     console.log(this.user);
-    if (this.isSignIn) {
 
-    }
   }
 
-  onFocusOut(idLabel: string, valueInput: string) {
-    debugger
-    if (valueInput) {
-      document.getElementById(idLabel)?.setAttribute('class', 'label-top')
-    } else {
-      document.getElementById(idLabel)?.setAttribute('class', '')
-    }
+  estilizarLabel(evento: any, value: any) {
+    if (!value)
+      evento.classList.toggle('estilo-label')
   }
 }
