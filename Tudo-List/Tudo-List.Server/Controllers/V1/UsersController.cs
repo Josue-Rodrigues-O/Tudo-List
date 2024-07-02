@@ -4,24 +4,24 @@ using Tudo_List.Application.Interfaces;
 using Tudo_List.Application.Models.Users;
 using Tudo_List.Server.Controllers.Common;
 
-namespace Tudo_List.Server.Controllers
+namespace Tudo_List.Server.Controllers.V1
 {
     [Authorize]
-    [Route("api/[controller]")]
     [ApiController]
-    public class UserController(IUserApplication userApplication) : ApiController
+    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    public class UsersController(IUserApplication userApplication) : ApiController
     {
         private readonly IUserApplication _userApplication = userApplication;
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("users")]
         public IActionResult GetAll()
         {
             var users = _userApplication.GetAll();
             return Ok(users);
         }
-        
+
         [HttpGet]
         [Route("users/{id}")]
         public IActionResult GetAll([FromRoute] int id)

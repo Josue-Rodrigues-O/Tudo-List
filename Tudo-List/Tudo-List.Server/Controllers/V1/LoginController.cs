@@ -4,11 +4,12 @@ using Tudo_List.Application.Models.Users;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Server.Controllers.Common;
 
-namespace Tudo_List.Server.Controllers
+namespace Tudo_List.Server.Controllers.V1
 {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
+    [ApiVersion("1.0")]
     public class LoginController(IUserService userService) : ApiController
     {
         private readonly IUserService _userService = userService;

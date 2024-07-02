@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Tudo_list.Infrastructure.CrossCutting.Ioc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,12 @@ builder.Services.AddDatabaseContext(builder.Configuration.GetConnectionString("S
 builder.Services.AddRepositories();
 builder.Services.AddDomainServices();
 builder.Services.AddApplicationServices();
+builder.Services.AddApiVersioning(setup =>
+{
+    setup.DefaultApiVersion = ApiVersion.Default;
+    setup.AssumeDefaultVersionWhenUnspecified = true;
+    setup.ReportApiVersions = true;
+});
 
 var app = builder.Build();
 
