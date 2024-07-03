@@ -1,7 +1,7 @@
 {
     "pageSignInSignUp": {
         "titleSignIn": "LOGIN",
-        "titleSignUp": "INSCREVER-SE",
+        "titleSignUp": "CADASTRO",
         "forgotPassword": "Esqueceu sua senha?",
         "DontHaveAnAccount": "Não possui uma conta?",
         "linkSignIn": "Entrar",

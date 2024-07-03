@@ -1,14 +1,13 @@
-:root {
-    --transition-time: 1.1s;
-}
-
 .container {
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Work Sans", sans-serif;
+}
+
+h1 {
+    font-size: 1.5vw;
 }
 
 main {
@@ -31,11 +30,12 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 3rem;
 }
 
 .inputs {
-    width: 22rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -69,12 +69,6 @@ label {
     color: #40AFFF;
 }
 
-.label-top {
-    top: -80%;
-    font-style: normal;
-    color: #000;
-}
-
 a {
     text-decoration: none;
     color: #40AFFF;
@@ -82,7 +76,7 @@ a {
 
 button {
     height: 3rem;
-    width: 22rem;
+    width: 100%;
     background-color: #40AFFF;
     border-radius: 50pt;
     border: none;
@@ -103,6 +97,7 @@ button:hover {
     align-items: center;
     justify-content: space-evenly;
     height: 25%;
+    width: 100%;
 }
 
 .sign-up-link:hover {
