@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SignInSignUpComponent } from './pages/sign-in-sign-up/sign-in-sign-up.component';
 import { TudoListComponent } from './pages/tudo-list/tudo-list.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -18,6 +19,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     SignInSignUpComponent,
     TudoListComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

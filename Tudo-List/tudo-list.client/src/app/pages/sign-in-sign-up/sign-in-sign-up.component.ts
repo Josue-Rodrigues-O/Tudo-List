@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../models/user/user';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -12,7 +13,7 @@ export class SignInSignUpComponent {
   isSignIn: boolean = true;
   canChangeControls: boolean = false;
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private router: Router) {
     this.translate.addLangs(['en', 'pt']);
     this.translate.setDefaultLang('en');
 
@@ -36,7 +37,7 @@ export class SignInSignUpComponent {
   }
 
   onClickButtonSigninSignUp() {
-    console.log(this.user);
+    this.router.navigate(['/tudo-list']);
   }
 
   estilizarLabel(evento: any, value: any) {
