@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tudo_List.Application.Models.Requests
+namespace Tudo_List.Application.Models.Dtos
 {
     public class RegisterUserDto
     {

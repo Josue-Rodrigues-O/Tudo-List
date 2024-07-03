@@ -2,5 +2,8 @@
 {
     public interface IPasswordStrategy
     {
+        string HashPassword(string password, string? salt = null);
+        bool VerifyPassword(string password, string passwordHash, string? salt = null);
+        bool UsesSalting();
     }
 }

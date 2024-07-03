@@ -7,9 +7,11 @@ using Tudo_list.Infrastructure.Repositories;
 using Tudo_List.Application;
 using Tudo_List.Application.Interfaces;
 using Tudo_List.Application.Mappers;
+using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Services;
+using Tudo_List.Domain.Services.Factories;
 
 namespace Tudo_list.Infrastructure.CrossCutting.Ioc
 {
@@ -50,6 +52,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         public static IServiceCollection AddDomainServices(this IServiceCollection servicesCollection)
         {
             servicesCollection.TryAddScoped<IUserService, UserService>();
+            servicesCollection.TryAddTransient<IPasswordStrategyFactory, PasswordStrategyFactory>();
 
             return servicesCollection;
         }

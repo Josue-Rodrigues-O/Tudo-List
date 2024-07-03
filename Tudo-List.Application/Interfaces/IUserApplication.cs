@@ -1,5 +1,4 @@
 ﻿using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Application.Models.Requests;
 
 namespace Tudo_List.Application.Interfaces
 {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces;
 using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Application.Models.Requests;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -37,15 +36,15 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Register([FromBody] RegisterUserDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
 
             _userApplication.Register(model);
-            return Created();
+            return Ok();
         }
 
         [HttpPut]
@@ -55,6 +54,7 @@ namespace Tudo_List.Server.Controllers.V1
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
             _userApplication.Update(model);
+
             return NoContent();
         }
 

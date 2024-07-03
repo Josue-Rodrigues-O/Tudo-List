@@ -17,5 +17,13 @@ namespace Tudo_List.Domain.Helpers
 
             return description;
         }
+
+        public static T GetRandomValue<T>() where T : struct, Enum
+        {
+            T[] enumValues = (T[])Enum.GetValues(typeof(T));
+            var index = new Random().Next(enumValues.Length);
+
+            return enumValues[index];
+        }
     }
 }
