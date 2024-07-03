@@ -1,0 +1,74 @@
+<div class="container">
+    <main>
+        <form #form id="id-sign-in-sign-up" class="form-sign-in">
+            <div>
+                @if(isSignIn){
+                <h1> {{ 'pageSignInSignUp.titleSignIn' | translate }} </h1>
+                }@else {
+                <h1> {{ 'pageSignInSignUp.titleSignUp' | translate }} </h1>
+                }
+            </div>
+            <div class="inputs">
+                <div>
+                    <label #labelEmail for="idInputEmail">
+                        {{ 'pageSignInSignUp.placeholder.email' | translate }}
+                    </label>
+                    <input id="idInputEmail" type="text" name="email" (blur)="estilizarLabel(labelEmail, user.email)"
+                        (focus)="estilizarLabel(labelEmail, user.email)" [required]="true" [(ngModel)]="user.email" />
+                </div>
+
+                <div>
+                    <label #labelPassword for="idInputPassword">
+                        {{ 'pageSignInSignUp.placeholder.password' | translate }}
+                    </label>
+                    <input id="idInputPassword" name="password" type="password"
+                        (blur)="estilizarLabel(labelPassword, user.password)"
+                        (focus)="estilizarLabel(labelPassword, user.password)" [required]="true"
+                        [(ngModel)]="user.password" />
+                </div>
+
+                @if(!isSignIn){
+                <div>
+                    <label #labelConfirmPassword for="idInputConfirmPassword">
+                        {{ 'pageSignInSignUp.placeholder.confirmPassword' | translate }}
+                    </label>
+                    <input id="idInputConfirmPassword" name="confirm-password" type="password"
+                        (blur)="estilizarLabel(labelConfirmPassword, user.confirmPassword)"
+                        (focus)="estilizarLabel(labelConfirmPassword, user.confirmPassword)" [required]="true"
+                        [(ngModel)]="user.confirmPassword" />
+                </div>
+                }
+            </div>
+            <div class="container-button">
+                @if(isSignIn){
+                <button (click)="onClickButtonSigninSignUp()">
+                    {{ 'pageSignInSignUp.buttonSignIn' | translate }}
+                </button>
+                <a href="">
+                    {{ 'pageSignInSignUp.forgotPassword' | translate }}
+                </a>
+                }@else {
+                <button (click)="onClickButtonSigninSignUp()">
+                    {{ 'pageSignInSignUp.buttonSignUp' | translate }}
+                </button>
+                }
+            </div>
+            <div>
+                @if(isSignIn){
+                <p>
+                    {{ 'pageSignInSignUp.DontHaveAnAccount' | translate }}
+                    <a class="sign-up-link" (click)="onClickTextSignUpSignIn(form, image)"> {{ 'pageSignInSignUp.linkSignUp' |
+                        translate }} </a>
+                </p>
+                }@else {
+                <p>
+                    {{ 'pageSignInSignUp.alreadyHasAnAccount' | translate }}
+                    <a class="sign-up-link" (click)="onClickTextSignUpSignIn(form, image)"> {{ 'pageSignInSignUp.linkSignIn' |
+                        translate }} </a>
+                </p>
+                }
+            </div>
+        </form>
+        <img #image src="../../../assets/images/background_image.jpg" />
+    </main>
+</div>

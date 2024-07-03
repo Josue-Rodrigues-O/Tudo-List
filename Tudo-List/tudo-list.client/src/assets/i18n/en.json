@@ -1,0 +1,18 @@
+{
+    "pageSignInSignUp": {
+        "titleSignIn": "LOGIN",
+        "titleSignUp": "REGISTER",
+        "forgotPassword": "Forgot password?",
+        "DontHaveAnAccount": "Don't have an account?",
+        "linkSignIn": "Sign In",
+        "linkSignUp": "Sign Up",
+        "buttonSignIn": "Sign In",
+        "buttonSignUp": "Sign Up",
+        "alreadyHasAnAccount": "Already has an account?",
+        "placeholder": {
+            "email": "E-mail",
+            "password": "Password",
+            "confirmPassword": "Confirm Password"
+        }
+    }
+}

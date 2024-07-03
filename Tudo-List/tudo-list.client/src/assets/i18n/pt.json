@@ -1,0 +1,18 @@
+{
+    "pageSignInSignUp": {
+        "titleSignIn": "LOGIN",
+        "titleSignUp": "CADASTRO",
+        "forgotPassword": "Esqueceu sua senha?",
+        "DontHaveAnAccount": "Não possui uma conta?",
+        "linkSignIn": "Entrar",
+        "linkSignUp": "Inscreva-se",
+        "buttonSignIn": "Entrar",
+        "buttonSignUp": "Increver-se",
+        "alreadyHasAnAccount": "Já possui uma conta?",
+        "placeholder": {
+            "email": "E-mail",
+            "password": "Senha",
+            "confirmPassword": "Confirme sua senha"
+        }
+    }
+}
