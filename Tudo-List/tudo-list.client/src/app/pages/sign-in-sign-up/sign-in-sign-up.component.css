@@ -1,3 +1,7 @@
+:root {
+    --transition-time: 1.1s;
+}
+
 .container {
     height: 100%;
     width: 100%;
@@ -21,16 +25,6 @@ img {
 }
 
 .form-sign-in {
-    height: 100%;
-    width: 50%;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.form-sign-up {
     height: 100%;
     width: 50%;
     background-color: white;
@@ -69,7 +63,7 @@ label {
     transition: top 0.25s, font-style 0.25s;
 }
 
-.estilo-label{
+.estilo-label {
     top: 20%;
     font-style: normal;
     color: #40AFFF;
@@ -94,6 +88,7 @@ button {
     border: none;
     color: white;
     font-weight: bold;
+    font-size: 1rem;
     transition: background-color 0.5s;
 }
 
@@ -115,25 +110,83 @@ button:hover {
 }
 
 .animate-form-right {
-    transition: transform 1.2s;
-    transition-timing-function: ease;
-    transform: translateX(100%);
+    animation: translate-form-left-to-right 1s forwards;
 }
 
 .animate-form-left {
-    transition: transform 1.2s;
-    transition-timing-function: ease;
-    transform: translateX(0%);
+    animation: translate-form-right-to-left 1s forwards;
 }
 
 .animate-img-left {
-    transition: transform 1.2s;
-    transition-timing-function: ease;
-    transform: translateX(-100%);
+    animation: translate-img-right-to-left 1s forwards;
 }
 
 .animate-img-right {
-    transition: transform 1.2s;
-    transition-timing-function: ease;
-    transform: translateX(0%);
+    animation: translate-img-left-to-right 1s forwards;
+}
+
+@keyframes translate-form-left-to-right {
+    from {
+        transform: translateX(0%);
+    }
+
+    0% {
+        opacity: 1;
+    }
+
+    15%,
+    55% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes translate-form-right-to-left {
+    from {
+        transform: translateX(100%);
+    }
+
+    0% {
+        opacity: 1;
+    }
+
+    15%,
+    55% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes translate-img-left-to-right {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes translate-img-right-to-left {
+    from {
+        transform: translateX(0%);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
 }
