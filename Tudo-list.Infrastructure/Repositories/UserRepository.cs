@@ -14,21 +14,43 @@ namespace Tudo_list.Infrastructure.Repositories
             return _context.Users;
         }
 
-        public User Get(int id)
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return GetUser(id);
+            return await _context.Users.ToListAsync();
+        }
+
+        public User GetById(int id)
+        {
+            return GetUserById(id);
+        }
+
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await GetUserByIdAsync(id);
         }
 
         public User GetByEmail(string email)
         {
-            return _context.Users.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email)) 
+            return _context.Users.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email))
                 ?? throw new KeyNotFoundException(nameof(User));
         }
 
-        public void Register(User user)
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email.Equals(email))
+                ?? throw new KeyNotFoundException(nameof(User));
+        }
+
+        public void Add(User user)
         {
             _context.Users.Add(user);
             _context.SaveChanges();
+        }
+        
+        public async Task AddAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
         }
 
         public void Update(User entity)
@@ -36,18 +58,37 @@ namespace Tudo_list.Infrastructure.Repositories
             _context.Users.Update(entity);
             _context.SaveChanges();
         }
+        
+        public async Task UpdateAsync(User entity)
+        {
+            _context.Users.Update(entity);
+            await _context.SaveChangesAsync();
+        }
 
         public void Delete(int id)
         {
-            var user = GetUser(id);
+            var user = GetUserById(id);
             _context.Users.Remove(user);
             _context.SaveChanges();
         }
-
-        private User GetUser(int id)
+        
+        public async Task DeleteAsync(int id)
         {
-            var user = _context.Users.Find(id) ?? throw new KeyNotFoundException(nameof(User));
-            return user;
+            var user = await GetUserByIdAsync(id);
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+
+        private User GetUserById(int id)
+        {
+            return _context.Users.Find(id)
+                ?? throw new KeyNotFoundException(nameof(User));
+        }
+
+        private async Task<User> GetUserByIdAsync(int id)
+        {
+            return await _context.Users.FindAsync(id)
+                ?? throw new KeyNotFoundException(nameof(User));
         }
     }
 }

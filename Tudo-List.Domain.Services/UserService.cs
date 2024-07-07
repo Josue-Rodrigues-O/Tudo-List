@@ -15,7 +15,7 @@ namespace Tudo_List.Domain.Services
 
         public User GetById(int id)
         {
-            return _repository.Get(id);
+            return _repository.GetById(id);
         }
 
         public User GetByEmail(string email)
@@ -25,7 +25,7 @@ namespace Tudo_List.Domain.Services
 
         public void Register(User user)
         {
-            _repository.Register(user);
+            _repository.Add(user);
         }
 
         public void Update(User user)
