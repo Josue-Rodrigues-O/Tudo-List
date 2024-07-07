@@ -1,0 +1,187 @@
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 1.5vw;
+}
+
+main {
+    height: 70vh;
+    width: 50vw;
+    display: flex;
+    box-shadow: 1.3rem 1.3rem 3.5rem rgb(0, 0, 0, 50%);
+}
+
+img {
+    height: 100%;
+    width: 50%;
+    object-fit: cover;
+}
+
+.form-sign-in {
+    height: 100%;
+    width: 50%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem;
+}
+
+.inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    width: 100%;
+    height: 3rem;
+    padding: 0rem 0rem 0rem 1rem;
+    border: none;
+    outline: none;
+    background-color: #F1F1F1;
+    margin: 0.5rem;
+    font-size: 1rem;
+    border-radius: 50pt;
+}
+
+label {
+    font-size: 1rem;
+    color: gray;
+    font-style: italic;
+    position: relative;
+    top: 50%;
+    left: 7%;
+    pointer-events: none;
+    transition: top 0.25s, font-style 0.25s;
+}
+
+.estilo-label {
+    top: 20%;
+    font-style: normal;
+    color: #40AFFF;
+}
+
+a {
+    text-decoration: none;
+    color: #40AFFF;
+}
+
+button {
+    height: 3rem;
+    width: 100%;
+    background-color: #40AFFF;
+    border-radius: 50pt;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background-color 0.5s;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #1789da;
+}
+
+.container-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    height: 25%;
+    width: 100%;
+}
+
+.sign-up-link:hover {
+    cursor: pointer;
+}
+
+.animate-form-right {
+    animation: translate-form-left-to-right 1s forwards;
+}
+
+.animate-form-left {
+    animation: translate-form-right-to-left 1s forwards;
+}
+
+.animate-img-left {
+    animation: translate-img-right-to-left 1s forwards;
+}
+
+.animate-img-right {
+    animation: translate-img-left-to-right 1s forwards;
+}
+
+@keyframes translate-form-left-to-right {
+    from {
+        transform: translateX(0%);
+    }
+
+    0% {
+        opacity: 1;
+    }
+
+    15%,
+    55% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes translate-form-right-to-left {
+    from {
+        transform: translateX(100%);
+    }
+
+    0% {
+        opacity: 1;
+    }
+
+    15%,
+    55% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes translate-img-left-to-right {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+@keyframes translate-img-right-to-left {
+    from {
+        transform: translateX(0%);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
