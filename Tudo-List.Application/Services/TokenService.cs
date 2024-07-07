@@ -5,7 +5,6 @@ using System.Text;
 using Tudo_List.Application;
 using Tudo_List.Application.Models.Dtos;
 using Tudo_List.Domain.Core.Interfaces.Services;
-using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Domain.Services
 {
@@ -40,7 +39,7 @@ namespace Tudo_List.Domain.Services
             return new ClaimsIdentity(
             [
                 new Claim("userId", user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, user.Email),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
             ]);
         }
