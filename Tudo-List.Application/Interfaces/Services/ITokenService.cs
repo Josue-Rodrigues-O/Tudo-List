@@ -1,6 +1,6 @@
 ﻿using Tudo_List.Application.Models.Dtos;
 
-namespace Tudo_List.Domain.Core.Interfaces.Services
+namespace Tudo_List.Application.Interfaces.Services
 {
     public interface ITokenService
     {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tudo_List.Application.Interfaces;
+using Tudo_List.Application.Interfaces.Applications;
+using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1

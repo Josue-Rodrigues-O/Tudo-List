@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tudo_List.Application.Interfaces;
+using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Models.Dtos;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -35,7 +35,7 @@ namespace Tudo_List.Application
         {
             var user = _mapper.Map<User>(model);
 
-            var passwordStrategy = EnumHelper.GetRandomValue<PasswordStrategyEnum>();
+            var passwordStrategy = EnumHelper.GetRandomValue<PasswordStrategy>();
             var strategy = _passwordStrategyFactory.CreatePasswordStrategy(passwordStrategy);
             string? salt = null;
 

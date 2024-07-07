@@ -1,6 +1,6 @@
 ﻿using Tudo_List.Application.Models.Dtos;
 
-namespace Tudo_List.Application.Interfaces
+namespace Tudo_List.Application.Interfaces.Applications
 {
     public interface IUserApplication
     {

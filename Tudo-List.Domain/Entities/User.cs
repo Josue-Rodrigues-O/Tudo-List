@@ -9,6 +9,6 @@ namespace Tudo_List.Domain.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string? Salt { get; set; }
-        public PasswordStrategyEnum PasswordStrategy { get; set; }
+        public PasswordStrategy PasswordStrategy { get; set; }
     }
 }

@@ -5,6 +5,6 @@ namespace Tudo_List.Domain.Core.Interfaces.Factories
 {
     public interface IPasswordStrategyFactory
     {
-        IPasswordStrategy CreatePasswordStrategy(PasswordStrategyEnum strategy);
+        IPasswordStrategy CreatePasswordStrategy(PasswordStrategy strategy);
     }
 }

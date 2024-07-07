@@ -7,11 +7,11 @@ namespace Tudo_List.Domain.Services.Factories
 {
     public class PasswordStrategyFactory : IPasswordStrategyFactory
     {
-        public IPasswordStrategy CreatePasswordStrategy(PasswordStrategyEnum strategy)
+        public IPasswordStrategy CreatePasswordStrategy(PasswordStrategy strategy)
         {
             return strategy switch
             {
-                PasswordStrategyEnum.BCrypt => new BCryptPasswordStrategy(),
+                PasswordStrategy.BCrypt => new BCryptPasswordStrategy(),
                 _ => throw new ArgumentException("Invalid Password Strategy!")
             };
         }

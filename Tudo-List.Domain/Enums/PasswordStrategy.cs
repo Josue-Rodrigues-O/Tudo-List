@@ -1,6 +1,6 @@
 ﻿namespace Tudo_List.Domain.Enums
 {
-    public enum PasswordStrategyEnum
+    public enum PasswordStrategy
     {
         BCrypt
     }

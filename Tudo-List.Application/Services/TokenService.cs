@@ -2,11 +2,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Tudo_List.Application;
+using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Core.Interfaces.Services;
 
-namespace Tudo_List.Domain.Services
+namespace Tudo_List.Application.Services
 {
     public class TokenService : ITokenService
     {

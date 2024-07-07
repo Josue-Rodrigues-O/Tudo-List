@@ -1,4 +1,4 @@
-﻿using Tudo_List.Application.Interfaces;
+﻿using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Services;
 

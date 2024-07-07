@@ -1,4 +1,4 @@
-﻿namespace Tudo_List.Application.Interfaces
+﻿namespace Tudo_List.Application.Interfaces.Services
 {
     public interface IAuthService
     {
