@@ -1,0 +1,52 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Tudo_List.Application.Interfaces.Applications;
+using Tudo_List.Application.Interfaces.Services;
+using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Server.Controllers.Common;
+
+namespace Tudo_List.Server.Controllers.V1
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    [ApiVersion("1.0")]
+    public class LoginController(IUserApplication userApplication, IAuthService authService, ITokenService tokenService) : ApiController
+    {
+        private readonly IUserApplication _userApplication = userApplication;
+        private readonly IAuthService _authService = authService;
+        private readonly ITokenService _tokenService = tokenService;
+
+        [HttpPost]
+        public IActionResult Login([FromBody] LoginRequestDto model)
+        {
+            if (!ModelState.IsValid)
+                CustomResponse(ModelState);
+
+            var user = _userApplication.GetByEmail(model.Email);
+
+            if (_authService.CheckPassword(user.Id, model.Password))
+            {
+                var authResult = _tokenService.GenerateToken(user);
+                return Ok(authResult);
+            }
+
+            return BadRequest();
+        }
+        
+        [HttpPost("login-async")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto model)
+        {
+            if (!ModelState.IsValid)
+                CustomResponse(ModelState);
+
+            var user = await _userApplication.GetByEmailAsync(model.Email);
+
+            if (_authService.CheckPassword(user.Id, model.Password))
+            {
+                var authResult = _tokenService.GenerateToken(user);
+                return Ok(authResult);
+            }
+
+            return BadRequest();
+        }
+    }
+}

@@ -8,9 +8,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Tudo-List.Domain.Core\Tudo-List.Domain.Core.csproj" />
     <ProjectReference Include="..\Tudo-List.Domain.Services\Tudo-List.Domain.Services.csproj" />
     <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
 
 </Project>

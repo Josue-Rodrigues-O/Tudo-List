@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Tudo_List.Domain.Extensions
+namespace Tudo_List.Domain.Helpers
 {
     public static class EnumHelper
     {
@@ -16,6 +16,14 @@ namespace Tudo_List.Domain.Extensions
             }
 
             return description;
+        }
+
+        public static T GetRandomValue<T>() where T : struct, Enum
+        {
+            T[] enumValues = (T[])Enum.GetValues(typeof(T));
+            var index = new Random().Next(enumValues.Length);
+
+            return enumValues[index];
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Tudo_List.Application.Interfaces.Services;
+using Tudo_List.Application.Models.Dtos;
+
+namespace Tudo_List.Application.Services
+{
+    public class TokenService : ITokenService
+    {
+        public AuthResultDto GenerateToken(UserDto user)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Configuration.PrivateKey);
+
+            var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor()
+            {
+                Subject = GenerateClaims(user),
+                SigningCredentials = credentials,
+                Expires = DateTime.UtcNow.AddHours(8),
+            };
+
+            var token = handler.CreateToken(tokenDescriptor);
+            var strToken = handler.WriteToken(token);
+
+            return new AuthResultDto()
+            {
+                Success = true,
+                Token = strToken,
+            };
+        }
+
+        private static ClaimsIdentity GenerateClaims(UserDto user)
+        {
+            return new ClaimsIdentity(
+            [
+                new Claim("userId", user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+            ]);
+        }
+    }
+}

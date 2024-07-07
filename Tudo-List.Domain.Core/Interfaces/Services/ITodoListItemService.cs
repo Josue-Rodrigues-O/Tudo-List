@@ -2,7 +2,7 @@
 
 namespace Tudo_List.Domain.Core.Interfaces.Services
 {
-    public interface ITaskService
+    public interface ITodoListItemService
     {
         IEnumerable<TodoListItem> GetAll();
         TodoListItem GetById(int id);

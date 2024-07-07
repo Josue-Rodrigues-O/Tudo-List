@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Tudo-List.Domain.Core\Tudo-List.Domain.Core.csproj" />
     <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
   </ItemGroup>
