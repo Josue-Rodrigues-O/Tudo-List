@@ -86,7 +86,7 @@ namespace Tudo_List.Application
             var strategy = _passwordStrategyFactory.CreatePasswordStrategy(passwordStrategy);
             string? salt = null;
 
-            if (strategy.UsesSalting())
+            if (strategy.UsesSalting)
             {
                 salt = PasswordHelper.GenerateBase64String();
                 user.Salt = salt;

@@ -1,18 +1,22 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Domain.Core.Interfaces.Configuration;
 
 namespace Tudo_List.Application.Services
 {
-    public class TokenService : ITokenService
+    public class TokenService(ISecrets secrets) : ITokenService
     {
+        private readonly ISecrets _secrets = secrets;
+
         public AuthResultDto GenerateToken(UserDto user)
         {
             var handler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Configuration.PrivateKey);
+            var key = Encoding.ASCII.GetBytes(_secrets.JwtPrivateKey);
 
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
 

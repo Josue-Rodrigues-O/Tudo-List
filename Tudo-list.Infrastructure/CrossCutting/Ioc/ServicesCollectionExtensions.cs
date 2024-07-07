@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Tudo_list.Infrastructure.Configuration;
 using Tudo_list.Infrastructure.Context;
 using Tudo_list.Infrastructure.Repositories;
 using Tudo_List.Application;
+using Tudo_List.Application.Constants;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Mappers;
 using Tudo_List.Application.Services;
+using Tudo_List.Domain.Core.Interfaces.Configuration;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -21,9 +25,9 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
     {
         public static IServiceCollection AddAutoMapper(this IServiceCollection servicesCollection)
         {
-            var mappingConfig = new MapperConfiguration(x => 
+            var mappingConfig = new MapperConfiguration(config => 
             {
-                x.AddProfile(new DtoToUserMapping());
+                config.AddProfile(new DtoToUserMapping());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -32,11 +36,11 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
             return servicesCollection;
         }
 
-        public static IServiceCollection AddDatabaseContext(this IServiceCollection servicesCollection, string connectionString)
+        public static IServiceCollection AddDatabaseContext(this IServiceCollection servicesCollection, ConfigurationManager config)
         {
             servicesCollection.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                options.UseSqlServer(config.GetConnectionString(SecretsKeys.SqlServerConnectionString));
             });
 
             servicesCollection.TryAddScoped<ApplicationDbContext>();
@@ -67,6 +71,12 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
 
             return servicesCollection;
         }
+        
+        public static IServiceCollection AddApplicationSecrets(this IServiceCollection servicesCollection)
+        {
+            servicesCollection.TryAddScoped<ISecrets, Secrets>();
 
+            return servicesCollection;
+        }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tudo_list.Infrastructure.CrossCutting.Ioc;
-using Tudo_List.Application;
+using Tudo_List.Application.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ builder.Services
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.PrivateKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection(SecretsKeys.JwtPrivateKey).Value)),
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = true,
@@ -28,10 +28,11 @@ builder.Services
 
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper();
-builder.Services.AddDatabaseContext(builder.Configuration.GetConnectionString("SqlServer"));
+builder.Services.AddDatabaseContext(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddDomainServices();
 builder.Services.AddApplicationServices();
+builder.Services.AddApplicationSecrets();
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = ApiVersion.Default;
