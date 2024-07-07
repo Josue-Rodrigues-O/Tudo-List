@@ -1,6 +1,7 @@
 using System.Drawing;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
+using Tudo_List.Domain.Services;
 using Tudo_List.Domain.Services.Strategies;
 
 namespace Tudo_List.Test
@@ -10,8 +11,6 @@ namespace Tudo_List.Test
         [Fact]
         public void Test()
         {
-            var salt = GenerateBase64String();
-
         }
 
         private static byte[] GenerateSalt(int size = 128)

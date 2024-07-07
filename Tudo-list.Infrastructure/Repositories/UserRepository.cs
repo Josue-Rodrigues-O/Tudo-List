@@ -1,4 +1,5 @@
-﻿using Tudo_list.Infrastructure.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Tudo_list.Infrastructure.Context;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 
@@ -16,6 +17,12 @@ namespace Tudo_list.Infrastructure.Repositories
         public User Get(int id)
         {
             return GetUser(id);
+        }
+
+        public User GetByEmail(string email)
+        {
+            return _context.Users.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email)) 
+                ?? throw new KeyNotFoundException(nameof(User));
         }
 
         public void Register(User user)

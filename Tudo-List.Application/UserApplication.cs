@@ -6,7 +6,6 @@ using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Helpers;
-using Tudo_List.Domain.Services.Factories;
 using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Application
@@ -25,6 +24,11 @@ namespace Tudo_List.Application
         public UserDto GetById(int id)
         {
             return _mapper.Map<UserDto>(_userService.GetById(id));
+        }
+
+        public UserDto GetByEmail(string email)
+        {
+            return _mapper.Map<UserDto>(_userService.GetByEmail(email));
         }
 
         public void Register(RegisterUserDto model)

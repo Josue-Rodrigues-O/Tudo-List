@@ -1,36 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Tudo_List.Application.Models.Auth;
+using Tudo_List.Application.Interfaces;
+using Tudo_List.Application.Models.Dtos;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
-    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
-    public class LoginController(IUserService userService) : ApiController
+    public class LoginController(IUserApplication userApplication, IAuthService authService, ITokenService tokenService) : ApiController
     {
-        private readonly IUserService _userService = userService;
+        private readonly IUserApplication _userApplication = userApplication;
+        private readonly IAuthService _authService = authService;
+        private readonly ITokenService _tokenService = tokenService;
 
         [HttpPost]
-        public Task<IActionResult> Login([FromBody] LoginRequest model)
+        public IActionResult Login([FromBody] LoginRequestDto model)
         {
             if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values
-                    .SelectMany(x => x.Errors)
-                    .Select(x => x.ErrorMessage)
-                    .ToArray();
+                CustomResponse(ModelState);
 
-                return Task
-                        .FromResult<IActionResult>(BadRequest(new
-                        {
-                            Errors = errors
-                        }));
+            var user = _userApplication.GetByEmail(model.Email);
+
+            if (_authService.CheckPassword(user.Id, model.Password))
+            {
+                var authResult = _tokenService.GenerateToken(user);
+                return Ok(authResult);
             }
 
-            return Task.FromResult<IActionResult>(Ok());
+            return BadRequest();
         }
     }
 }

@@ -1,17 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces;
 using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
-    //[Authorize]
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiVersion("1.0")]
-    public class UsersController(IUserApplication userApplication) : ApiController
+    public class UsersController(IUserApplication userApplication, ITokenService tokenService) : ApiController
     {
         private readonly IUserApplication _userApplication = userApplication;
+        private readonly ITokenService _tokenService = tokenService;
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
@@ -44,6 +47,7 @@ namespace Tudo_List.Server.Controllers.V1
                 return CustomResponse(ModelState);
 
             _userApplication.Register(model);
+
             return Ok();
         }
 
@@ -54,7 +58,6 @@ namespace Tudo_List.Server.Controllers.V1
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
             _userApplication.Update(model);
-
             return NoContent();
         }
 

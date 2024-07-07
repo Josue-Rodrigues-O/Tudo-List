@@ -7,6 +7,7 @@ using Tudo_list.Infrastructure.Repositories;
 using Tudo_List.Application;
 using Tudo_List.Application.Interfaces;
 using Tudo_List.Application.Mappers;
+using Tudo_List.Application.Services;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -60,6 +61,8 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         public static IServiceCollection AddApplicationServices(this IServiceCollection servicesCollection)
         {
             servicesCollection.TryAddScoped<IUserApplication, UserApplication>();
+            servicesCollection.TryAddTransient<ITokenService, TokenService>();
+            servicesCollection.TryAddScoped<IAuthService, AuthService>();
 
             return servicesCollection;
         }

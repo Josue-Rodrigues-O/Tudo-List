@@ -18,6 +18,11 @@ namespace Tudo_List.Domain.Services
             return _repository.Get(id);
         }
 
+        public User GetByEmail(string email)
+        {
+            return _repository.GetByEmail(email);
+        }
+
         public void Register(User user)
         {
             _repository.Register(user);

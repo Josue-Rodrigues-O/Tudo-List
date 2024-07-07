@@ -1,4 +1,4 @@
-﻿namespace Tudo_List.Domain.Core.Interfaces.Repositories
+﻿namespace Tudo_List.Domain.Core.Interfaces.Repositories.Common
 {
     public interface IRepository<T> where T : class
     {

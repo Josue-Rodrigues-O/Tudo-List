@@ -6,6 +6,7 @@ namespace Tudo_List.Application.Interfaces
     {
         IEnumerable<UserDto> GetAll();
         UserDto GetById(int id);
+        UserDto GetByEmail(string email);
         void Register(RegisterUserDto model);
         void Update(UpdateUserDto model);
         void Delete(int id);

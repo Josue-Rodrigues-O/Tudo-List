@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tudo_List.Application.Models.Auth
+namespace Tudo_List.Application.Models.Dtos
 {
-    public class LoginRequest
+    public class LoginRequestDto
     {
         [Required]
         public string Email { get; set; }
