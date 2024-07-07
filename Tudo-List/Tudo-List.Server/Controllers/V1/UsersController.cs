@@ -7,27 +7,28 @@ using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
-    [ApiController]
     [Authorize]
     [Route("api/[controller]")]
+    [ApiController]
     [ApiVersion("1.0")]
     public class UsersController(IUserApplication userApplication, ITokenService tokenService) : ApiController
     {
         private readonly IUserApplication _userApplication = userApplication;
         private readonly ITokenService _tokenService = tokenService;
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("get-all")]
         public IActionResult GetAll()
         {
             return Ok(_userApplication.GetAll());
         }
+        
+        [HttpGet("get-all-async")]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            return Ok(await _userApplication.GetAllAsync());
+        }
 
-        [HttpGet]
-        [Route("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserDto))]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("get-by-id/{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
             var user = _userApplication.GetById(id);
@@ -37,11 +38,20 @@ namespace Tudo_List.Server.Controllers.V1
 
             return Ok(user);
         }
+        
+        [HttpGet("get-by-id-async/{id}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+        {
+            var user = await _userApplication.GetByIdAsync(id);
 
-        [HttpPost]
+            if (user is null)
+                return NotFound($"{nameof(User)} with the id {id} was not found!");
+
+            return Ok(user);
+        }
+
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterUserDto model)
         {
             if (!ModelState.IsValid)
@@ -51,24 +61,44 @@ namespace Tudo_List.Server.Controllers.V1
 
             return Ok();
         }
+        
+        [AllowAnonymous]
+        [HttpPost("register-async")]
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDto model)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
 
-        [HttpPut]
-        [Route("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+            await _userApplication.RegisterAsync(model);
+            
+            return Ok();
+        }
+
+        [HttpPut("update/{id}")]
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
             _userApplication.Update(model);
             return NoContent();
         }
+        
+        [HttpPut("update-async/{id}")]
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
+        {
+            await _userApplication.UpdateAsync(model);
+            return NoContent();
+        }
 
-        [HttpDelete]
-        [Route("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [HttpDelete("delete/{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
             _userApplication.Delete(id);
+            return NoContent();
+        }
+        
+        [HttpDelete("delete-async/{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        {
+            await _userApplication.DeleteAsync(id);
             return NoContent();
         }
     }

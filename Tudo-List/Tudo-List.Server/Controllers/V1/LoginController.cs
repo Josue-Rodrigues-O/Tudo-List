@@ -6,8 +6,8 @@ using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     [ApiVersion("1.0")]
     public class LoginController(IUserApplication userApplication, IAuthService authService, ITokenService tokenService) : ApiController
     {
@@ -22,6 +22,23 @@ namespace Tudo_List.Server.Controllers.V1
                 CustomResponse(ModelState);
 
             var user = _userApplication.GetByEmail(model.Email);
+
+            if (_authService.CheckPassword(user.Id, model.Password))
+            {
+                var authResult = _tokenService.GenerateToken(user);
+                return Ok(authResult);
+            }
+
+            return BadRequest();
+        }
+        
+        [HttpPost("login-async")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto model)
+        {
+            if (!ModelState.IsValid)
+                CustomResponse(ModelState);
+
+            var user = await _userApplication.GetByEmailAsync(model.Email);
 
             if (_authService.CheckPassword(user.Id, model.Password))
             {

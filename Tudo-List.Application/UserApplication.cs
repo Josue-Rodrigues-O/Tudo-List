@@ -20,18 +20,65 @@ namespace Tudo_List.Application
         {
             return _mapper.Map<IEnumerable<UserDto>>(_userService.GetAll());
         }
+        
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        {
+            return _mapper.Map<IEnumerable<UserDto>>(await _userService.GetAllAsync());
+        }
 
         public UserDto GetById(int id)
         {
             return _mapper.Map<UserDto>(_userService.GetById(id));
+        }
+        
+        public async Task<UserDto> GetByIdAsync(int id)
+        {
+            return _mapper.Map<UserDto>(await _userService.GetByIdAsync(id));
         }
 
         public UserDto GetByEmail(string email)
         {
             return _mapper.Map<UserDto>(_userService.GetByEmail(email));
         }
+        
+        public async Task<UserDto> GetByEmailAsync(string email)
+        {
+            return _mapper.Map<UserDto>(await _userService.GetByEmailAsync(email));
+        }
 
         public void Register(RegisterUserDto model)
+        {
+            var user = DefineUserInfo(model);
+            _userService.Register(user);
+        }
+        
+        public async Task RegisterAsync(RegisterUserDto model)
+        {
+            var user = DefineUserInfo(model);
+            await _userService.RegisterAsync(user);
+        }
+
+        public void Update(UpdateUserDto model)
+        {
+            _userService.Update(_mapper.Map<User>(model));
+        }
+        
+        public async Task UpdateAsync(UpdateUserDto model)
+        {
+            await _userService.UpdateAsync(_mapper.Map<User>(model));
+        }
+
+        public void Delete(int id)
+        {
+            _userService.Delete(id);
+        }
+        
+        public async Task DeleteAsync(int id)
+        {
+            await _userService.DeleteAsync(id);
+        }
+
+        private User DefineUserInfo(RegisterUserDto model)
         {
             var user = _mapper.Map<User>(model);
 
@@ -42,23 +89,13 @@ namespace Tudo_List.Application
             if (strategy.UsesSalting())
             {
                 salt = PasswordHelper.GenerateBase64String();
-                user.Salt = salt;   
+                user.Salt = salt;
             }
 
             user.PasswordStrategy = passwordStrategy;
             user.PasswordHash = strategy.HashPassword(model.Password, salt);
 
-            _userService.Register(user);
-        }
-
-        public void Update(UpdateUserDto model)
-        {
-            _userService.Update(_mapper.Map<User>(model));
-        }
-
-        public void Delete(int id)
-        {
-            _userService.Delete(id);
+            return user;
         }
     }
 }
