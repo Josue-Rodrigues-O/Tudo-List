@@ -7,5 +7,16 @@ namespace Tudo_list.Infrastructure.Context
     {
         public DbSet<User> Users { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<TodoListItem>()
+                .HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .IsRequired();
+        }
     }
 }
