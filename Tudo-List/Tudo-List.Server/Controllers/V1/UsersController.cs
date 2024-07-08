@@ -11,10 +11,9 @@ namespace Tudo_List.Server.Controllers.V1
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class UsersController(IUserApplication userApplication, ITokenService tokenService) : ApiController
+    public class UsersController(IUserApplication userApplication) : ApiController
     {
         private readonly IUserApplication _userApplication = userApplication;
-        private readonly ITokenService _tokenService = tokenService;
 
         [HttpGet("get-all")]
         public IActionResult GetAll()
