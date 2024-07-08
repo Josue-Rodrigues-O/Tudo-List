@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Domain.Commands.Dtos.User;
+using Tudo_List.Domain.Validation.Constants;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -73,8 +74,11 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update")]
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
-            if (!ModelState.IsValid)
+            if (model.Id == decimal.Zero)
+            {
+                AddError(ValidationErrorMessages.RequiredId);
                 return CustomResponse(ModelState);
+            }
 
             _userApplication.Update(model);
             return NoContent();
@@ -83,8 +87,11 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update-async")]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
         {
-            if (!ModelState.IsValid)
+            if (model.Id == decimal.Zero)
+            {
+                AddError(ValidationErrorMessages.RequiredId);
                 return CustomResponse(ModelState);
+            }
 
             await _userApplication.UpdateAsync(model);
             return NoContent();

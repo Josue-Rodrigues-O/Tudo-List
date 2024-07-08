@@ -49,47 +49,43 @@ namespace Tudo_List.Application
 
         public void Register(RegisterUserDto model)
         {
-            var user = _mapper.Map<User>(model);
-            _userService.Register(user, model.Password);
+            _userService.Register(_mapper.Map<User>(model), model.Password);
         }
         
         public async Task RegisterAsync(RegisterUserDto model)
         {
-            var user = _mapper.Map<User>(model);
-            await _userService.RegisterAsync(user, model.Password);
+            await _userService.RegisterAsync(_mapper.Map<User>(model), model.Password);
         }
 
         public void Update(UpdateUserDto model)
         {
-            var currentUserId = GetCurrentUserId();
-
-            if (model.Id != currentUserId)
-            {
+            if (model.Id != GetCurrentUserId())
                 throw new Exception();
-            }
 
             _userService.Update(model);
         }
         
         public async Task UpdateAsync(UpdateUserDto model)
         {
-            var currentUserId = GetCurrentUserId();
-
-            if (model.Id != currentUserId)
-            {
+            if (model.Id != GetCurrentUserId())
                 throw new Exception();
-            }
 
             await _userService.UpdateAsync(model);
         }
 
         public void Delete(int id)
         {
+            if (id != GetCurrentUserId())
+                throw new Exception();
+
             _userService.Delete(id);
         }
         
         public async Task DeleteAsync(int id)
         {
+            if (id != GetCurrentUserId())
+                throw new Exception();
+
             await _userService.DeleteAsync(id);
         }
 

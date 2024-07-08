@@ -71,14 +71,14 @@ namespace Tudo_List.Server.Controllers.V1
             return Ok();
         }
 
-        [HttpPut("update")]
+        [HttpPatch("update")]
         public IActionResult Update([FromBody] UpdateItemDto model)
         {
             _todoListItemApplication.Update(model);
             return NoContent();
         }
 
-        [HttpPut("update-async")]
+        [HttpPatch("update-async")]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateItemDto model)
         {
             await _todoListItemApplication.UpdateAsync(model);

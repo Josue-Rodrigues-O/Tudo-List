@@ -47,9 +47,7 @@ namespace Tudo_List.Domain.Services
         public void Register(User user, string password)
         {
             if (password != null)
-            {
                 DefineUserPasswordHash(user, password);
-            }
 
             _userRepository.Add(user);
         }
@@ -57,9 +55,7 @@ namespace Tudo_List.Domain.Services
         public async Task RegisterAsync(User user, string password)
         {
             if (password != null)
-            {
                 DefineUserPasswordHash(user, password);
-            }
 
             await _userRepository.AddAsync(user);
         }
@@ -68,10 +64,8 @@ namespace Tudo_List.Domain.Services
         {
             var user = _userRepository.GetById(model.Id);
 
-            if (model.Name != null)
-            {
+            if (model.Name != null) 
                 user.Name = model.Name;
-            }
 
             _userRepository.Update(user);
         }
@@ -81,9 +75,7 @@ namespace Tudo_List.Domain.Services
             var user = _userRepository.GetById(model.Id);
 
             if (model.Name != null)
-            {
                 user.Name = model.Name;
-            }
 
             await _userRepository.UpdateAsync(user);
         }

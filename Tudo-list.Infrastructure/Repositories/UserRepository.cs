@@ -68,15 +68,13 @@ namespace Tudo_list.Infrastructure.Repositories
 
         public void Remove(int id)
         {
-            var user = GetUserById(id);
-            _users.Remove(user);
+            _users.Remove(GetUserById(id));
             _context.SaveChanges();
         }
         
         public async Task RemoveAsync(int id)
         {
-            var user = await GetUserByIdAsync(id);
-            _users.Remove(user);
+            _users.Remove(await GetUserByIdAsync(id));
             await _context.SaveChangesAsync();
         }
 
