@@ -54,15 +54,15 @@ namespace Tudo_list.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public void Update(User entity)
+        public void Update(User user)
         {
-            _users.Update(entity);
+            _users.Update(user);
             _context.SaveChanges();
         }
         
-        public async Task UpdateAsync(User entity)
+        public async Task UpdateAsync(User user)
         {
-            _users.Update(entity);
+            _users.Update(user);
             await _context.SaveChangesAsync();
         }
 

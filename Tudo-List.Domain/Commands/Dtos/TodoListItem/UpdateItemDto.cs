@@ -1,6 +1,6 @@
 ﻿using Tudo_List.Domain.Enums;
 
-namespace Tudo_List.Application.Models.Dtos.TodoListItem
+namespace Tudo_List.Domain.Commands.Dtos.TodoListItem
 {
     public class UpdateItemDto
     {

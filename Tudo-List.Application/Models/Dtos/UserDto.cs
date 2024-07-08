@@ -1,4 +1,4 @@
-﻿namespace Tudo_List.Application.Models.Dtos.User
+﻿namespace Tudo_List.Application.Models.Dtos
 {
     public class UserDto
     {

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos.User;
+using Tudo_List.Domain.Commands.Dtos.User;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -57,7 +56,6 @@ namespace Tudo_List.Server.Controllers.V1
                 return CustomResponse(ModelState);
 
             _userApplication.Register(model);
-
             return Ok();
         }
         
@@ -69,20 +67,25 @@ namespace Tudo_List.Server.Controllers.V1
                 return CustomResponse(ModelState);
 
             await _userApplication.RegisterAsync(model);
-            
             return Ok();
         }
 
-        [HttpPut("update")]
+        [HttpPatch("update")]
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
             _userApplication.Update(model);
             return NoContent();
         }
         
-        [HttpPut("update-async")]
+        [HttpPatch("update-async")]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
         {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
             await _userApplication.UpdateAsync(model);
             return NoContent();
         }

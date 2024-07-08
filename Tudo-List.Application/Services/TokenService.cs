@@ -4,8 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Tudo_List.Application.Interfaces.Services;
+using Tudo_List.Application.Models.Dtos;
 using Tudo_List.Application.Models.Dtos.Login;
-using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Configuration;
 
 namespace Tudo_List.Application.Services
