@@ -5,9 +5,18 @@ namespace Tudo_List.Domain.Core.Interfaces.Services
     public interface ITodoListItemService
     {
         IEnumerable<TodoListItem> GetAll();
-        TodoListItem GetById(int id);
-        void Register(TodoListItem task);
-        void Update(TodoListItem task);
-        void Delete(int id);
+        Task<IEnumerable<TodoListItem>> GetAllAsync();
+
+        TodoListItem GetById(Guid id);
+        Task<TodoListItem> GetByIdAsync(Guid id);
+
+        void Add(TodoListItem item);
+        Task AddAsync(TodoListItem item);
+
+        void Update(TodoListItem item);
+        Task UpdateAsync(TodoListItem item);
+   
+        void Delete(Guid id);
+        Task DeleteAsync(Guid id);
     }
 }
