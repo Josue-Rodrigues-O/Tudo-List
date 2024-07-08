@@ -1,6 +1,6 @@
 @Tudo_List.Server_HostAddress = http://localhost:5140
 
-GET {{Tudo_List.Server_HostAddress}}/weatherforecast/
+GET {{Tudo_List.Server_HostAddress}}/api/users
 Accept: application/json
 
 ###
