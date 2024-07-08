@@ -19,12 +19,6 @@ namespace Tudo_List.Application.Mappers
                     .ForMember(dest => dest.UserId, opt => opt.Ignore())
                     .ForMember(dest => dest.User, opt => opt.Ignore())
                     .ForMember(dest => dest.CreationDate, opt => opt.Ignore());
-
-                CreateMap<UpdateItemDto, TodoListItem>()
-                    .ForMember(dest => dest.Id, opt => opt.Ignore())
-                    .ForMember(dest => dest.UserId, opt => opt.Ignore())
-                    .ForMember(dest => dest.User, opt => opt.Ignore())
-                    .ForMember(dest => dest.CreationDate, opt => opt.Ignore());
             }
         }
     }
