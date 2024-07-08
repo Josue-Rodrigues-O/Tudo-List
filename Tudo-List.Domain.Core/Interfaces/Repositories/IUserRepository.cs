@@ -1,11 +1,25 @@
-﻿using Tudo_List.Domain.Core.Interfaces.Repositories.Common;
-using Tudo_List.Domain.Entities;
+﻿using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Domain.Core.Interfaces.Repositories
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository
     {
+        IEnumerable<User> GetAll();
+        Task<IEnumerable<User>> GetAllAsync();
+
+        User GetById(int id);
+        Task<User> GetByIdAsync(int id);
+
         User GetByEmail(string email);
         Task<User> GetByEmailAsync(string email);
+
+        void Add(User user);
+        Task AddAsync(User user);
+
+        void Update(User user);
+        Task UpdateAsync(User user);
+
+        void Remove(int id);
+        Task RemoveAsync(int id);
     }
 }

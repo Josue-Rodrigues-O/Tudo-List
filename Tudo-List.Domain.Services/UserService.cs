@@ -4,68 +4,68 @@ using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Domain.Services
 {
-    public class UserService(IUserRepository repository) : IUserService
+    public class UserService(IUserRepository userRepository) : IUserService
     {
-        private readonly IUserRepository _repository = repository;
+        private readonly IUserRepository _userRepository = userRepository;
 
         public IEnumerable<User> GetAll()
         {
-            return _repository.GetAll();
+            return _userRepository.GetAll();
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _userRepository.GetAllAsync();
         }
 
         public User GetById(int id)
         {
-            return _repository.GetById(id);
+            return _userRepository.GetById(id);
         }
         
         public async Task<User> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _userRepository.GetByIdAsync(id);
         }
 
         public User GetByEmail(string email)
         {
-            return _repository.GetByEmail(email);
+            return _userRepository.GetByEmail(email);
         }
         
         public async Task<User> GetByEmailAsync(string email)
         {
-            return await _repository.GetByEmailAsync(email);
+            return await _userRepository.GetByEmailAsync(email);
         }
 
         public void Register(User user)
         {
-            _repository.Add(user);
+            _userRepository.Add(user);
         }
         
         public async Task RegisterAsync(User user)
         {
-            await _repository.AddAsync(user);
+            await _userRepository.AddAsync(user);
         }
 
         public void Update(User user)
         {
-            _repository.Update(user);
+            _userRepository.Update(user);
         }
         
         public async Task UpdateAsync(User user)
         {
-            await _repository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user);
         }
 
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            _userRepository.Remove(id);
         }
         
         public async Task DeleteAsync(int id)
         {
-            await _repository.DeleteAsync(id);
+            await _userRepository.RemoveAsync(id);
         }
     }
 }

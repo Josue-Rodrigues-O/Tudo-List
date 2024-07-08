@@ -31,6 +31,7 @@ builder.Services.AddAutoMapper();
 builder.Services.AddDatabaseContext(builder.Configuration);
 builder.Services.AddRepositories();
 builder.Services.AddDomainServices();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationSecrets();
 builder.Services.AddApiVersioning(options =>

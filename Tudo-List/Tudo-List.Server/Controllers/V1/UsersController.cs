@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -74,14 +74,14 @@ namespace Tudo_List.Server.Controllers.V1
             return Ok();
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("update")]
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
             _userApplication.Update(model);
             return NoContent();
         }
         
-        [HttpPut("update-async/{id}")]
+        [HttpPut("update-async")]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
         {
             await _userApplication.UpdateAsync(model);

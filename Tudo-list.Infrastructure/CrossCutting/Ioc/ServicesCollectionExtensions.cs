@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Tudo_list.Infrastructure.Configuration;
 using Tudo_list.Infrastructure.Context;
 using Tudo_list.Infrastructure.Repositories;
@@ -28,6 +27,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
             var mappingConfig = new MapperConfiguration(config => 
             {
                 config.AddProfile(new DtoToUserMapping());
+                config.AddProfile(new DtoToTodoListItemMapping());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
@@ -43,38 +43,42 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
                 options.UseSqlServer(config.GetConnectionString(SecretsKeys.SqlServerConnectionString));
             });
 
-            servicesCollection.TryAddScoped<ApplicationDbContext>();
+            servicesCollection.AddScoped<ApplicationDbContext>();
 
             return servicesCollection;
         }
 
         public static IServiceCollection AddRepositories(this IServiceCollection servicesCollection)
         {
-            servicesCollection.TryAddScoped<IUserRepository, UserRepository>();
+            servicesCollection.AddScoped<IUserRepository, UserRepository>();
+            servicesCollection.AddScoped<ITodoListItemRepository, TodoListItemRepository>();
 
             return servicesCollection;
         }
 
         public static IServiceCollection AddDomainServices(this IServiceCollection servicesCollection)
         {
-            servicesCollection.TryAddScoped<IUserService, UserService>();
-            servicesCollection.TryAddTransient<IPasswordStrategyFactory, PasswordStrategyFactory>();
+            servicesCollection.AddScoped<IUserService, UserService>();
+            servicesCollection.AddScoped<ITodoListItemService, TodoListItemService>();
+            servicesCollection.AddTransient<IPasswordStrategyFactory, PasswordStrategyFactory>();
 
             return servicesCollection;
         }
         
         public static IServiceCollection AddApplicationServices(this IServiceCollection servicesCollection)
         {
-            servicesCollection.TryAddScoped<IUserApplication, UserApplication>();
-            servicesCollection.TryAddTransient<ITokenService, TokenService>();
-            servicesCollection.TryAddScoped<IAuthService, AuthService>();
+            servicesCollection.AddScoped<IUserApplication, UserApplication>();
+            servicesCollection.AddScoped<ITodoListItemApplication, TodoListItemApplication>();
+            servicesCollection.AddScoped<IAuthService, AuthService>();
+            servicesCollection.AddScoped<ICurrentUserService, CurrentUserService>();
+            servicesCollection.AddTransient<ITokenService, TokenService>();
 
             return servicesCollection;
         }
         
         public static IServiceCollection AddApplicationSecrets(this IServiceCollection servicesCollection)
         {
-            servicesCollection.TryAddScoped<ISecrets, Secrets>();
+            servicesCollection.AddScoped<ISecrets, Secrets>();
 
             return servicesCollection;
         }
