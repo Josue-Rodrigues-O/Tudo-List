@@ -1,12 +1,25 @@
-﻿namespace Tudo_List.Domain.Validation.Constants
+﻿using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Models.TodoListItem;
+using Tudo_List.Domain.Models.User;
+
+namespace Tudo_List.Domain.Validation.Constants
 {
     public static class ValidationErrorMessages
     {
-        public const string RequiredId = "Id is required!";
-        public const string RequiredEmail = "E-mail is required!";
-        public const string RequiredPassword = "Password is required!";
-        public const string RequiredTitle = "Title is required!";
-        public const string RequiredNewEmail = "New Email is required for this operation!";
-        public const string RequiredCurrentPassword = "Current Password is required for this operation!";
+        public const string RequiredName = nameof(User.Name) + isRequired;
+        public const string RequiredEmail = nameof(User.Email) + isRequired;
+        public const string RequiredNewEmail = nameof(User.Email) + isRequired;
+        public const string RequiredPassword = nameof(RegisterUserRequest.Password) + isRequired;
+        
+        public const string RequiredTitle = nameof(TodoListItem.Title) + isRequired;
+
+        public const string RequiredUserId = nameof(UpdateEmailRequest.UserId) + isRequired;
+        public const string RequiredCurrentPassword = nameof(UpdateEmailRequest.CurrentPassword) + isRequired;
+        public const string RequiredItemId = nameof(UpdateItemRequest.ItemId) + isRequired;
+        
+        public const string RequiredNewPassword = nameof(UpdatePasswordRequest.NewPassword) + isRequired;
+        public const string RequiredConfirmNewPassword = nameof(UpdatePasswordRequest.ConfirmNewPassword) + isRequired;
+
+        private const string isRequired = " is required for this operation!";
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Tudo_List.Domain.Enums;
-using Tudo_List.Domain.Validation.Constants;
+using Tudo_List.Domain.Validation.Attributes;
 
 namespace Tudo_List.Domain.Models.TodoListItem
 {
     public class UpdateItemRequest
     {
-        [Key, Required(ErrorMessage = ValidationErrorMessages.RequiredId)]
-        public Guid Id { get; set; }
-
+        [RequireGuidId]
+        public Guid ItemId { get; set; }
+        
         public string? Title { get; set; }
         public string? Description { get; set; }
         public Status? Status { get; set; }

@@ -41,7 +41,7 @@ namespace Tudo_List.Domain.Services
 
         public void Update(UpdateItemRequest model)
         {
-            var item = _repository.GetById(model.Id);
+            var item = _repository.GetById(model.ItemId);
 
             item.Title = model.Title ?? item.Title;
             item.Description = model.Description ?? item.Description;
@@ -53,7 +53,7 @@ namespace Tudo_List.Domain.Services
 
         public async Task UpdateAsync(UpdateItemRequest model)
         {
-            var item = await _repository.GetByIdAsync(model.Id);
+            var item = await _repository.GetByIdAsync(model.ItemId);
 
             item.Title = model.Title ?? item.Title;
             item.Description = model.Description ?? item.Description;
