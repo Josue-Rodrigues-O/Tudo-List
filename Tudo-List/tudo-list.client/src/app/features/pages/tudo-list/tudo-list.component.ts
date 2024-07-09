@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { TodoListItem } from '../../models/todo-list-item/todo-list-item';
-import { StatusEnum } from '../../models/enums/status-enum/status-enum';
+import { TodoListItem } from '../../../core/models/todo-list-item/todo-list-item';
+import { StatusEnum } from '../../../core/enums/status-enum/status-enum';
 
 @Component({
   selector: 'app-tudo-list',
@@ -39,7 +39,7 @@ export class TudoListComponent {
       userId: 0,
     },
   ];
-  
+
   onClickTaskStatusItem(
     value: StatusEnum,
     task: TodoListItem,

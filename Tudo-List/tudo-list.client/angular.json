@@ -36,7 +36,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/custom-bootstrap.scss",
+              "src/app/styles/custom-bootstrap.scss",
               "src/styles.scss"
             ],
             "scripts": []

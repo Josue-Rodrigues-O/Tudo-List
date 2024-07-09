@@ -1,5 +1,5 @@
-import { PriorityEnum } from "../enums/priority-enum/priority-enum";
-import { StatusEnum } from "../enums/status-enum/status-enum";
+import { PriorityEnum } from "../../enums/priority-enum/priority-enum";
+import { StatusEnum } from "../../enums/status-enum/status-enum";
 
 export class TodoListItem {
     id!: string;

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SignInSignUpComponent } from './pages/sign-in-sign-up/sign-in-sign-up.component';
-import { TudoListComponent } from './pages/tudo-list/tudo-list.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SignInSignUpComponent } from './features/pages/sign-in-sign-up/sign-in-sign-up.component';
+import { TudoListComponent } from './features/pages/tudo-list/tudo-list.component';
+import { NotFoundComponent } from './features/pages/not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', component: SignInSignUpComponent },

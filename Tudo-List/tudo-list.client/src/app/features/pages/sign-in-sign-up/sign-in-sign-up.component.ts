@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from '../../models/user/user';
+import { User } from '../../../core/models/user/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 
