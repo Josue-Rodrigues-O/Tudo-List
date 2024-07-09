@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Entities
 {
@@ -6,11 +6,9 @@ namespace Tudo_List.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        [JsonIgnore]
+        public string Email { get; set; }
         public string PasswordHash { get; set; }
-
-        [JsonIgnore]
         public string? Salt { get; set; }
+        public PasswordStrategy PasswordStrategy { get; set; }
     }
 }
