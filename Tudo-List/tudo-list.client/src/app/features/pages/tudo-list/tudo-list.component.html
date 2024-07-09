@@ -53,8 +53,12 @@
         <div class="m-5 mb-0">
             <ul class="list-group list-group-flush">
                 @for (task of tasks; track $index) {
-                <li class="list-group-item d-flex justify-content-between align-items-center rounded-2 mb-1 shadow-sm">
-                    <p>{{task.title}}</p>
+                <li
+                    class="task list-group-item d-flex justify-content-between align-items-center rounded-2 p-0 mb-1 shadow-sm">
+                    <div class="title-task p-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                        aria-controls="offcanvasRight" (click)="onSelectedTask(task)">
+                        <p>{{task.title}}</p>
+                    </div>
                     <div class="dropdown">
                         <input #status class="btn btn-select btn-sm dropdown-toggle rounded-5" type="button"
                             data-bs-toggle="dropdown" aria-expanded="false" value="Não iniciado" />
@@ -84,4 +88,37 @@
         </div>
         <button class="btn-add-task rounded-circle bi bi-plus-lg"></button>
     </main>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header justify-content-between">
+            <button type="button" class="btn-close m-0" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <div class="dropdown">
+                <input #status class="btn btn-select btn-sm dropdown-toggle rounded-5" type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false" value="Não iniciado" />
+                @switch (currentTask.status) {
+                @case (statusEnum.notStarted) {
+                {{onClickTaskStatusItem(statusEnum.notStarted, currentTask, status)}}
+                }
+                @case (statusEnum.inProgress) {
+                {{onClickTaskStatusItem(statusEnum.inProgress, currentTask, status)}}
+                }
+                @case (statusEnum.completed) {
+                {{onClickTaskStatusItem(statusEnum.completed, currentTask, status)}}
+                }
+                }
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item items-select"
+                        (click)="onClickTaskStatusItem(statusEnum.notStarted, currentTask, status)">Não iniciado</li>
+                    <li class="dropdown-item items-select"
+                        (click)="onClickTaskStatusItem(statusEnum.inProgress, currentTask, status)">Em progresso</li>
+                    <li class="dropdown-item items-select"
+                        (click)="onClickTaskStatusItem(statusEnum.completed, currentTask, status)">Concluído</li>
+                </ul>
+            </div>
+        </div>
+        <div class="offcanvas-body">
+            <h5>{{currentTask.title}}</h5>
+            <hr>
+            <p>{{currentTask.description}}</p>
+        </div>
+    </div>
 </div>

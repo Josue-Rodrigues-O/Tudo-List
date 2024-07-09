@@ -9,11 +9,12 @@ import { StatusEnum } from '../../../core/enums/status-enum/status-enum';
 })
 export class TudoListComponent {
   statusEnum = StatusEnum;
+  currentTask: TodoListItem = new TodoListItem();
 
   tasks: Array<TodoListItem> = [
     {
       id: '1',
-      title: 'task 1',
+      title: 'task 1 asd asd sa sad sa ad sadsad sdas dsa dsad sa dsad sad sad sad sad sadsad sadsad sa sad sa ',
       description: 'description 1',
       status: 0,
       priority: 0,
@@ -62,5 +63,9 @@ export class TudoListComponent {
         statusSelect.style.backgroundColor = '#A6E9D5';
         break;
     }
+  }
+
+  onSelectedTask(task: TodoListItem){
+    this.currentTask = task;
   }
 }
