@@ -1,0 +1,68 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// Required
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+// Optional
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+// @import "../node_modules/bootstrap/scss/code";
+@import "../node_modules/bootstrap/scss/grid";
+
+$primary: #4E73DF;
+$secondary: #90b4ce;
+$body-bg: #fffffe;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "info": $info,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    //   "$body-bg":   $body-bg
+);
+
+.bg-tudo-list-primary {
+    background-color: #4E73DF;
+    // background: rgb(78, 115, 223);
+    // background: linear-gradient(90deg, rgba(78, 115, 223, 1) 0%, rgba(0, 37, 194, 1) 100%);
+    color: white;
+
+    p {
+        color: #d1ddff;
+    }
+}
+
+.bg-tudo-list-secondary {
+    background-color: #F8F9FC;
+    color: #5A5C69;
+
+    p {
+        color: #858796
+    }
+}
+
+.btn-ligth {
+    background: none;
+    border: none;
+    color: white;
+    transition: color 0.4s;
+}
+
+.btn-ligth:hover {
+    cursor: pointer;
+    color: #d1ddff;
+}
+
+@import "../node_modules/bootstrap/scss/bootstrap";

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-sign-in-sign-up',
   templateUrl: './sign-in-sign-up.component.html',
-  styleUrl: './sign-in-sign-up.component.css',
+  styleUrl: './sign-in-sign-up.component.scss',
 })
 export class SignInSignUpComponent {
   user: User = new User();

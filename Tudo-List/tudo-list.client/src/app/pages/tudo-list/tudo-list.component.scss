@@ -1,0 +1,45 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "../../../custom-bootstrap.scss";
+
+p {
+    margin: 0;
+}
+
+.folder:hover {
+    cursor: pointer;
+    background-color: #F8F9FC;
+    color: #5A5C69;
+
+    p {
+        color: #858796
+    }
+}
+
+.btn-add-task {
+    background: none;
+    border: none;
+    background-color: #4E73DF;
+    width: 3vw;
+    height: 3vw;
+    position: absolute;
+    right: 1vw;
+    bottom: 1vw;
+    color: white;
+    -webkit-text-stroke: 3px;
+}
+
+.btn-select {
+    background-color: #F8F9FC;
+    border: none;
+}
+
+.items-select:hover {
+    cursor: pointer;
+}
+
+.btn-search {
+    background-color: white;
+    border: 1px solid rgb(222, 220, 220);
+    border-left: none;
+}
