@@ -23,6 +23,9 @@ namespace Tudo_List.Application.Interfaces.Applications
         public void UpdateEmail(UpdateEmailRequest model);
         public Task UpdateEmailAsync(UpdateEmailRequest model);
 
+        public void UpdatePassword(UpdatePasswordRequest model);
+        public Task UpdatePasswordAsync(UpdatePasswordRequest model);
+
         void Delete(int id);
         Task DeleteAsync(int id);
     }

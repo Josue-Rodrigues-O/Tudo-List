@@ -62,7 +62,7 @@ namespace Tudo_List.Domain.Services
 
         public void Update(UpdateUserRequest model)
         {
-            var user = _userRepository.GetById(model.Id);
+            var user = _userRepository.GetById(model.UserId);
 
             if (model.Name != null) 
                 user.Name = model.Name;
@@ -72,7 +72,7 @@ namespace Tudo_List.Domain.Services
         
         public async Task UpdateAsync(UpdateUserRequest model)
         {
-            var user = _userRepository.GetById(model.Id);
+            var user = _userRepository.GetById(model.UserId);
 
             if (model.Name != null)
                 user.Name = model.Name;
@@ -82,7 +82,7 @@ namespace Tudo_List.Domain.Services
 
         public void UpdateEmail(UpdateEmailRequest model)
         {
-            var user = _userRepository.GetById(model.Id);
+            var user = _userRepository.GetById(model.UserId);
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
             if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
@@ -94,12 +94,43 @@ namespace Tudo_List.Domain.Services
         
         public async Task UpdateEmailAsync(UpdateEmailRequest model)
         {
-            var user = await _userRepository.GetByIdAsync(model.Id);
+            var user = await _userRepository.GetByIdAsync(model.UserId);
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
-            if (passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
-                user.Email = model.NewEmail;
+            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+                throw new ArgumentException();
 
+            user.Email = model.NewEmail;
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public void UpdatePassword(UpdatePasswordRequest model)
+        {
+            var user = _userRepository.GetById(model.UserId);
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+
+            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+                throw new ArgumentException();
+
+            if (model.NewPassword != model.ConfirmNewPassword)
+                throw new ArgumentException();
+
+            DefineUserPasswordHash(user, model.NewPassword);
+            _userRepository.Update(user);
+        }
+
+        public async Task UpdatePasswordAsync(UpdatePasswordRequest model)
+        {
+            var user = await _userRepository.GetByIdAsync(model.UserId);
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+
+            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+                throw new ArgumentException();
+
+            if (model.NewPassword != model.ConfirmNewPassword)
+                throw new ArgumentException();
+
+            DefineUserPasswordHash(user, model.NewPassword);
             await _userRepository.UpdateAsync(user);
         }
 

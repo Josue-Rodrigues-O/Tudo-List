@@ -59,7 +59,7 @@ namespace Tudo_List.Application
 
         public void Update(UpdateUserRequest model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
             _userService.Update(model);
@@ -67,7 +67,7 @@ namespace Tudo_List.Application
         
         public async Task UpdateAsync(UpdateUserRequest model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
             await _userService.UpdateAsync(model);
@@ -75,15 +75,31 @@ namespace Tudo_List.Application
 
         public void UpdateEmail(UpdateEmailRequest model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
             _userService.UpdateEmail(model);
         }
-        
+
+        public void UpdatePassword(UpdatePasswordRequest model)
+        {
+            if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            _userService.UpdatePassword(model);
+        }
+
+        public async Task UpdatePasswordAsync(UpdatePasswordRequest model)
+        {
+            if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            await _userService.UpdatePasswordAsync(model);
+        }
+
         public async Task UpdateEmailAsync(UpdateEmailRequest model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
             await _userService.UpdateEmailAsync(model);

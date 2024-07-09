@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Domain.Models.User;
-using Tudo_List.Domain.Validation.Constants;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -74,11 +73,8 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update")]
         public IActionResult Update([FromBody] UpdateUserRequest model)
         {
-            if (model.Id == decimal.Zero)
-            {
-                AddError(ValidationErrorMessages.RequiredId);
+            if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
-            }
 
             _userApplication.Update(model);
             return NoContent();
@@ -87,11 +83,8 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update-async")]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserRequest model)
         {
-            if (model.Id == decimal.Zero)
-            {
-                AddError(ValidationErrorMessages.RequiredId);
+            if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
-            }
 
             await _userApplication.UpdateAsync(model);
             return NoContent();
@@ -102,12 +95,6 @@ namespace Tudo_List.Server.Controllers.V1
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
-
-            if (model.Id == decimal.Zero)
-            {
-                AddError(ValidationErrorMessages.RequiredId);
-                return CustomResponse(ModelState);
-            }
 
             _userApplication.UpdateEmail(model);
 
@@ -121,6 +108,28 @@ namespace Tudo_List.Server.Controllers.V1
                 return CustomResponse(ModelState);
 
             await _userApplication.UpdateEmailAsync(model);
+
+            return Ok();
+        }
+
+        [HttpPatch("update-password")]
+        public IActionResult UpdatePassword([FromBody] UpdatePasswordRequest model)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            _userApplication.UpdatePassword(model);
+
+            return Ok();
+        }
+
+        [HttpPatch("update-password-async")]
+        public async Task<IActionResult> UpdatePasswordAsync([FromBody] UpdatePasswordRequest model)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            await _userApplication.UpdatePasswordAsync(model);
 
             return Ok();
         }

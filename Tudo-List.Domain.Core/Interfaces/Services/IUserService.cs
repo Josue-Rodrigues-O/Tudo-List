@@ -22,6 +22,9 @@ namespace Tudo_List.Domain.Core.Interfaces.Services
 
         void UpdateEmail(UpdateEmailRequest model);
         Task UpdateEmailAsync(UpdateEmailRequest model);
+        
+        void UpdatePassword(UpdatePasswordRequest model);
+        Task UpdatePasswordAsync(UpdatePasswordRequest model);
 
         void Delete(int id);
         Task DeleteAsync(int id);
