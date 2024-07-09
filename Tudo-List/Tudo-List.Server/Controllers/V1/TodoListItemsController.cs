@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Domain.Commands.Dtos.TodoListItem;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Models.TodoListItem;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -50,7 +50,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromBody] AddItemDto model)
+        public IActionResult Add([FromBody] AddItemRequest model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -61,7 +61,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPost("add-async")]
-        public async Task<IActionResult> AddAsync([FromBody] AddItemDto model)
+        public async Task<IActionResult> AddAsync([FromBody] AddItemRequest model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -72,14 +72,14 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPatch("update")]
-        public IActionResult Update([FromBody] UpdateItemDto model)
+        public IActionResult Update([FromBody] UpdateItemRequest model)
         {
             _todoListItemApplication.Update(model);
             return NoContent();
         }
 
         [HttpPatch("update-async")]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateItemDto model)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateItemRequest model)
         {
             await _todoListItemApplication.UpdateAsync(model);
             return NoContent();

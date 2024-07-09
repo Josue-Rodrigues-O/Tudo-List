@@ -1,10 +1,10 @@
-﻿using Tudo_List.Domain.Commands.Dtos.User;
-using Tudo_List.Domain.Core.Interfaces.Factories;
+﻿using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Helpers;
+using Tudo_List.Domain.Models.User;
 using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Domain.Services
@@ -60,7 +60,7 @@ namespace Tudo_List.Domain.Services
             await _userRepository.AddAsync(user);
         }
 
-        public void Update(UpdateUserDto model)
+        public void Update(UpdateUserRequest model)
         {
             var user = _userRepository.GetById(model.Id);
 
@@ -70,12 +70,35 @@ namespace Tudo_List.Domain.Services
             _userRepository.Update(user);
         }
         
-        public async Task UpdateAsync(UpdateUserDto model)
+        public async Task UpdateAsync(UpdateUserRequest model)
         {
             var user = _userRepository.GetById(model.Id);
 
             if (model.Name != null)
                 user.Name = model.Name;
+
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public void UpdateEmail(UpdateEmailRequest model)
+        {
+            var user = _userRepository.GetById(model.Id);
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+
+            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+                throw new ArgumentException();
+
+            user.Email = model.NewEmail;
+            _userRepository.Update(user);
+        }
+        
+        public async Task UpdateEmailAsync(UpdateEmailRequest model)
+        {
+            var user = await _userRepository.GetByIdAsync(model.Id);
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+
+            if (passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+                user.Email = model.NewEmail;
 
             await _userRepository.UpdateAsync(user);
         }
@@ -92,8 +115,8 @@ namespace Tudo_List.Domain.Services
 
         private void DefineUserPasswordHash(User user, string password)
         {
-            var passwordStrategy = EnumHelper.GetRandomValue<PasswordStrategy>();
-            var strategy = _passwordStrategyFactory.CreatePasswordStrategy(passwordStrategy);
+            var strategyToUse = EnumHelper.GetRandomValue<PasswordStrategy>();
+            var strategy = _passwordStrategyFactory.CreatePasswordStrategy(strategyToUse);
             string? salt = null;
 
             if (strategy.UsesSalting)
@@ -102,7 +125,7 @@ namespace Tudo_List.Domain.Services
                 user.Salt = salt;
             }
 
-            user.PasswordStrategy = passwordStrategy;
+            user.PasswordStrategy = strategyToUse;
             user.PasswordHash = strategy.HashPassword(password, salt);
         }
     }

@@ -1,5 +1,5 @@
 ﻿using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.TodoListItem;
+using Tudo_List.Domain.Models.TodoListItem;
 
 namespace Tudo_List.Application.Interfaces.Applications
 {
@@ -11,11 +11,11 @@ namespace Tudo_List.Application.Interfaces.Applications
         TodoListItemDto GetById(Guid id);
         Task<TodoListItemDto> GetByIdAsync(Guid id);
 
-        void Add(AddItemDto item);
-        Task AddAsync(AddItemDto item);
+        void Add(AddItemRequest item);
+        Task AddAsync(AddItemRequest item);
 
-        void Update(UpdateItemDto item);
-        Task UpdateAsync(UpdateItemDto item);
+        void Update(UpdateItemRequest item);
+        Task UpdateAsync(UpdateItemRequest item);
 
         void Delete(Guid id);
         Task DeleteAsync(Guid id);

@@ -1,5 +1,5 @@
 ﻿using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.User;
+using Tudo_List.Domain.Models.User;
 
 namespace Tudo_List.Application.Interfaces.Applications
 {
@@ -14,11 +14,14 @@ namespace Tudo_List.Application.Interfaces.Applications
         UserDto GetByEmail(string email);
         Task<UserDto> GetByEmailAsync(string email);
 
-        void Register(RegisterUserDto model);
-        Task RegisterAsync(RegisterUserDto model);
+        void Register(RegisterUserRequest model);
+        Task RegisterAsync(RegisterUserRequest model);
 
-        void Update(UpdateUserDto model);
-        Task UpdateAsync(UpdateUserDto model);
+        void Update(UpdateUserRequest model);
+        Task UpdateAsync(UpdateUserRequest model);
+
+        public void UpdateEmail(UpdateEmailRequest model);
+        public Task UpdateEmailAsync(UpdateEmailRequest model);
 
         void Delete(int id);
         Task DeleteAsync(int id);

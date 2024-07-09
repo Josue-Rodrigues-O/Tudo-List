@@ -2,9 +2,9 @@
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Validation.Constants;
 
-namespace Tudo_List.Domain.Commands.Dtos.TodoListItem
+namespace Tudo_List.Domain.Models.TodoListItem
 {
-    public class AddItemDto
+    public class AddItemRequest
     {
         [Required(ErrorMessage = ValidationErrorMessages.RequiredTitle)]
         public string Title { get; set; }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tudo_List.Domain.Commands.Dtos.User
+namespace Tudo_List.Domain.Models.User
 {
-    public class UpdateUserDto
+    public class UpdateUserRequest
     {
         [Key, Required]
         public int Id { get; set; }

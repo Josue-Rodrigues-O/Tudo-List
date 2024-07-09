@@ -1,5 +1,5 @@
-﻿using Tudo_List.Domain.Commands.Dtos.TodoListItem;
-using Tudo_List.Domain.Entities;
+﻿using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Models.TodoListItem;
 
 namespace Tudo_List.Domain.Core.Interfaces.Services
 {
@@ -14,8 +14,8 @@ namespace Tudo_List.Domain.Core.Interfaces.Services
         void Add(TodoListItem item);
         Task AddAsync(TodoListItem item);
 
-        void Update(UpdateItemDto model);
-        Task UpdateAsync(UpdateItemDto model);
+        void Update(UpdateItemRequest model);
+        Task UpdateAsync(UpdateItemRequest model);
    
         void Delete(Guid id);
         Task DeleteAsync(Guid id);

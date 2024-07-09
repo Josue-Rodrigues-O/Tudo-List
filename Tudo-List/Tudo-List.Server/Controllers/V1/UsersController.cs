@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Domain.Commands.Dtos.User;
+using Tudo_List.Domain.Models.User;
 using Tudo_List.Domain.Validation.Constants;
 using Tudo_List.Server.Controllers.Common;
 
@@ -51,7 +51,7 @@ namespace Tudo_List.Server.Controllers.V1
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterUserDto model)
+        public IActionResult Register([FromBody] RegisterUserRequest model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -62,7 +62,7 @@ namespace Tudo_List.Server.Controllers.V1
         
         [AllowAnonymous]
         [HttpPost("register-async")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDto model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -72,7 +72,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPatch("update")]
-        public IActionResult Update([FromBody] UpdateUserDto model)
+        public IActionResult Update([FromBody] UpdateUserRequest model)
         {
             if (model.Id == decimal.Zero)
             {
@@ -85,7 +85,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
         
         [HttpPatch("update-async")]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserRequest model)
         {
             if (model.Id == decimal.Zero)
             {
@@ -95,6 +95,34 @@ namespace Tudo_List.Server.Controllers.V1
 
             await _userApplication.UpdateAsync(model);
             return NoContent();
+        }
+
+        [HttpPatch("update-email")]
+        public IActionResult UpdateEmail([FromBody] UpdateEmailRequest model)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            if (model.Id == decimal.Zero)
+            {
+                AddError(ValidationErrorMessages.RequiredId);
+                return CustomResponse(ModelState);
+            }
+
+            _userApplication.UpdateEmail(model);
+
+            return Ok();
+        }
+        
+        [HttpPatch("update-email-async")]
+        public async Task<IActionResult> UpdateEmailAsync([FromBody] UpdateEmailRequest model)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            await _userApplication.UpdateEmailAsync(model);
+
+            return Ok();
         }
 
         [HttpDelete("delete/{id}")]

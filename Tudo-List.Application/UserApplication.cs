@@ -2,9 +2,9 @@
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Models.User;
 
 namespace Tudo_List.Application
 {
@@ -47,17 +47,17 @@ namespace Tudo_List.Application
             return _mapper.Map<UserDto>(await _userService.GetByEmailAsync(email));
         }
 
-        public void Register(RegisterUserDto model)
+        public void Register(RegisterUserRequest model)
         {
             _userService.Register(_mapper.Map<User>(model), model.Password);
         }
         
-        public async Task RegisterAsync(RegisterUserDto model)
+        public async Task RegisterAsync(RegisterUserRequest model)
         {
             await _userService.RegisterAsync(_mapper.Map<User>(model), model.Password);
         }
 
-        public void Update(UpdateUserDto model)
+        public void Update(UpdateUserRequest model)
         {
             if (model.Id != GetCurrentUserId())
                 throw new Exception();
@@ -65,12 +65,28 @@ namespace Tudo_List.Application
             _userService.Update(model);
         }
         
-        public async Task UpdateAsync(UpdateUserDto model)
+        public async Task UpdateAsync(UpdateUserRequest model)
         {
             if (model.Id != GetCurrentUserId())
                 throw new Exception();
 
             await _userService.UpdateAsync(model);
+        }
+
+        public void UpdateEmail(UpdateEmailRequest model)
+        {
+            if (model.Id != GetCurrentUserId())
+                throw new Exception();
+
+            _userService.UpdateEmail(model);
+        }
+        
+        public async Task UpdateEmailAsync(UpdateEmailRequest model)
+        {
+            if (model.Id != GetCurrentUserId())
+                throw new Exception();
+
+            await _userService.UpdateEmailAsync(model);
         }
 
         public void Delete(int id)

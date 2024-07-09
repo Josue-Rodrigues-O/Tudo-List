@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tudo_List.Domain.Commands.Dtos.User
+namespace Tudo_List.Domain.Models.User
 {
-    public class RegisterUserDto
+    public class RegisterUserRequest
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Email is Required!")]
         [EmailAddress]

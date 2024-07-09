@@ -4,9 +4,9 @@ using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos;
 using Tudo_List.Application.Services;
-using Tudo_List.Domain.Commands.Dtos.TodoListItem;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Models.TodoListItem;
 
 namespace Tudo_List.Application
 {
@@ -36,26 +36,26 @@ namespace Tudo_List.Application
             return _mapper.Map<TodoListItemDto>(await _todoListItemService.GetByIdAsync(id));
         }
 
-        public void Add(AddItemDto model)
+        public void Add(AddItemRequest model)
         {
             var item = _mapper.Map<TodoListItem>(model);
             item.UserId = GetCurrentUserId();
             _todoListItemService.Add(item);
         }
 
-        public async Task AddAsync(AddItemDto model)
+        public async Task AddAsync(AddItemRequest model)
         {
             var item = _mapper.Map<TodoListItem>(model);
             item.UserId = GetCurrentUserId();
             await _todoListItemService.AddAsync(item);
         }
 
-        public void Update(UpdateItemDto model)
+        public void Update(UpdateItemRequest model)
         {
             _todoListItemService.Update(model);
         }
 
-        public async Task UpdateAsync(UpdateItemDto model)
+        public async Task UpdateAsync(UpdateItemRequest model)
         {
             await _todoListItemService.UpdateAsync(model);
         }
