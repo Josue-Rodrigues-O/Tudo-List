@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Tudo_List.Application.Interfaces.Services;
 
@@ -12,7 +11,7 @@ namespace Tudo_List.Application.Services
         public string Id => _currentUserClaims?.FindFirstValue(ClaimTypes.NameIdentifier)
             ?? throw new Exception();
 
-        public string Name => _currentUserClaims?.FindFirstValue(JwtRegisteredClaimNames.Name)
+        public string Name => _currentUserClaims?.FindFirstValue(ClaimTypes.Name)
             ?? throw new Exception();
         
         public string Email => _currentUserClaims?.FindFirstValue(ClaimTypes.Email)
