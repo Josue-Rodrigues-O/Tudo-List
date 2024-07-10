@@ -1,7 +1,6 @@
 ﻿using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Models.TodoListItem;
 
 namespace Tudo_List.Domain.Services
 {
@@ -39,9 +38,9 @@ namespace Tudo_List.Domain.Services
             await _repository.AddAsync(item);
         }
 
-        public void Update(UpdateItemRequest model)
+        public void Update(TodoListItem model)
         {
-            var item = _repository.GetById(model.ItemId);
+            var item = _repository.GetById(model.Id);
 
             item.Title = model.Title ?? item.Title;
             item.Description = model.Description ?? item.Description;
@@ -51,9 +50,9 @@ namespace Tudo_List.Domain.Services
             _repository.Update(item);
         }
 
-        public async Task UpdateAsync(UpdateItemRequest model)
+        public async Task UpdateAsync(TodoListItem model)
         {
-            var item = await _repository.GetByIdAsync(model.ItemId);
+            var item = await _repository.GetByIdAsync(model.Id);
 
             item.Title = model.Title ?? item.Title;
             item.Description = model.Description ?? item.Description;

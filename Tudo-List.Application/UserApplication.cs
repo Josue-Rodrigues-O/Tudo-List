@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
+using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Models.User;
 
 namespace Tudo_List.Application
 {
@@ -47,62 +46,62 @@ namespace Tudo_List.Application
             return _mapper.Map<UserDto>(await _userService.GetByEmailAsync(email));
         }
 
-        public void Register(RegisterUserRequest model)
+        public void Register(RegisterUserDto model)
         {
             _userService.Register(_mapper.Map<User>(model), model.Password);
         }
         
-        public async Task RegisterAsync(RegisterUserRequest model)
+        public async Task RegisterAsync(RegisterUserDto model)
         {
             await _userService.RegisterAsync(_mapper.Map<User>(model), model.Password);
         }
 
-        public void Update(UpdateUserRequest model)
+        public void Update(UpdateUserDto model)
         {
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            _userService.Update(model);
+            _userService.Update(model.UserId, model.NewName);
         }
         
-        public async Task UpdateAsync(UpdateUserRequest model)
+        public async Task UpdateAsync(UpdateUserDto model)
         {
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            await _userService.UpdateAsync(model);
+            await _userService.UpdateAsync(model.UserId, model.NewName);
         }
 
-        public void UpdateEmail(UpdateEmailRequest model)
+        public void UpdateEmail(UpdateEmailDto model)
         {
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            _userService.UpdateEmail(model);
+            _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
         }
 
-        public void UpdatePassword(UpdatePasswordRequest model)
+        public async Task UpdateEmailAsync(UpdateEmailDto model)
         {
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            _userService.UpdatePassword(model);
+            await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
         }
 
-        public async Task UpdatePasswordAsync(UpdatePasswordRequest model)
+        public void UpdatePassword(UpdatePasswordDto model)
         {
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            await _userService.UpdatePasswordAsync(model);
+            _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword, model.ConfirmNewPassword);
         }
 
-        public async Task UpdateEmailAsync(UpdateEmailRequest model)
+        public async Task UpdatePasswordAsync(UpdatePasswordDto model)
         {
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            await _userService.UpdateEmailAsync(model);
+            await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword, model.ConfirmNewPassword);
         }
 
         public void Delete(int id)

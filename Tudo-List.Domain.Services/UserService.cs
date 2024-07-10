@@ -4,7 +4,6 @@ using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Helpers;
-using Tudo_List.Domain.Models.User;
 using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Domain.Services
@@ -60,77 +59,77 @@ namespace Tudo_List.Domain.Services
             await _userRepository.AddAsync(user);
         }
 
-        public void Update(UpdateUserRequest model)
+        public void Update(int id, string? newName)
         {
-            var user = _userRepository.GetById(model.UserId);
+            var user = _userRepository.GetById(id);
 
-            if (model.Name != null) 
-                user.Name = model.Name;
+            if (newName.ContainsValue()) 
+                user.Name = newName;
 
             _userRepository.Update(user);
         }
         
-        public async Task UpdateAsync(UpdateUserRequest model)
+        public async Task UpdateAsync(int id, string? newName)
         {
-            var user = _userRepository.GetById(model.UserId);
+            var user = _userRepository.GetById(id);
 
-            if (model.Name != null)
-                user.Name = model.Name;
+            if (newName.ContainsValue())
+                user.Name = newName;
 
             await _userRepository.UpdateAsync(user);
         }
 
-        public void UpdateEmail(UpdateEmailRequest model)
+        public void UpdateEmail(int id, string newEmail, string currentPassword)
         {
-            var user = _userRepository.GetById(model.UserId);
+            var user = _userRepository.GetById(id);
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
-            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new ArgumentException();
 
-            user.Email = model.NewEmail;
+            user.Email = newEmail;
             _userRepository.Update(user);
         }
         
-        public async Task UpdateEmailAsync(UpdateEmailRequest model)
+        public async Task UpdateEmailAsync(int id, string newEmail, string currentPassword)
         {
-            var user = await _userRepository.GetByIdAsync(model.UserId);
+            var user = await _userRepository.GetByIdAsync(id);
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
-            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new ArgumentException();
 
-            user.Email = model.NewEmail;
+            user.Email = newEmail;
             await _userRepository.UpdateAsync(user);
         }
 
-        public void UpdatePassword(UpdatePasswordRequest model)
+        public void UpdatePassword(int id, string currentPassword, string newPassword, string confirmNewPassword)
         {
-            var user = _userRepository.GetById(model.UserId);
+            var user = _userRepository.GetById(id);
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
-            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new ArgumentException();
 
-            if (model.NewPassword != model.ConfirmNewPassword)
+            if (newPassword != confirmNewPassword)
                 throw new ArgumentException();
 
-            DefineUserPasswordHash(user, model.NewPassword);
+            DefineUserPasswordHash(user, newPassword);
             _userRepository.Update(user);
         }
 
-        public async Task UpdatePasswordAsync(UpdatePasswordRequest model)
+        public async Task UpdatePasswordAsync(int id, string currentPassword, string newPassword, string confirmNewPassword)
         {
-            var user = await _userRepository.GetByIdAsync(model.UserId);
+            var user = await _userRepository.GetByIdAsync(id);
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
-            if (!passwordStrategy.VerifyPassword(model.CurrentPassword, user.PasswordHash, user.Salt))
+            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new ArgumentException();
 
-            if (model.NewPassword != model.ConfirmNewPassword)
+            if (newPassword != confirmNewPassword)
                 throw new ArgumentException();
 
-            DefineUserPasswordHash(user, model.NewPassword);
+            DefineUserPasswordHash(user, newPassword);
             await _userRepository.UpdateAsync(user);
         }
 

@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using System.Reflection;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Application.Services;
+using Tudo_List.Application.Models.Dtos.TodoListItem;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Models.TodoListItem;
 
 namespace Tudo_List.Application
 {
@@ -36,28 +33,28 @@ namespace Tudo_List.Application
             return _mapper.Map<TodoListItemDto>(await _todoListItemService.GetByIdAsync(id));
         }
 
-        public void Add(AddItemRequest model)
+        public void Add(AddItemDto model)
         {
             var item = _mapper.Map<TodoListItem>(model);
             item.UserId = GetCurrentUserId();
             _todoListItemService.Add(item);
         }
 
-        public async Task AddAsync(AddItemRequest model)
+        public async Task AddAsync(AddItemDto model)
         {
             var item = _mapper.Map<TodoListItem>(model);
             item.UserId = GetCurrentUserId();
             await _todoListItemService.AddAsync(item);
         }
 
-        public void Update(UpdateItemRequest model)
+        public void Update(UpdateItemDto model)
         {
-            _todoListItemService.Update(model);
+            _todoListItemService.Update(_mapper.Map<TodoListItem>(model));
         }
 
-        public async Task UpdateAsync(UpdateItemRequest model)
+        public async Task UpdateAsync(UpdateItemDto model)
         {
-            await _todoListItemService.UpdateAsync(model);
+            await _todoListItemService.UpdateAsync(_mapper.Map<TodoListItem>(model));
         }
 
         public void Delete(Guid id)

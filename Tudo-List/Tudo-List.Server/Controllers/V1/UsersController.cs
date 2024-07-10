@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Domain.Models.User;
+using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
@@ -50,7 +50,7 @@ namespace Tudo_List.Server.Controllers.V1
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterUserRequest model)
+        public IActionResult Register([FromBody] RegisterUserDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -61,7 +61,7 @@ namespace Tudo_List.Server.Controllers.V1
         
         [AllowAnonymous]
         [HttpPost("register-async")]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest model)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -71,7 +71,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPatch("update")]
-        public IActionResult Update([FromBody] UpdateUserRequest model)
+        public IActionResult Update([FromBody] UpdateUserDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -81,7 +81,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
         
         [HttpPatch("update-async")]
-        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserRequest model)
+        public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -91,7 +91,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPatch("update-email")]
-        public IActionResult UpdateEmail([FromBody] UpdateEmailRequest model)
+        public IActionResult UpdateEmail([FromBody] UpdateEmailDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -102,7 +102,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
         
         [HttpPatch("update-email-async")]
-        public async Task<IActionResult> UpdateEmailAsync([FromBody] UpdateEmailRequest model)
+        public async Task<IActionResult> UpdateEmailAsync([FromBody] UpdateEmailDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -113,7 +113,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPatch("update-password")]
-        public IActionResult UpdatePassword([FromBody] UpdatePasswordRequest model)
+        public IActionResult UpdatePassword([FromBody] UpdatePasswordDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
@@ -124,7 +124,7 @@ namespace Tudo_List.Server.Controllers.V1
         }
 
         [HttpPatch("update-password-async")]
-        public async Task<IActionResult> UpdatePasswordAsync([FromBody] UpdatePasswordRequest model)
+        public async Task<IActionResult> UpdatePasswordAsync([FromBody] UpdatePasswordDto model)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
