@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.User;
+using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 
@@ -59,18 +58,50 @@ namespace Tudo_List.Application
 
         public void Update(UpdateUserDto model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            _userService.Update(model);
+            _userService.Update(model.UserId, model.NewName);
         }
         
         public async Task UpdateAsync(UpdateUserDto model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            await _userService.UpdateAsync(model);
+            await _userService.UpdateAsync(model.UserId, model.NewName);
+        }
+
+        public void UpdateEmail(UpdateEmailDto model)
+        {
+            if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
+        }
+
+        public async Task UpdateEmailAsync(UpdateEmailDto model)
+        {
+            if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
+        }
+
+        public void UpdatePassword(UpdatePasswordDto model)
+        {
+            if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword, model.ConfirmNewPassword);
+        }
+
+        public async Task UpdatePasswordAsync(UpdatePasswordDto model)
+        {
+            if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword, model.ConfirmNewPassword);
         }
 
         public void Delete(int id)

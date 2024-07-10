@@ -1,5 +1,4 @@
-﻿using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.User;
+﻿using Tudo_List.Application.Models.Dtos.User;
 
 namespace Tudo_List.Application.Interfaces.Applications
 {
@@ -19,6 +18,12 @@ namespace Tudo_List.Application.Interfaces.Applications
 
         void Update(UpdateUserDto model);
         Task UpdateAsync(UpdateUserDto model);
+
+        public void UpdateEmail(UpdateEmailDto model);
+        public Task UpdateEmailAsync(UpdateEmailDto model);
+
+        public void UpdatePassword(UpdatePasswordDto model);
+        public Task UpdatePasswordAsync(UpdatePasswordDto model);
 
         void Delete(int id);
         Task DeleteAsync(int id);

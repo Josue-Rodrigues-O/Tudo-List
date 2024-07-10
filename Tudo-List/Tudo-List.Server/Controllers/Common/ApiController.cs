@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Tudo_List.Domain.Commands.Dtos.User;
-using Tudo_List.Domain.Validation.Constants;
 
 namespace Tudo_List.Server.Controllers.Common
 {

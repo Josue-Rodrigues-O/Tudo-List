@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Tudo_List.Domain.Validation.Constants;
+﻿using Tudo_List.Application.DtoValidation;
 
 namespace Tudo_List.Application.Models.Dtos.Login
 {
     public class LoginRequestDto
     {
-        [Required(ErrorMessage = ValidationErrorMessages.RequiredEmail)]
+        [RequiredProperty]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = ValidationErrorMessages.RequiredPassword)]
+        [RequiredProperty]
         public string Password { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Tudo_List.Domain.Commands.Dtos.User;
-using Tudo_List.Domain.Entities;
+﻿using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Domain.Core.Interfaces.Services
 {
@@ -17,9 +16,15 @@ namespace Tudo_List.Domain.Core.Interfaces.Services
         void Register(User user, string password);
         Task RegisterAsync(User user, string password);
 
-        void Update(UpdateUserDto model);
-        Task UpdateAsync(UpdateUserDto model);
-   
+        void Update(int id, string newName);
+        Task UpdateAsync(int id, string newName);
+
+        void UpdateEmail(int id, string newEmail, string currentPassword);
+        Task UpdateEmailAsync(int id, string newEmail, string currentPassword);
+        
+        void UpdatePassword(int id, string currentPassword, string newPassword, string confirmNewPassword);
+        Task UpdatePasswordAsync(int id, string currentPassword, string newPassword, string confirmNewPassword);
+
         void Delete(int id);
         Task DeleteAsync(int id);
     }

@@ -1,19 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Tudo_List.Application.DtoValidation;
 
-namespace Tudo_List.Domain.Commands.Dtos.User
+namespace Tudo_List.Application.Models.Dtos.User
 {
     public class RegisterUserDto
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Email is Required!")]
+        [RequiredProperty]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Name is Required!")]
+        [RequiredProperty]
         [MinLength(2)]
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Password is Required!")]
+        [RequiredProperty]
         public string Password { get; set; }
     }
 }

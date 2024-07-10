@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validation\" />
+  </ItemGroup>
+
 </Project>

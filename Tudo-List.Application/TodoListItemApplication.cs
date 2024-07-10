@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using System.Reflection;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Application.Services;
-using Tudo_List.Domain.Commands.Dtos.TodoListItem;
+using Tudo_List.Application.Models.Dtos.TodoListItem;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 
@@ -52,12 +49,12 @@ namespace Tudo_List.Application
 
         public void Update(UpdateItemDto model)
         {
-            _todoListItemService.Update(model);
+            _todoListItemService.Update(_mapper.Map<TodoListItem>(model));
         }
 
         public async Task UpdateAsync(UpdateItemDto model)
         {
-            await _todoListItemService.UpdateAsync(model);
+            await _todoListItemService.UpdateAsync(_mapper.Map<TodoListItem>(model));
         }
 
         public void Delete(Guid id)
