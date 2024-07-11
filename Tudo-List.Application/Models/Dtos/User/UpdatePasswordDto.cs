@@ -1,4 +1,6 @@
-﻿using Tudo_List.Application.DtoValidation;
+﻿using System.ComponentModel.DataAnnotations;
+using Tudo_List.Application.DtoValidation;
+using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Application.Models.Dtos.User
 {
@@ -11,6 +13,7 @@ namespace Tudo_List.Application.Models.Dtos.User
         public string CurrentPassword { get; set; }
 
         [RequiredProperty]
+        [MinLength(ValidationConstants.PasswordMinimumLength)]
         public string NewPassword { get; set; }
 
         [RequiredProperty]

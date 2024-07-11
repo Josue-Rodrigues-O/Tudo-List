@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Tudo_List.Application.DtoValidation;
+using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Application.Models.Dtos.User
 {
@@ -10,8 +11,7 @@ namespace Tudo_List.Application.Models.Dtos.User
         public string Email { get; set; }
 
         [RequiredProperty]
-        [MinLength(2)]
-        [MaxLength(100)]
+        [Length(ValidationConstants.NameMinimumLength, ValidationConstants.NameMaximumLength)]
         public string Name { get; set; }
 
         [RequiredProperty]
