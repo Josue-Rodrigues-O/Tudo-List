@@ -1,4 +1,5 @@
-﻿using Tudo_List.Application.DtoValidation;
+﻿using System.ComponentModel.DataAnnotations;
+using Tudo_List.Application.DtoValidation;
 
 namespace Tudo_List.Application.Models.Dtos.User
 {
@@ -8,6 +9,7 @@ namespace Tudo_List.Application.Models.Dtos.User
         public int UserId { get; set; }
 
         [RequiredProperty]
+        [EmailAddress]
         public string NewEmail { get; set; }
 
         [RequiredProperty]

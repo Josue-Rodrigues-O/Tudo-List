@@ -15,6 +15,7 @@ namespace Tudo_List.Application.Models.Dtos.User
         public string Name { get; set; }
 
         [RequiredProperty]
+        [MinLength(ValidationConstants.PasswordMinimumLength)]
         public string Password { get; set; }
     }
 }

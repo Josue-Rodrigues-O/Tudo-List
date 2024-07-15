@@ -61,12 +61,18 @@ namespace Tudo_List.Application
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
+            if (model.NewName is null)
+                throw new Exception();
+
             _userService.Update(model.UserId, model.NewName);
         }
         
         public async Task UpdateAsync(UpdateUserDto model)
         {
             if (model.UserId != GetCurrentUserId())
+                throw new Exception();
+
+            if (model.NewName is null) 
                 throw new Exception();
 
             await _userService.UpdateAsync(model.UserId, model.NewName);
@@ -93,7 +99,10 @@ namespace Tudo_List.Application
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword, model.ConfirmNewPassword);
+            if (model.NewPassword != model.ConfirmNewPassword)
+                throw new Exception();
+
+            _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
         }
 
         public async Task UpdatePasswordAsync(UpdatePasswordDto model)
@@ -101,7 +110,10 @@ namespace Tudo_List.Application
             if (model.UserId != GetCurrentUserId())
                 throw new Exception();
 
-            await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword, model.ConfirmNewPassword);
+            if (model.NewPassword != model.ConfirmNewPassword)
+                throw new Exception();
+
+            await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
         }
 
         public void Delete(int id)
