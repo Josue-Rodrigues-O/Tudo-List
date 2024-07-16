@@ -13,11 +13,11 @@ namespace Tudo_List.Application.Models.Dtos.User
         public string CurrentPassword { get; set; }
 
         [RequiredProperty]
-        [MinLength(ValidationConstants.PasswordMinimumLength)]
+        [MinLength(UserValidationConstants.PasswordMinimumLength)]
         public string NewPassword { get; set; }
 
         [RequiredProperty]
-        [MinLength(ValidationConstants.PasswordMinimumLength)]
+        [MinLength(UserValidationConstants.PasswordMinimumLength)]
         public string ConfirmNewPassword { get; set; }
     }
 }
