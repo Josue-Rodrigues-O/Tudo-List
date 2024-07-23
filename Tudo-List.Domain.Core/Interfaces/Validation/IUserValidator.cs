@@ -2,6 +2,9 @@
 {
     public interface IUserValidator
     {
+        IUserValidator WithName(string name);
+        IUserValidator WithEmail(string name);
+        IUserValidator WithPassword(string name);
         void Validate();
     }
 }

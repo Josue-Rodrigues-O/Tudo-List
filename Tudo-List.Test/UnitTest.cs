@@ -11,20 +11,10 @@ namespace Tudo_List.Test
         [Fact]
         public void Test()
         {
+            ehVerdade(null);
         }
 
-        private static byte[] GenerateSalt(int size = 128)
-        {
-            var salt = new byte[size];
-            new Random().NextBytes(salt);
-
-            return salt;
-        }
-
-        public static string GenerateBase64String(int size = 128)
-        {
-            var salt = GenerateSalt(size);
-            return Convert.ToBase64String(salt);
-        }
+        private bool ehVerdade(string teste)
+            => teste.Any(x => x == '1');
     }
 }

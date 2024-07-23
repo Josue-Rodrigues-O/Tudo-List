@@ -7,11 +7,6 @@
             return $"{property} value is invalid!";
         }
 
-        public static string GetEmptyPropertyMessage(string property)
-        {
-            return $"{property} must have a value!";
-        }
-
         public static string GetInvalidLengthMessage(string property, int minLength, int maxLength)
         {
             return $"{property} must have between {minLength} and {maxLength} characters!";
