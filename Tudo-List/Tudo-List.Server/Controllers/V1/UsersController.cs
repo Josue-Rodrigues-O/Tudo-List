@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Models.Dtos.User;
-using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
@@ -10,7 +9,7 @@ namespace Tudo_List.Server.Controllers.V1
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class UsersController(IUserApplication userApplication) : ApiController
+    public class UsersController(IUserApplication userApplication) : ControllerBase
     {
         private readonly IUserApplication _userApplication = userApplication;
 
@@ -29,32 +28,19 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpGet("get-by-id/{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
-            var user = _userApplication.GetById(id);
-
-            if (user is null)
-                return NotFound($"{nameof(User)} with the id {id} was not found!");
-
-            return Ok(user);
+            return Ok(_userApplication.GetById(id));
         }
         
         [HttpGet("get-by-id-async/{id}")]
         public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
         {
-            var user = await _userApplication.GetByIdAsync(id);
-
-            if (user is null)
-                return NotFound($"{nameof(User)} with the id {id} was not found!");
-
-            return Ok(user);
+            return Ok(await _userApplication.GetByIdAsync(id));
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterUserDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             _userApplication.Register(model);
             return Ok();
         }
@@ -63,9 +49,6 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPost("register-async")]
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             await _userApplication.RegisterAsync(model);
             return Ok();
         }
@@ -73,9 +56,6 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update")]
         public IActionResult Update([FromBody] UpdateUserDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             _userApplication.Update(model);
             return NoContent();
         }
@@ -83,9 +63,6 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update-async")]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateUserDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             await _userApplication.UpdateAsync(model);
             return NoContent();
         }
@@ -93,44 +70,28 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPatch("update-email")]
         public IActionResult UpdateEmail([FromBody] UpdateEmailDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             _userApplication.UpdateEmail(model);
-
             return Ok();
         }
         
         [HttpPatch("update-email-async")]
         public async Task<IActionResult> UpdateEmailAsync([FromBody] UpdateEmailDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             await _userApplication.UpdateEmailAsync(model);
-
             return Ok();
         }
 
         [HttpPatch("update-password")]
         public IActionResult UpdatePassword([FromBody] UpdatePasswordDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             _userApplication.UpdatePassword(model);
-
             return Ok();
         }
 
         [HttpPatch("update-password-async")]
         public async Task<IActionResult> UpdatePasswordAsync([FromBody] UpdatePasswordDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             await _userApplication.UpdatePasswordAsync(model);
-
             return Ok();
         }
 

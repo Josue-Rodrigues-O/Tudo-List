@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Models.Dtos.TodoListItem;
 using Tudo_List.Domain.Entities;
-using Tudo_List.Server.Controllers.Common;
 
 namespace Tudo_List.Server.Controllers.V1
 {
@@ -11,7 +10,7 @@ namespace Tudo_List.Server.Controllers.V1
     [Route("api/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    public class TodoListItemsController(ITodoListItemApplication todoListItemApplication) : ApiController
+    public class TodoListItemsController(ITodoListItemApplication todoListItemApplication) : ControllerBase
     {
         private readonly ITodoListItemApplication _todoListItemApplication = todoListItemApplication;
 
@@ -52,22 +51,14 @@ namespace Tudo_List.Server.Controllers.V1
         [HttpPost("add")]
         public IActionResult Add([FromBody] AddItemDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             _todoListItemApplication.Add(model);
-
             return Ok();
         }
 
         [HttpPost("add-async")]
         public async Task<IActionResult> AddAsync([FromBody] AddItemDto model)
         {
-            if (!ModelState.IsValid)
-                return CustomResponse(ModelState);
-
             await _todoListItemApplication.AddAsync(model);
-
             return Ok();
         }
 
