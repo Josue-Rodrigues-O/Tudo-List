@@ -1,6 +1,6 @@
 ﻿using Tudo_List.Domain.Enums;
 
-namespace Tudo_List.Application.Models.Dtos
+namespace Tudo_List.Application.Models.Dtos.TodoListItem
 {
     public class TodoListItemDto
     {

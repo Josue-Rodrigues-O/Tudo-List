@@ -1,5 +1,5 @@
-﻿using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Application.Models.Dtos.Login;
+﻿using Tudo_List.Application.Models.Dtos.Login;
+using Tudo_List.Application.Models.Dtos.User;
 
 namespace Tudo_List.Application.Interfaces.Services
 {

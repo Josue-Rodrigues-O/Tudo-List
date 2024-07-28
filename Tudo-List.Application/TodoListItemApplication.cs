@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using System.Reflection;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Application.Services;
-using Tudo_List.Domain.Commands.Dtos.TodoListItem;
+using Tudo_List.Application.Models.Dtos.TodoListItem;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 
@@ -15,6 +12,8 @@ namespace Tudo_List.Application
         private readonly ITodoListItemService _todoListItemService = todoListItemService;
         private readonly IMapper _mapper = mapper;
         private readonly ICurrentUserService _currentUserService = currentUserService;
+
+        private int CurrentUserId => int.Parse(_currentUserService.Id);
 
         public IEnumerable<TodoListItemDto> GetAll()
         {
@@ -39,25 +38,23 @@ namespace Tudo_List.Application
         public void Add(AddItemDto model)
         {
             var item = _mapper.Map<TodoListItem>(model);
-            item.UserId = GetCurrentUserId();
-            _todoListItemService.Add(item);
+            _todoListItemService.Add(item, CurrentUserId);
         }
 
         public async Task AddAsync(AddItemDto model)
         {
             var item = _mapper.Map<TodoListItem>(model);
-            item.UserId = GetCurrentUserId();
-            await _todoListItemService.AddAsync(item);
+            await _todoListItemService.AddAsync(item, CurrentUserId);
         }
 
         public void Update(UpdateItemDto model)
         {
-            _todoListItemService.Update(model);
+            _todoListItemService.Update(_mapper.Map<TodoListItem>(model));
         }
 
         public async Task UpdateAsync(UpdateItemDto model)
         {
-            await _todoListItemService.UpdateAsync(model);
+            await _todoListItemService.UpdateAsync(_mapper.Map<TodoListItem>(model));
         }
 
         public void Delete(Guid id)
@@ -68,16 +65,6 @@ namespace Tudo_List.Application
         public async Task DeleteAsync(Guid id)
         {
             await _todoListItemService.DeleteAsync(id);
-        }
-
-        private int GetCurrentUserId()
-        {
-            var strUserId = _currentUserService.Id;
-
-            if (!int.TryParse(strUserId, out int userId))
-                throw new Exception();
-
-            return userId;
         }
     }
 }

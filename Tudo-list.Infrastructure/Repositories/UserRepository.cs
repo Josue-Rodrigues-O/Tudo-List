@@ -20,26 +20,24 @@ namespace Tudo_list.Infrastructure.Repositories
             return await _users.ToListAsync();
         }
 
-        public User GetById(int id)
+        public User? GetById(int id)
         {
-            return GetUserById(id);
+            return _users.Find(id);
         }
 
-        public async Task<User> GetByIdAsync(int id)
+        public async Task<User?> GetByIdAsync(int id)
         {
-            return await GetUserByIdAsync(id);
+            return await _users.FindAsync(id);
         }
 
-        public User GetByEmail(string email)
+        public User? GetByEmail(string email)
         {
-            return _users.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email))
-                ?? throw new KeyNotFoundException(nameof(User));
+            return _users.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email));
         }
 
-        public async Task<User> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _users.AsNoTracking().FirstOrDefaultAsync(x => x.Email.Equals(email))
-                ?? throw new KeyNotFoundException(nameof(User));
+            return await _users.AsNoTracking().FirstOrDefaultAsync(x => x.Email.Equals(email));
         }
 
         public void Add(User user)
@@ -47,7 +45,7 @@ namespace Tudo_list.Infrastructure.Repositories
             _users.Add(user);
             _context.SaveChanges();
         }
-        
+
         public async Task AddAsync(User user)
         {
             await _users.AddAsync(user);
@@ -59,35 +57,23 @@ namespace Tudo_list.Infrastructure.Repositories
             _users.Update(user);
             _context.SaveChanges();
         }
-        
+
         public async Task UpdateAsync(User user)
         {
             _users.Update(user);
             await _context.SaveChangesAsync();
         }
 
-        public void Remove(int id)
+        public void Remove(User user)
         {
-            _users.Remove(GetUserById(id));
+            _users.Remove(user);
             _context.SaveChanges();
         }
-        
-        public async Task RemoveAsync(int id)
+
+        public async Task RemoveAsync(User user)
         {
-            _users.Remove(await GetUserByIdAsync(id));
+            _users.Remove(user);
             await _context.SaveChangesAsync();
-        }
-
-        private User GetUserById(int id)
-        {
-            return _users.Find(id)
-                ?? throw new KeyNotFoundException(nameof(User));
-        }
-
-        private async Task<User> GetUserByIdAsync(int id)
-        {
-            return await _users.FindAsync(id)
-                ?? throw new KeyNotFoundException(nameof(User));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Tudo_List.Application.Constants
+﻿namespace Tudo_list.Infrastructure.Configuration.Constants
 {
     public static class SecretsKeys
     {

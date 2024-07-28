@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Tudo_list.Infrastructure.Configuration.Constants;
 using Tudo_list.Infrastructure.CrossCutting.Ioc;
-using Tudo_List.Application.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +26,7 @@ builder.Services
         };
     });
 
+builder.Services.AddApplicationSecrets();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper();
 builder.Services.AddDatabaseContext(builder.Configuration);
@@ -33,7 +34,6 @@ builder.Services.AddRepositories();
 builder.Services.AddDomainServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
-builder.Services.AddApplicationSecrets();
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = ApiVersion.Default;

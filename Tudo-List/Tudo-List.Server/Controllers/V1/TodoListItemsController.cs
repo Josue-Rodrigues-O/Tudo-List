@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Domain.Commands.Dtos.TodoListItem;
+using Tudo_List.Application.Models.Dtos.TodoListItem;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Server.Controllers.Common;
 

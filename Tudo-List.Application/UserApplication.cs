@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Tudo_List.Application.DtoValidation.Helpers;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.User;
+using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 
@@ -16,6 +16,8 @@ namespace Tudo_List.Application
         private readonly IUserService _userService = userService;
         private readonly IMapper _mapper = mapper;
         private readonly ICurrentUserService _currentUserService = currentUserService;
+
+        private int CurrentUserId => int.Parse(_currentUserService.Id);
 
         public IEnumerable<UserDto> GetAll()
         {
@@ -59,23 +61,55 @@ namespace Tudo_List.Application
 
         public void Update(UpdateUserDto model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (!ApplicationValidationHelper.IsValidUserUpdate(CurrentUserId, model))
                 throw new Exception();
 
-            _userService.Update(model);
+            _userService.Update(model.UserId, model.NewName);
         }
         
         public async Task UpdateAsync(UpdateUserDto model)
         {
-            if (model.Id != GetCurrentUserId())
+            if (!ApplicationValidationHelper.IsValidUserUpdate(CurrentUserId, model))
                 throw new Exception();
 
-            await _userService.UpdateAsync(model);
+            await _userService.UpdateAsync(model.UserId, model.NewName);
+        }
+
+        public void UpdateEmail(UpdateEmailDto model)
+        {
+            if (!ApplicationValidationHelper.IsValidEmailUpdate(CurrentUserId, model))
+                throw new Exception();
+
+            _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
+        }
+
+        public async Task UpdateEmailAsync(UpdateEmailDto model)
+        {
+            if (!ApplicationValidationHelper.IsValidEmailUpdate(CurrentUserId, model))
+                throw new Exception();
+
+            await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
+        }
+
+        public void UpdatePassword(UpdatePasswordDto model)
+        {
+            if (!ApplicationValidationHelper.IsValidPasswordUpdate(CurrentUserId, model))
+                throw new Exception();
+
+            _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
+        }
+
+        public async Task UpdatePasswordAsync(UpdatePasswordDto model)
+        {
+            if (!ApplicationValidationHelper.IsValidPasswordUpdate(CurrentUserId, model))
+                throw new Exception();
+
+            await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
         }
 
         public void Delete(int id)
         {
-            if (id != GetCurrentUserId())
+            if (id != CurrentUserId)
                 throw new Exception();
 
             _userService.Delete(id);
@@ -83,20 +117,10 @@ namespace Tudo_List.Application
         
         public async Task DeleteAsync(int id)
         {
-            if (id != GetCurrentUserId())
+            if (id != CurrentUserId)
                 throw new Exception();
 
             await _userService.DeleteAsync(id);
-        }
-
-        private int GetCurrentUserId()
-        {
-            var strUserId = _currentUserService.Id;
-
-            if (!int.TryParse(strUserId, out int userId))
-                throw new Exception();
-
-            return userId;
         }
     }
 }

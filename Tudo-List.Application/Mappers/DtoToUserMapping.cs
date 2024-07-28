@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Tudo_List.Application.Models.Dtos;
-using Tudo_List.Domain.Commands.Dtos.User;
+using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Application.Mappers
