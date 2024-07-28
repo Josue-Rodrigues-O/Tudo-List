@@ -5,6 +5,7 @@ using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Helpers;
 using Tudo_List.Domain.Services.Helpers;
+using Tudo_List.Domain.Services.Validation;
 
 namespace Tudo_List.Domain.Services
 {
@@ -45,12 +46,24 @@ namespace Tudo_List.Domain.Services
 
         public void Register(User user, string password)
         {
+            new UserValidator(_userRepository)
+                .WithName(user.Name)
+                .WithEmail(user.Email)
+                .WithPassword(password)
+                .Validate();
+
             DefineUserPasswordHash(user, password);
             _userRepository.Add(user);
         }
 
         public async Task RegisterAsync(User user, string password)
         {
+            new UserValidator(_userRepository)
+                .WithName(user.Name)
+                .WithEmail(user.Email)
+                .WithPassword(password)
+                .Validate();
+
             DefineUserPasswordHash(user, password);
             await _userRepository.AddAsync(user);
         }
@@ -60,7 +73,20 @@ namespace Tudo_List.Domain.Services
             var user = _userRepository.GetById(id) 
                 ?? throw new KeyNotFoundException(nameof(id));
 
-            user.Name = newName ?? user.Name;
+            var nothingChanged = newName is null || user.Name.Equals(newName);
+
+            if (nothingChanged)
+                throw new Exception("No property is being updated!");
+
+            var userValidator = new UserValidator(_userRepository);
+
+            if (newName is not null)
+            {
+                user.Name = newName;
+                userValidator.WithName(newName);
+            }
+
+            userValidator.Validate();
 
             _userRepository.Update(user);
         }
@@ -70,8 +96,20 @@ namespace Tudo_List.Domain.Services
             var user = _userRepository.GetById(id)
                 ?? throw new KeyNotFoundException(nameof(id));
 
-            user.Name = newName ?? user.Name;
+            var nothingChanged = newName is null || user.Name.Equals(newName);
 
+            if (nothingChanged)
+                throw new Exception("No property is being updated!");
+
+            var userValidator = new UserValidator(_userRepository);
+
+            if (newName is not null)
+            {
+                user.Name = newName;
+                userValidator.WithName(newName);
+            }
+
+            userValidator.Validate();
             await _userRepository.UpdateAsync(user);
         }
 
@@ -80,8 +118,14 @@ namespace Tudo_List.Domain.Services
             var user = _userRepository.GetById(id)
                  ?? throw new KeyNotFoundException(nameof(id));
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+            if (user.Email.Equals(newEmail))
+                throw new Exception("The new email can't be the same as the current one!");
 
+            new UserValidator(_userRepository)
+                .WithEmail(newEmail)
+                .Validate();
+
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
             if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new Exception();
 
@@ -94,8 +138,14 @@ namespace Tudo_List.Domain.Services
             var user = await _userRepository.GetByIdAsync(id)
                  ?? throw new KeyNotFoundException(nameof(id));
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+            if (user.Email.Equals(newEmail))
+                throw new Exception("The new email can't be the same as the current one!");
 
+            new UserValidator(_userRepository)
+                .WithEmail(newEmail)
+                .Validate();
+
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
             if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new Exception();
 
@@ -108,11 +158,16 @@ namespace Tudo_List.Domain.Services
             var user = _userRepository.GetById(id)
                  ?? throw new KeyNotFoundException(nameof(id));
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+            new UserValidator()
+                .WithPassword(newPassword)
+                .Validate();
 
+            if (newPassword.Equals(currentPassword))
+                throw new Exception("The new password can't be the same as the current password!");
+
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
             if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new Exception();
-
 
             DefineUserPasswordHash(user, newPassword);
             _userRepository.Update(user);
@@ -123,8 +178,14 @@ namespace Tudo_List.Domain.Services
             var user = await _userRepository.GetByIdAsync(id)
                  ?? throw new KeyNotFoundException(nameof(id));
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+            new UserValidator()
+                .WithPassword(newPassword)
+                .Validate();
 
+            if (newPassword.Equals(currentPassword))
+                throw new Exception("The new password can't be the same as the current password!");
+
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
             if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
                 throw new Exception();
 

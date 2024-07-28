@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Tudo_List.Application.DtoValidation.Helpers;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos.User;
@@ -15,6 +16,8 @@ namespace Tudo_List.Application
         private readonly IUserService _userService = userService;
         private readonly IMapper _mapper = mapper;
         private readonly ICurrentUserService _currentUserService = currentUserService;
+
+        private int CurrentUserId => int.Parse(_currentUserService.Id);
 
         public IEnumerable<UserDto> GetAll()
         {
@@ -58,10 +61,7 @@ namespace Tudo_List.Application
 
         public void Update(UpdateUserDto model)
         {
-            if (model.UserId != GetCurrentUserId())
-                throw new Exception();
-
-            if (model.NewName is null)
+            if (!ApplicationValidationHelper.IsValidUserUpdate(CurrentUserId, model))
                 throw new Exception();
 
             _userService.Update(model.UserId, model.NewName);
@@ -69,10 +69,7 @@ namespace Tudo_List.Application
         
         public async Task UpdateAsync(UpdateUserDto model)
         {
-            if (model.UserId != GetCurrentUserId())
-                throw new Exception();
-
-            if (model.NewName is null) 
+            if (!ApplicationValidationHelper.IsValidUserUpdate(CurrentUserId, model))
                 throw new Exception();
 
             await _userService.UpdateAsync(model.UserId, model.NewName);
@@ -80,7 +77,7 @@ namespace Tudo_List.Application
 
         public void UpdateEmail(UpdateEmailDto model)
         {
-            if (model.UserId != GetCurrentUserId())
+            if (!ApplicationValidationHelper.IsValidEmailUpdate(CurrentUserId, model))
                 throw new Exception();
 
             _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
@@ -88,7 +85,7 @@ namespace Tudo_List.Application
 
         public async Task UpdateEmailAsync(UpdateEmailDto model)
         {
-            if (model.UserId != GetCurrentUserId())
+            if (!ApplicationValidationHelper.IsValidEmailUpdate(CurrentUserId, model))
                 throw new Exception();
 
             await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
@@ -96,10 +93,7 @@ namespace Tudo_List.Application
 
         public void UpdatePassword(UpdatePasswordDto model)
         {
-            if (model.UserId != GetCurrentUserId())
-                throw new Exception();
-
-            if (model.NewPassword != model.ConfirmNewPassword)
+            if (!ApplicationValidationHelper.IsValidPasswordUpdate(CurrentUserId, model))
                 throw new Exception();
 
             _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
@@ -107,10 +101,7 @@ namespace Tudo_List.Application
 
         public async Task UpdatePasswordAsync(UpdatePasswordDto model)
         {
-            if (model.UserId != GetCurrentUserId())
-                throw new Exception();
-
-            if (model.NewPassword != model.ConfirmNewPassword)
+            if (!ApplicationValidationHelper.IsValidPasswordUpdate(CurrentUserId, model))
                 throw new Exception();
 
             await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
@@ -118,7 +109,7 @@ namespace Tudo_List.Application
 
         public void Delete(int id)
         {
-            if (id != GetCurrentUserId())
+            if (id != CurrentUserId)
                 throw new Exception();
 
             _userService.Delete(id);
@@ -126,20 +117,10 @@ namespace Tudo_List.Application
         
         public async Task DeleteAsync(int id)
         {
-            if (id != GetCurrentUserId())
+            if (id != CurrentUserId)
                 throw new Exception();
 
             await _userService.DeleteAsync(id);
-        }
-
-        private int GetCurrentUserId()
-        {
-            var strUserId = _currentUserService.Id;
-
-            if (!int.TryParse(strUserId, out int userId))
-                throw new Exception();
-
-            return userId;
         }
     }
 }

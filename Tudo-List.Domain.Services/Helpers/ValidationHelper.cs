@@ -2,14 +2,9 @@
 {
     public static class ValidationHelper
     {
-        public static string GetInvalidPropertyMessage(string property)
+        public static string GetInvalidPropertyValueMessage(string property, object? value)
         {
-            return $"{property} value is invalid!";
-        }
-
-        public static string GetEmptyPropertyMessage(string property)
-        {
-            return $"{property} must have a value!";
+            return $"\"{value}\" value is invalid for property {property}!";
         }
 
         public static string GetInvalidLengthMessage(string property, int minLength, int maxLength)

@@ -11,11 +11,11 @@ namespace Tudo_List.Application.Models.Dtos.User
         public string Email { get; set; }
 
         [RequiredProperty]
-        [Length(ValidationConstants.NameMinimumLength, ValidationConstants.NameMaximumLength)]
+        [Length(UserValidationConstants.NameMinimumLength, UserValidationConstants.NameMaximumLength)]
         public string Name { get; set; }
 
         [RequiredProperty]
-        [MinLength(ValidationConstants.PasswordMinimumLength)]
+        [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
         public string Password { get; set; }
     }
 }

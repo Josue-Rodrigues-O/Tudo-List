@@ -1,12 +1,16 @@
-﻿using Tudo_List.Domain.Core.Interfaces.Repositories;
+﻿using FluentValidation;
+using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Enums;
+using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Domain.Services
 {
-    public class TodoListItemService(ITodoListItemRepository repository) : ITodoListItemService
+    public class TodoListItemService(ITodoListItemRepository repository, IValidator<TodoListItem> itemValidator) : ITodoListItemService
     {
         private readonly ITodoListItemRepository _repository = repository;
+        private readonly IValidator<TodoListItem> _itemValidator = itemValidator;
 
         public IEnumerable<TodoListItem> GetAll()
         {
@@ -28,13 +32,33 @@ namespace Tudo_List.Domain.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        public void Add(TodoListItem item)
+        public void Add(TodoListItem item, int userId)
         {
+            _itemValidator.Validate(item, opt =>
+            {
+                opt.ThrowOnFailures();
+                opt.IncludeRuleSets(RuleSetNames.Register);
+            });
+
+            item.UserId = userId;
+            item.Status ??= Status.NotStarted;
+            item.CreationDate = DateTime.Now;
+
             _repository.Add(item);
         }
 
-        public async Task AddAsync(TodoListItem item)
+        public async Task AddAsync(TodoListItem item, int userId)
         {
+            await _itemValidator.ValidateAsync(item, opt =>
+            {
+                opt.ThrowOnFailures();
+                opt.IncludeRuleSets(RuleSetNames.Register);
+            });
+
+            item.UserId = userId;
+            item.Status ??= Status.NotStarted;
+            item.CreationDate = DateTime.Now;
+
             await _repository.AddAsync(item);
         }
 
@@ -42,10 +66,23 @@ namespace Tudo_List.Domain.Services
         {
             var item = _repository.GetById(model.Id);
 
-            item.Title = model.Title ?? item.Title;
-            item.Description = model.Description ?? item.Description;
-            item.Status = model.Status ?? item.Status;
-            item.Priority = model.Priority ?? item.Priority;
+            _itemValidator.Validate(item, opt =>
+            {
+                opt.ThrowOnFailures();
+                opt.IncludeRuleSets(RuleSetNames.Update);
+            });
+
+            if (model.Title is not null)
+                item.Title = model.Title;
+
+            if (model.Description is not null)
+                item.Description = model.Description;
+
+            if (model.Status is not null) 
+                item.Status = model.Status;
+
+            if (model.Priority is not null) 
+                item.Priority = model.Priority;
 
             _repository.Update(item);
         }
@@ -54,10 +91,23 @@ namespace Tudo_List.Domain.Services
         {
             var item = await _repository.GetByIdAsync(model.Id);
 
-            item.Title = model.Title ?? item.Title;
-            item.Description = model.Description ?? item.Description;
-            item.Status = model.Status ?? item.Status;
-            item.Priority = model.Priority ?? item.Priority;
+            await _itemValidator.ValidateAsync(item, opt =>
+            {
+                opt.ThrowOnFailures();
+                opt.IncludeRuleSets(RuleSetNames.Update);
+            });
+
+            if (model.Title is not null)
+                item.Title = model.Title;
+
+            if (model.Description is not null)
+                item.Description = model.Description;
+
+            if (model.Status is not null)
+                item.Status = model.Status;
+
+            if (model.Priority is not null)
+                item.Priority = model.Priority;
 
             await _repository.UpdateAsync(item);
         }
