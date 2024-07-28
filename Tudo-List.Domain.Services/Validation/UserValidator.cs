@@ -67,7 +67,7 @@ namespace Tudo_List.Domain.Services.Validation
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                _errors.Add(ValidationHelper.GetInvalidPropertyMessage(nameProperty, name));
+                _errors.Add(ValidationHelper.GetInvalidPropertyValueMessage(nameProperty, name));
                 return;
             }
 
@@ -87,7 +87,7 @@ namespace Tudo_List.Domain.Services.Validation
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                _errors.Add(ValidationHelper.GetInvalidPropertyMessage(UserValidationConstants.EmailProperty, email));
+                _errors.Add(ValidationHelper.GetInvalidPropertyValueMessage(UserValidationConstants.EmailProperty, email));
                 return;
             }
 
@@ -103,7 +103,7 @@ namespace Tudo_List.Domain.Services.Validation
         {
             if (string.IsNullOrWhiteSpace(password))
             {
-                _errors.Add(ValidationHelper.GetInvalidPropertyMessage(UserValidationConstants.PasswordProperty, password));
+                _errors.Add(ValidationHelper.GetInvalidPropertyValueMessage(UserValidationConstants.PasswordProperty, password));
                 return;
             }
 

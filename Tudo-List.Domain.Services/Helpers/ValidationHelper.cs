@@ -2,7 +2,7 @@
 {
     public static class ValidationHelper
     {
-        public static string GetInvalidPropertyMessage(string property, object? value)
+        public static string GetInvalidPropertyValueMessage(string property, object? value)
         {
             return $"\"{value}\" value is invalid for property {property}!";
         }
