@@ -9,9 +9,9 @@ namespace Tudo_list.Infrastructure.Configuration
         private readonly IConfiguration _configuration = configuration;
 
         public string SqlServerConnectionString => _configuration.GetConnectionString(SecretsKeys.SqlServerConnectionString)
-            ?? throw new Exception("The application does not have a connection string for Sql Server!");
+            ?? throw new ArgumentNullException(nameof(SqlServerConnectionString), "The application does not have a connection string for Sql Server!");
         
         public string JwtPrivateKey => _configuration.GetSection(SecretsKeys.JwtPrivateKey).Value
-            ?? throw new Exception("The application does not have a private key for JWT!");
+            ?? throw new ArgumentNullException(nameof(JwtPrivateKey), "The application does not have a private key for JWT!");
     }
 }

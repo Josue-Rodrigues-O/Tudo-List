@@ -1,11 +1,14 @@
-﻿using Tudo_List.Domain.Core.Interfaces.Factories;
+﻿using FluentValidation;
+using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
+using Tudo_List.Domain.Exceptions;
 using Tudo_List.Domain.Helpers;
 using Tudo_List.Domain.Services.Helpers;
 using Tudo_List.Domain.Services.Validation;
+using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Domain.Services
 {
@@ -70,13 +73,10 @@ namespace Tudo_List.Domain.Services
 
         public void Update(int id, string? newName)
         {
-            var user = _userRepository.GetById(id) 
-                ?? throw new KeyNotFoundException(nameof(id));
+            var user = GetUser(id);
 
-            var nothingChanged = newName is null || user.Name.Equals(newName);
-
-            if (nothingChanged)
-                throw new Exception("No property is being updated!");
+            if (newName is null || user.Name.Equals(newName))
+                throw new ValidationException("No property is being updated!");
 
             var userValidator = new UserValidator(_userRepository);
 
@@ -93,13 +93,10 @@ namespace Tudo_List.Domain.Services
 
         public async Task UpdateAsync(int id, string? newName)
         {
-            var user = _userRepository.GetById(id)
-                ?? throw new KeyNotFoundException(nameof(id));
+            var user = await GetUserAsync(id);
 
-            var nothingChanged = newName is null || user.Name.Equals(newName);
-
-            if (nothingChanged)
-                throw new Exception("No property is being updated!");
+            if (newName is null || user.Name.Equals(newName))
+                throw new ValidationException("No property is being updated!");
 
             var userValidator = new UserValidator(_userRepository);
 
@@ -115,98 +112,102 @@ namespace Tudo_List.Domain.Services
 
         public void UpdateEmail(int id, string newEmail, string currentPassword)
         {
-            var user = _userRepository.GetById(id)
-                 ?? throw new KeyNotFoundException(nameof(id));
+            var user = GetUser(id);
 
             if (user.Email.Equals(newEmail))
-                throw new Exception("The new email can't be the same as the current one!");
+                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)));
 
             new UserValidator(_userRepository)
                 .WithEmail(newEmail)
                 .Validate();
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
-            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
-                throw new Exception();
-
+            ValidateUserPassword(user, currentPassword);
             user.Email = newEmail;
+            
             _userRepository.Update(user);
         }
 
         public async Task UpdateEmailAsync(int id, string newEmail, string currentPassword)
         {
-            var user = await _userRepository.GetByIdAsync(id)
-                 ?? throw new KeyNotFoundException(nameof(id));
+            var user = await GetUserAsync(id);
 
             if (user.Email.Equals(newEmail))
-                throw new Exception("The new email can't be the same as the current one!");
+                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)));
 
             new UserValidator(_userRepository)
                 .WithEmail(newEmail)
                 .Validate();
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
-            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
-                throw new Exception();
-
+            ValidateUserPassword(user, currentPassword);
             user.Email = newEmail;
+            
             await _userRepository.UpdateAsync(user);
         }
 
         public void UpdatePassword(int id, string currentPassword, string newPassword)
         {
-            var user = _userRepository.GetById(id)
-                 ?? throw new KeyNotFoundException(nameof(id));
+            var user = GetUser(id);
 
             new UserValidator()
                 .WithPassword(newPassword)
                 .Validate();
 
             if (newPassword.Equals(currentPassword))
-                throw new Exception("The new password can't be the same as the current password!");
+                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(UserValidationConstants.PasswordProperty));
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
-            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
-                throw new Exception();
-
+            ValidateUserPassword(user, currentPassword);
             DefineUserPasswordHash(user, newPassword);
+            
             _userRepository.Update(user);
         }
 
         public async Task UpdatePasswordAsync(int id, string currentPassword, string newPassword)
         {
-            var user = await _userRepository.GetByIdAsync(id)
-                 ?? throw new KeyNotFoundException(nameof(id));
+            var user = await GetUserAsync(id);
 
             new UserValidator()
                 .WithPassword(newPassword)
                 .Validate();
 
             if (newPassword.Equals(currentPassword))
-                throw new Exception("The new password can't be the same as the current password!");
+                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(UserValidationConstants.PasswordProperty));
 
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
-            if (!passwordStrategy.VerifyPassword(currentPassword, user.PasswordHash, user.Salt))
-                throw new Exception();
-
+            ValidateUserPassword(user, currentPassword);
             DefineUserPasswordHash(user, newPassword);
+
             await _userRepository.UpdateAsync(user);
         }
 
         public void Delete(int id)
         {
-            var user = _userRepository.GetById(id) 
-                ?? throw new KeyNotFoundException(nameof(id));
-
+            var user = GetUser(id);
             _userRepository.Remove(user);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var user = await _userRepository.GetByIdAsync(id)
-                ?? throw new KeyNotFoundException(nameof(id));
-
+            var user = await GetUserAsync(id);
             await _userRepository.RemoveAsync(user);
+        }
+        
+        private User GetUser(int id)
+        {
+            return _userRepository.GetById(id)
+                 ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
+        }
+
+        private async Task<User> GetUserAsync(int id)
+        {
+            return await _userRepository.GetByIdAsync(id)
+                ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
+        }
+
+        private void ValidateUserPassword(User user, string password)
+        {
+            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+
+            if (!passwordStrategy.VerifyPassword(password, user.PasswordHash, user.Salt))
+                throw new ValidationException("The password is incorrect!");
         }
 
         private void DefineUserPasswordHash(User user, string password)

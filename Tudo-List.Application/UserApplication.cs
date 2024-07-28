@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
-using Tudo_List.Application.DtoValidation.Helpers;
+using FluentValidation;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Exceptions;
+using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Application
 {
@@ -31,22 +33,34 @@ namespace Tudo_List.Application
 
         public UserDto GetById(int id)
         {
-            return _mapper.Map<UserDto>(_userService.GetById(id));
+            var user = _userService.GetById(id)
+                ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
+
+            return _mapper.Map<UserDto>(user);
         }
         
         public async Task<UserDto> GetByIdAsync(int id)
         {
-            return _mapper.Map<UserDto>(await _userService.GetByIdAsync(id));
+            var user = await _userService.GetByIdAsync(id)
+                ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
+
+            return _mapper.Map<UserDto>(user);
         }
 
         public UserDto GetByEmail(string email)
         {
-            return _mapper.Map<UserDto>(_userService.GetByEmail(email));
+            var user = _userService.GetByEmail(email)
+                ?? throw new EntityNotFoundException(nameof(User), nameof(User.Email), email);
+
+            return _mapper.Map<UserDto>(user);
         }
         
         public async Task<UserDto> GetByEmailAsync(string email)
         {
-            return _mapper.Map<UserDto>(await _userService.GetByEmailAsync(email));
+            var user = await _userService.GetByEmailAsync(email)
+                ?? throw new EntityNotFoundException(nameof(User), nameof(User.Email), email);
+
+            return _mapper.Map<UserDto>(user);
         }
 
         public void Register(RegisterUserDto model)
@@ -61,48 +75,54 @@ namespace Tudo_List.Application
 
         public void Update(UpdateUserDto model)
         {
-            if (!ApplicationValidationHelper.IsValidUserUpdate(CurrentUserId, model))
-                throw new Exception();
+            if (model.UserId != CurrentUserId)
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Update)));
 
             _userService.Update(model.UserId, model.NewName);
         }
         
         public async Task UpdateAsync(UpdateUserDto model)
         {
-            if (!ApplicationValidationHelper.IsValidUserUpdate(CurrentUserId, model))
-                throw new Exception();
+            if (model.UserId != CurrentUserId)
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateAsync)));
 
             await _userService.UpdateAsync(model.UserId, model.NewName);
         }
 
         public void UpdateEmail(UpdateEmailDto model)
         {
-            if (!ApplicationValidationHelper.IsValidEmailUpdate(CurrentUserId, model))
-                throw new Exception();
+            if (model.UserId != CurrentUserId)
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmail)));
 
             _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
         }
 
         public async Task UpdateEmailAsync(UpdateEmailDto model)
         {
-            if (!ApplicationValidationHelper.IsValidEmailUpdate(CurrentUserId, model))
-                throw new Exception();
+            if (model.UserId != CurrentUserId)
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmailAsync)));
 
             await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
         }
 
         public void UpdatePassword(UpdatePasswordDto model)
         {
-            if (!ApplicationValidationHelper.IsValidPasswordUpdate(CurrentUserId, model))
-                throw new Exception();
+            if (model.UserId != CurrentUserId)
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePassword)));
+
+            if (model.NewPassword != model.ConfirmNewPassword)
+                throw new ValidationException(ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)));
 
             _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
         }
 
         public async Task UpdatePasswordAsync(UpdatePasswordDto model)
         {
-            if (!ApplicationValidationHelper.IsValidPasswordUpdate(CurrentUserId, model))
-                throw new Exception();
+            if (model.UserId != CurrentUserId)
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePasswordAsync)));
+
+            if (model.NewPassword != model.ConfirmNewPassword)
+                throw new ValidationException(ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)));
 
             await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
         }
@@ -110,7 +130,7 @@ namespace Tudo_List.Application
         public void Delete(int id)
         {
             if (id != CurrentUserId)
-                throw new Exception();
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
 
             _userService.Delete(id);
         }
@@ -118,7 +138,7 @@ namespace Tudo_List.Application
         public async Task DeleteAsync(int id)
         {
             if (id != CurrentUserId)
-                throw new Exception();
+                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
 
             await _userService.DeleteAsync(id);
         }

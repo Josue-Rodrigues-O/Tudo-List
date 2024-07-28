@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Tudo_List.Domain.Services.Constants;
+﻿using Tudo_List.Domain.Services.Constants;
 
 namespace Tudo_List.Domain.Services.Helpers
 {

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Helpers
 {
@@ -24,6 +26,24 @@ namespace Tudo_List.Domain.Helpers
             var index = new Random().Next(enumValues.Length);
 
             return enumValues[index];
+        }
+
+        public static Status ParseStatus(int value)
+        {
+            if (!Enum.IsDefined(typeof(Status), value))
+            {
+                throw new ArgumentOutOfRangeException(nameof(TodoListItem.Status), $"{value} is not a valid status");
+            }
+            return (Status)value;
+        }
+
+        public static Priority ParsePriority(int value)
+        {
+            if (!Enum.IsDefined(typeof(Priority), value))
+            {
+                throw new ArgumentOutOfRangeException(nameof(TodoListItem.Priority), $"{value} is not a valid status");
+            }
+            return (Priority)value;
         }
     }
 }

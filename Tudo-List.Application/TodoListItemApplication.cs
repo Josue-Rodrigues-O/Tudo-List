@@ -4,6 +4,7 @@ using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos.TodoListItem;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Exceptions;
 
 namespace Tudo_List.Application
 {
@@ -27,12 +28,18 @@ namespace Tudo_List.Application
 
         public TodoListItemDto GetById(Guid id)
         {
-            return _mapper.Map<TodoListItemDto>(_todoListItemService.GetById(id));
+            var item = _todoListItemService.GetById(id)
+                ?? throw new EntityNotFoundException(nameof(TodoListItem), nameof(TodoListItem.Id), id);
+
+            return _mapper.Map<TodoListItemDto>(item);
         }
 
         public async Task<TodoListItemDto> GetByIdAsync(Guid id)
         {
-            return _mapper.Map<TodoListItemDto>(await _todoListItemService.GetByIdAsync(id));
+            var item = await _todoListItemService.GetByIdAsync(id)
+                ?? throw new EntityNotFoundException(nameof(TodoListItem), nameof(TodoListItem.Id), id);
+
+            return _mapper.Map<TodoListItemDto>(item);
         }
 
         public void Add(AddItemDto model)
