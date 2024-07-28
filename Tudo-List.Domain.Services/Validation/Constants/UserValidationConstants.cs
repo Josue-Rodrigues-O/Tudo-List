@@ -6,7 +6,7 @@ namespace Tudo_List.Domain.Services.Validation.Constants
     {
         public const string NameProperty = nameof(User.Name);
         public const string EmailProperty = nameof(User.Email);
-        public const string PasswordProperty = "Passord";
+        public const string PasswordProperty = "Password";
 
         public const int NameMinimumLength = 2;
         public const int NameMaximumLength = 100;

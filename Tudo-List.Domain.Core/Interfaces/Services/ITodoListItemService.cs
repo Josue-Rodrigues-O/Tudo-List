@@ -1,5 +1,4 @@
 ﻿using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Core.Interfaces.Services
 {
@@ -8,8 +7,8 @@ namespace Tudo_List.Domain.Core.Interfaces.Services
         IEnumerable<TodoListItem> GetAll();
         Task<IEnumerable<TodoListItem>> GetAllAsync();
 
-        TodoListItem GetById(Guid id);
-        Task<TodoListItem> GetByIdAsync(Guid id);
+        TodoListItem? GetById(Guid id);
+        Task<TodoListItem?> GetByIdAsync(Guid id);
 
         void Add(TodoListItem item, int userId);
         Task AddAsync(TodoListItem item, int userId);

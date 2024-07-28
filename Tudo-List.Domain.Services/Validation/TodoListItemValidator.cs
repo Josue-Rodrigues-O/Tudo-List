@@ -9,6 +9,8 @@ namespace Tudo_List.Domain.Services.Validation
     {
         public TodoListItemValidator()
         {
+            RuleLevelCascadeMode = CascadeMode.Stop;
+
             RuleSet(RuleSetNames.Register, ValidateItemTitle);
 
             RuleSet(RuleSetNames.Update, () => 
