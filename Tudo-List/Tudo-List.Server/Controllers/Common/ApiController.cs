@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation.Results;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Tudo_List.Server.Controllers.Common
@@ -33,15 +34,15 @@ namespace Tudo_List.Server.Controllers.Common
             return CustomResponse();
         }
 
-        //protected ActionResult CustomResponse(ValidationResult validationResult)
-        //{
-        //    foreach (var error in validationResult.Errors)
-        //    {
-        //        AddError(error.ErrorMessage);
-        //    }
+        protected ActionResult CustomResponse(ValidationResult validationResult)
+        {
+            foreach (var error in validationResult.Errors)
+            {
+                AddError(error.ErrorMessage);
+            }
 
-        //    return CustomResponse();
-        //}
+            return CustomResponse();
+        }
 
         protected bool IsOperationValid()
         {

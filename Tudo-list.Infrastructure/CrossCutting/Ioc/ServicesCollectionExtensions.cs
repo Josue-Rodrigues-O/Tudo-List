@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,10 @@ using Tudo_List.Domain.Core.Interfaces.Configuration;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
+using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Services;
 using Tudo_List.Domain.Services.Factories;
+using Tudo_List.Domain.Services.Validation;
 
 namespace Tudo_list.Infrastructure.CrossCutting.Ioc
 {
@@ -71,6 +74,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
             servicesCollection.AddScoped<ITodoListItemApplication, TodoListItemApplication>();
             servicesCollection.AddScoped<IAuthService, AuthService>();
             servicesCollection.AddScoped<ICurrentUserService, CurrentUserService>();
+            servicesCollection.AddScoped<IValidator<TodoListItem>, TodoListItemValidator>();
             servicesCollection.AddTransient<ITokenService, TokenService>();
 
             return servicesCollection;
