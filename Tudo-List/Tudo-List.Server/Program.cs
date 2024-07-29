@@ -45,14 +45,13 @@ builder.Services.AddApiVersioning(options =>
 });
 
 var app = builder.Build();
-var serviceProvider = builder.Services.BuildServiceProvider();
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
-app.UseProblemDetailsExceptionHandler(serviceProvider.GetRequiredService<ILoggerFactory>());
+app.UseProblemDetailsExceptionHandler();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 app.Run();

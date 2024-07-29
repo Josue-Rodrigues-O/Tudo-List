@@ -12,20 +12,20 @@ namespace Tudo_List.Server.Extensions
     {
         private static readonly Dictionary<Type, int> StatusCodeByExceptionType = new()
         {
-            { typeof(ValidationException), StatusCodes.Status400BadRequest },
-            { typeof(EntityNotFoundException), StatusCodes.Status404NotFound },
             { typeof(ArgumentNullException), StatusCodes.Status500InternalServerError },
             { typeof(ArgumentException), StatusCodes.Status500InternalServerError },
+            { typeof(ArgumentOutOfRangeException), StatusCodes.Status400BadRequest },
             { typeof(BadHttpRequestException), StatusCodes.Status400BadRequest },
-            { typeof(UnauthorizedAccessException), StatusCodes.Status401Unauthorized },
             { typeof(DtoValidationException), StatusCodes.Status400BadRequest },
-            { typeof(ArgumentOutOfRangeException), StatusCodes.Status400BadRequest }
+            { typeof(ValidationException), StatusCodes.Status400BadRequest },
+            { typeof(EntityNotFoundException), StatusCodes.Status404NotFound },
+            { typeof(UnauthorizedAccessException), StatusCodes.Status401Unauthorized },
         };
 
         private const string DefaultValidationErrorTitle = "Validation Failed!";
         private const string DefaultValidationErrorDetail = "Please refer to the errors property for additional details";
 
-        public static void UseProblemDetailsExceptionHandler(this IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public static void UseProblemDetailsExceptionHandler(this IApplicationBuilder app)
         {
 
             app.UseExceptionHandler(builder =>
@@ -42,7 +42,7 @@ namespace Tudo_List.Server.Extensions
                     if (exceptionHandlerFeature is not null)
                     {
                         var exception = exceptionHandlerFeature.Error;
-                        StatusCodeByExceptionType.TryGetValue(exception.GetType(), out int statusCode);
+                        int statusCode = StatusCodeByExceptionType.GetValueOrDefault(exception.GetType(), StatusCodes.Status500InternalServerError);
 
                         if (exception is ValidationException validationException)
                         {
