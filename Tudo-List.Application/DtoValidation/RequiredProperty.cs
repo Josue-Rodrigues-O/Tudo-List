@@ -8,6 +8,9 @@ namespace Tudo_List.Application.DtoValidation
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
+            if (value is null)
+                return null;
+
             bool isValidProperty = value switch
             {
                 string strValue => IsValidString(strValue),

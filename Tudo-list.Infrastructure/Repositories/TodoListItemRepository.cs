@@ -20,14 +20,14 @@ namespace Tudo_list.Infrastructure.Repositories
             return await _items.ToListAsync();
         }
 
-        public TodoListItem GetById(Guid id)
+        public TodoListItem? GetById(Guid id)
         {
-            return GetItemById(id);
+            return _items.Find(id);
         }
 
-        public async Task<TodoListItem> GetByIdAsync(Guid id)
+        public async Task<TodoListItem?> GetByIdAsync(Guid id)
         {
-            return await GetItemByIdAsync(id);
+            return await _items.FindAsync(id);
         }
 
         public void Add(TodoListItem item)
@@ -54,30 +54,16 @@ namespace Tudo_list.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public void Remove(Guid id)
+        public void Remove(TodoListItem item)
         {
-            var item = GetItemById(id);
             _items.Remove(item);
             _context.SaveChanges();
         }
 
-        public async Task RemoveAsync(Guid id)
+        public async Task RemoveAsync(TodoListItem item)
         {
-            var item = await GetItemByIdAsync(id);
             _items.Remove(item);
             await _context.SaveChangesAsync();
-        }
-
-        private TodoListItem GetItemById(Guid id)
-        {
-            return _items.Find(id)
-                ?? throw new KeyNotFoundException(nameof(TodoListItem));
-        }
-
-        private async Task<TodoListItem> GetItemByIdAsync(Guid id)
-        {
-            return await _items.FindAsync(id)
-                ?? throw new KeyNotFoundException(nameof(TodoListItem));
         }
     }
 }

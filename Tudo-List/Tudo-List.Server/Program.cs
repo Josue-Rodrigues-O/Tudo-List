@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Tudo_list.Infrastructure.Configuration.Constants;
 using Tudo_list.Infrastructure.CrossCutting.Ioc;
+using Tudo_List.Server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddRepositories();
 builder.Services.AddDomainServices();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddApplicationServices();
+builder.Services.AddMvc();
+builder.Services.ConfigureProblemDetailsModelState();
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = ApiVersion.Default;
@@ -48,7 +51,7 @@ app.UseAuthorization();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseHttpsRedirection();
-app.UseAuthorization();
+app.UseProblemDetailsExceptionHandler();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 app.Run();
