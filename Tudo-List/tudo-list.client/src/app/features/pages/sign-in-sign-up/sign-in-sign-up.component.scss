@@ -38,20 +38,12 @@ img {
     padding: 3rem;
 }
 
-.inputs {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 input {
     width: 100%;
     height: 3rem;
     padding: 0rem 0rem 0rem 1rem;
     border: none;
     outline: none;
-    background-color: #F1F1F1;
-    margin: 0.5rem;
     font-size: 1rem;
     border-radius: 50pt;
 }
@@ -70,43 +62,8 @@ label {
 .estilo-label {
     top: 20%;
     font-style: normal;
-    color: #40AFFF;
-}
-
-a {
-    text-decoration: none;
-    color: #40AFFF;
-}
-
-button {
-    height: 3rem;
-    width: 100%;
-    // background-color: #40AFFF;
-    background-color: map-get($theme-colors, "primary");;
-    border-radius: 50pt;
-    border: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: background-color 0.5s;
-}
-
-button:hover {
-    cursor: pointer;
-    background-color: #1789da;
-}
-
-.container-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    height: 25%;
-    width: 100%;
-}
-
-.sign-up-link:hover {
-    cursor: pointer;
+    background-color: $white;
+    color: $dark;
 }
 
 .animate-form-right {

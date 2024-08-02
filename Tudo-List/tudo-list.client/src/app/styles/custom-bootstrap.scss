@@ -17,52 +17,32 @@
 // @import "../../../node_modules/bootstrap/scss/code";
 @import "../../../node_modules/bootstrap/scss/grid";
 
-$primary: #4E73DF;
-$secondary: #90b4ce;
-$body-bg: #fffffe;
+$primary:    #5C60F5;
+$light:      #e4f2fd;
+// $secondary:  #005aed;
+// $dark:       #020006;
+// $info:       #7e8abb;
+// $accent1:    #aec2c8;
+// $accent2:    #485e6b;
+// $accent3:    #96a7aa;
+// $success:    #00ad65;
+// $warning:    #e4ce00;
+// $danger:     #f41e00;
+
+$white: #ffffff;
 
 $theme-colors: (
-    "primary": $primary,
-    "secondary": $secondary,
-    "success": $success,
-    "info": $info,
-    "warning": $warning,
-    "danger": $danger,
-    "light": $light,
-    "dark": $dark,
-    //   "$body-bg":   $body-bg
+    "primary":    $primary,
+    "light":      $light,
+    // "dark":       $dark,
+    // "secondary":  $secondary,
+    // "info":       $info,
+    // "accent1":    $accent1,
+    // "accent2":    $accent2,
+    // "accent3":    $accent3,
+    // "success":    $success,
+    // "warning":    $warning,
+    // "danger":     $danger,
 );
-
-.bg-tudo-list-primary {
-    background-color: #4E73DF;
-    // background: rgb(78, 115, 223);
-    // background: linear-gradient(90deg, rgba(78, 115, 223, 1) 0%, rgba(0, 37, 194, 1) 100%);
-    color: white;
-
-    p {
-        color: #d1ddff;
-    }
-}
-
-.bg-tudo-list-secondary {
-    background-color: #F8F9FC;
-    color: #5A5C69;
-
-    p {
-        color: #858796
-    }
-}
-
-.btn-ligth {
-    background: none;
-    border: none;
-    color: white;
-    transition: color 0.4s;
-}
-
-.btn-ligth:hover {
-    cursor: pointer;
-    color: #d1ddff;
-}
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";

@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { TodoListItem } from '../../../core/models/todo-list-item/todo-list-item';
-import { StatusEnum } from '../../../core/enums/status-enum/status-enum';
-import { TodoListItemService } from '../../../core/services/todo-list-items/todo-list-item.service';
+import { StatusEnum } from '../../core/enums/status-enum/status-enum';
+import { TodoListItem } from '../../core/models/todo-list-item/todo-list-item';
+import { TodoListItemService } from '../../core/services/todo-list-items/todo-list-item.service';
 
 @Component({
-  selector: 'app-tudo-list',
-  templateUrl: './tudo-list.component.html',
-  styleUrl: './tudo-list.component.scss',
+  selector: 'app-teste',
+  templateUrl: './teste.component.html',
+  styleUrl: './teste.component.scss',
 })
-export class TudoListComponent {
+export class TesteComponent {
   tasks: Array<TodoListItem>;
   todoListItemService: TodoListItemService;
   statusEnum = StatusEnum;

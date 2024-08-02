@@ -9,6 +9,8 @@ import { AppComponent } from './app.component';
 import { SignInSignUpComponent } from './features/pages/sign-in-sign-up/sign-in-sign-up.component';
 import { TudoListComponent } from './features/pages/tudo-list/tudo-list.component';
 import { NotFoundComponent } from './features/pages/not-found/not-found.component';
+import { TesteComponent } from './pages-teste/teste/teste.component';
+import { MessageBoxComponent } from './features/fragments/message-box/message-box.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -20,6 +22,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SignInSignUpComponent,
     TudoListComponent,
     NotFoundComponent,
+    TesteComponent,
+    MessageBoxComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
