@@ -1,16 +1,14 @@
-﻿using Tudo_List.Domain.Helpers;
-
-namespace Tudo_List.Domain.Services.Helpers
+﻿namespace Tudo_List.Domain.Services.Helpers
 {
     public static class ValidationHelper
     {
         public static string GetInvalidPropertyValueMessage(string property, object? value)
         {
-            var stringValue = value is string str && str.ContainsValue() 
-                ? str 
-                : "Empty";
+            var message = string.IsNullOrWhiteSpace(value?.ToString())
+                ? $"The field {property} can't be empty!"
+                : $"{value} value is invalid for field {property}!";
 
-            return $"{stringValue} value is invalid for property {property}!";
+            return message;
         }
 
         public static string GetInvalidLengthMessage(string property, int minLength, int maxLength)
