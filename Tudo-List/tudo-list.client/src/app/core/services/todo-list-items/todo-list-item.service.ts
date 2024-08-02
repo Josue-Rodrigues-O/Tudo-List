@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
 import { TodoListItemsRepository } from '../../repositories/todo-list-items/todo-list-items-repository';
 import { TodoListItem } from '../../models/todo-list-item/todo-list-item';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoListItemService {
-  repository!: TodoListItemsRepository;
-  constructor() {
-    this.repository = new TodoListItemsRepository();
-  }
+  constructor(private repository: TodoListItemsRepository) {}
 
-  getAll(): Array<TodoListItem> {
+  getAll(): Observable<Array<TodoListItem>> {
     return this.repository.getAll();
   }
 
-  getById(id: string): TodoListItem {
+  getById(id: string): Observable<TodoListItem> {
     return this.repository.getById(id);
   }
 

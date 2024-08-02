@@ -9,16 +9,16 @@ import { TodoListItemService } from '../../../core/services/todo-list-items/todo
   styleUrl: './tudo-list.component.scss',
 })
 export class TudoListComponent {
-  tasks: Array<TodoListItem>;
-  todoListItemService: TodoListItemService;
+  tasks: Array<TodoListItem> = [];
   statusEnum = StatusEnum;
   selectedTask: TodoListItem = new TodoListItem();
   currentTask: TodoListItem = new TodoListItem();
   isEditing = false;
 
-  constructor() {
-    this.todoListItemService = new TodoListItemService();
-    this.tasks = this.todoListItemService.getAll();
+  constructor(private todoListItemService: TodoListItemService) {
+    this.todoListItemService
+      .getAll()
+      .subscribe((tasks) => (this.tasks = tasks));
   }
 
   onClickTaskStatusItem(
@@ -60,9 +60,10 @@ export class TudoListComponent {
   }
 
   onClickSave() {
-    this.currentTask.id
-      ? this.todoListItemService.update(this.currentTask)
-      : this.todoListItemService.add(this.currentTask);
+    this.todoListItemService.add(this.currentTask);
+    // this.currentTask.id
+    //   ? this.todoListItemService.update(this.currentTask)
+    //   : this.todoListItemService.add(this.currentTask);
 
     this.isEditing = false;
   }

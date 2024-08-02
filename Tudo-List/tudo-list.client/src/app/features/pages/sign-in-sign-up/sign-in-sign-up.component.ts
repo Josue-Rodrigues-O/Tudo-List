@@ -52,6 +52,7 @@ export class SignInSignUpComponent {
 
   onClickLogin() {
     this.userService.login(this.user);
+    this.router.navigate(['/tudo-list']);
   }
 
   onClickRegister() {

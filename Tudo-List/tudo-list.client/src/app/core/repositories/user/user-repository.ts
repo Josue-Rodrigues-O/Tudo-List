@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user/user';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, from, Observable } from 'rxjs';
 import { AuthenticationResult } from '../../models/authentication-result/authentication-result';
 
 @Injectable({
