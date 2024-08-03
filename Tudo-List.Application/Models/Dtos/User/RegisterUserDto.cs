@@ -10,7 +10,9 @@ namespace Tudo_List.Application.Models.Dtos.User
         [EmailAddress]
         public string Email { get; set; }
 
-        public string? Name { get; set; } 
+        [RequiredProperty]
+        [Length(UserValidationConstants.NameMinimumLength, UserValidationConstants.NameMaximumLength)]
+        public string Name { get; set; }
 
         [RequiredProperty]
         [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
