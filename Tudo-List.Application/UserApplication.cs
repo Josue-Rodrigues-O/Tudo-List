@@ -65,13 +65,11 @@ namespace Tudo_List.Application
 
         public void Register(RegisterUserDto model)
         {
-            model.Name ??= model.Email.Split('@').First();
             _userService.Register(_mapper.Map<User>(model), model.Password);
         }
         
         public async Task RegisterAsync(RegisterUserDto model)
         {
-            model.Name ??= model.Email.Split('@').First();
             await _userService.RegisterAsync(_mapper.Map<User>(model), model.Password);
         }
 
