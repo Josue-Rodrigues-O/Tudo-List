@@ -63,6 +63,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         {
             servicesCollection.AddScoped<IUserService, UserService>();
             servicesCollection.AddScoped<ITodoListItemService, TodoListItemService>();
+            servicesCollection.AddScoped<IValidator<TodoListItem>, TodoListItemValidator>();
             servicesCollection.AddTransient<IPasswordStrategyFactory, PasswordStrategyFactory>();
 
             return servicesCollection;
@@ -74,7 +75,6 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
             servicesCollection.AddScoped<ITodoListItemApplication, TodoListItemApplication>();
             servicesCollection.AddScoped<IAuthService, AuthService>();
             servicesCollection.AddScoped<ICurrentUserService, CurrentUserService>();
-            servicesCollection.AddScoped<IValidator<TodoListItem>, TodoListItemValidator>();
             servicesCollection.AddTransient<ITokenService, TokenService>();
 
             return servicesCollection;

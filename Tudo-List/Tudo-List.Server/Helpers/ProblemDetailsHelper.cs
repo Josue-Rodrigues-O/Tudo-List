@@ -40,7 +40,7 @@ namespace Tudo_List.Server.Helpers
             if (validationException.Errors.Any())
             {
                 validationProblemDetails.Detail = "Please refer to the errors property for additional details";
-                validationProblemDetails.Errors = validationException.Errors.ToDictionary(x => x.PropertyName, x => new string[] { x.ErrorMessage });
+                validationProblemDetails.Errors = validationException.Errors.ToDictionary(error => error.PropertyName, error => new string[] { error.ErrorMessage });
             }
             else
             {

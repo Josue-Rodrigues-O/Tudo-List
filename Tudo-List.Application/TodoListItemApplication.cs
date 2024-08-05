@@ -8,13 +8,10 @@ using Tudo_List.Domain.Exceptions;
 
 namespace Tudo_List.Application
 {
-    public class TodoListItemApplication(ITodoListItemService todoListItemService, IMapper mapper, ICurrentUserService currentUserService) : ITodoListItemApplication
+    public class TodoListItemApplication(ITodoListItemService todoListItemService, IMapper mapper) : ITodoListItemApplication
     {
         private readonly ITodoListItemService _todoListItemService = todoListItemService;
         private readonly IMapper _mapper = mapper;
-        private readonly ICurrentUserService _currentUserService = currentUserService;
-
-        private int CurrentUserId => int.Parse(_currentUserService.Id);
 
         public IEnumerable<TodoListItemDto> GetAll()
         {
@@ -45,13 +42,13 @@ namespace Tudo_List.Application
         public void Add(AddItemDto model)
         {
             var item = _mapper.Map<TodoListItem>(model);
-            _todoListItemService.Add(item, CurrentUserId);
+            _todoListItemService.Add(item);
         }
 
         public async Task AddAsync(AddItemDto model)
         {
             var item = _mapper.Map<TodoListItem>(model);
-            await _todoListItemService.AddAsync(item, CurrentUserId);
+            await _todoListItemService.AddAsync(item);
         }
 
         public void Update(UpdateItemDto model)

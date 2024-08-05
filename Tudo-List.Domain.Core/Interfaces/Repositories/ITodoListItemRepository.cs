@@ -4,11 +4,11 @@ namespace Tudo_List.Domain.Core.Interfaces.Repositories
 {
     public interface ITodoListItemRepository
     {
-        IEnumerable<TodoListItem> GetAll();
-        Task<IEnumerable<TodoListItem>> GetAllAsync();
+        IEnumerable<TodoListItem> GetAll(int? userId = null);
+        Task<IEnumerable<TodoListItem>> GetAllAsync(int? userId = null);
 
-        TodoListItem? GetById(Guid id);
-        Task<TodoListItem?> GetByIdAsync(Guid id);
+        TodoListItem? GetById(Guid id, int? userId = null);
+        Task<TodoListItem?> GetByIdAsync(Guid id, int? userId = null);
 
         void Add(TodoListItem item);
         Task AddAsync(TodoListItem item);

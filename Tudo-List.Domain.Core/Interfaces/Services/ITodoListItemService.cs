@@ -10,8 +10,8 @@ namespace Tudo_List.Domain.Core.Interfaces.Services
         TodoListItem? GetById(Guid id);
         Task<TodoListItem?> GetByIdAsync(Guid id);
 
-        void Add(TodoListItem item, int userId);
-        Task AddAsync(TodoListItem item, int userId);
+        void Add(TodoListItem item);
+        Task AddAsync(TodoListItem item);
 
         void Update(TodoListItem model);
         Task UpdateAsync(TodoListItem model);
