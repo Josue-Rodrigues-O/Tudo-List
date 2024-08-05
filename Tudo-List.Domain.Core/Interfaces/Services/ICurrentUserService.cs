@@ -1,4 +1,4 @@
-﻿namespace Tudo_List.Application.Interfaces.Services
+﻿namespace Tudo_List.Domain.Core.Interfaces.Services
 {
     public interface ICurrentUserService
     {

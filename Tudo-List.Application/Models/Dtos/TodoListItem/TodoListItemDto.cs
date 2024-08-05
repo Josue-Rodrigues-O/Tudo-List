@@ -10,6 +10,5 @@ namespace Tudo_List.Application.Models.Dtos.TodoListItem
         public Status Status { get; set; }
         public Priority Priority { get; set; }
         public DateTime CreationDate { get; set; }
-        public int UserId { get; set; }
     }
 }

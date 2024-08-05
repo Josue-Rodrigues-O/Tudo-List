@@ -4,5 +4,6 @@
     {
         public const string Register = "Register";
         public const string Update = "Update";
+        public const string Delete = "Delete";
     }
 }
