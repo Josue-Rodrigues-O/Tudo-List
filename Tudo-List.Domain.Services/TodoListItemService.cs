@@ -69,7 +69,7 @@ namespace Tudo_List.Domain.Services
 
         public void Update(TodoListItem model)
         {
-            var item = _itemRepository.GetById(model.Id)
+            var item = _itemRepository.GetById(model.Id, CurrentUserId)
                 ?? throw new EntityNotFoundException(nameof(TodoListItem), nameof(TodoListItem.Id), model.Id);
 
             _itemValidator.Validate(item, opt =>
@@ -95,7 +95,7 @@ namespace Tudo_List.Domain.Services
 
         public async Task UpdateAsync(TodoListItem model)
         {
-            var item = await _itemRepository.GetByIdAsync(model.Id)
+            var item = await _itemRepository.GetByIdAsync(model.Id, CurrentUserId)
                 ?? throw new EntityNotFoundException(nameof(TodoListItem), nameof(TodoListItem.Id), model.Id);
 
             await _itemValidator.ValidateAsync(item, opt =>
