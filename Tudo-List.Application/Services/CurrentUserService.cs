@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
-using Tudo_List.Application.Interfaces.Services;
+using Tudo_List.Domain.Core.Interfaces.Services;
+using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Application.Services
 {
@@ -9,12 +10,12 @@ namespace Tudo_List.Application.Services
         private readonly ClaimsPrincipal? _currentUserClaims = httpContextAccessor.HttpContext?.User;
 
         public string Id => _currentUserClaims?.FindFirstValue(ClaimTypes.NameIdentifier)
-            ?? throw new ArgumentNullException(nameof(Id), "The User Id was not found in JWT Claims!");
+            ?? throw new ArgumentNullException(nameof(Id), ValidationHelper.GetNotFoundUserPropertyInJwtClaims(nameof(Id)));
 
         public string Name => _currentUserClaims?.FindFirstValue(ClaimTypes.Name)
-            ?? throw new ArgumentNullException(nameof(Name), "The User Name was not found in JWT Claims!");
+            ?? throw new ArgumentNullException(nameof(Name), ValidationHelper.GetNotFoundUserPropertyInJwtClaims(nameof(Name)));
         
         public string Email => _currentUserClaims?.FindFirstValue(ClaimTypes.Email)
-            ?? throw new ArgumentNullException(nameof(Email), "The User Email was not found in JWT Claims!");
+            ?? throw new ArgumentNullException(nameof(Email), ValidationHelper.GetNotFoundUserPropertyInJwtClaims(nameof(Email)));
     }
 }

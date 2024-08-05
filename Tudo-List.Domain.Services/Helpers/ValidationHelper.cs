@@ -40,5 +40,15 @@
         {
             return $"The new {property} can't be the same as the current one!";
         }
+
+        public static string GetNotFoundUserPropertyInJwtClaims(string property)
+        {
+            return $"The User {property} was not found in JWT Claims!";
+        }
+
+        public static string GetUnauthorizedItemOperationMessage(string operation)
+        {
+            return $"The User can't {operation} an item that doesn't belongs to him!";
+        }
     }
 }

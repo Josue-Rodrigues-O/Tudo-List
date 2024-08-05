@@ -9,32 +9,35 @@ using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Domain.Services
 {
-    public class TodoListItemService(ITodoListItemRepository repository, IValidator<TodoListItem> itemValidator) : ITodoListItemService
+    public class TodoListItemService(ITodoListItemRepository repository, IValidator<TodoListItem> itemValidator, ICurrentUserService currentUserService) : ITodoListItemService
     {
         private readonly ITodoListItemRepository _itemRepository = repository;
         private readonly IValidator<TodoListItem> _itemValidator = itemValidator;
+        private readonly ICurrentUserService _currentUserService = currentUserService;
+
+        private int CurrentUserId => int.Parse(_currentUserService.Id);
 
         public IEnumerable<TodoListItem> GetAll()
         {
-            return _itemRepository.GetAll();
+            return _itemRepository.GetAll(CurrentUserId);
         }
 
         public async Task<IEnumerable<TodoListItem>> GetAllAsync()
         {
-            return await _itemRepository.GetAllAsync();
+            return await _itemRepository.GetAllAsync(CurrentUserId);
         }
 
         public TodoListItem? GetById(Guid id)
         {
-            return _itemRepository.GetById(id);
+            return _itemRepository.GetById(id, CurrentUserId);
         }
 
         public async Task<TodoListItem?> GetByIdAsync(Guid id)
         {
-            return await _itemRepository.GetByIdAsync(id);
+            return await _itemRepository.GetByIdAsync(id, CurrentUserId);
         }
 
-        public void Add(TodoListItem item, int userId)
+        public void Add(TodoListItem item)
         {
             _itemValidator.Validate(item, opt =>
             {
@@ -42,14 +45,14 @@ namespace Tudo_List.Domain.Services
                 opt.IncludeRuleSets(RuleSetNames.Register);
             });
 
-            item.UserId = userId;
+            item.UserId = CurrentUserId;
             item.Status ??= Status.NotStarted;
             item.CreationDate = DateTime.Now;
 
             _itemRepository.Add(item);
         }
 
-        public async Task AddAsync(TodoListItem item, int userId)
+        public async Task AddAsync(TodoListItem item)
         {
             await _itemValidator.ValidateAsync(item, opt =>
             {
@@ -57,7 +60,7 @@ namespace Tudo_List.Domain.Services
                 opt.IncludeRuleSets(RuleSetNames.Register);
             });
 
-            item.UserId = userId;
+            item.UserId = CurrentUserId;
             item.Status ??= Status.NotStarted;
             item.CreationDate = DateTime.Now;
 
@@ -118,16 +121,28 @@ namespace Tudo_List.Domain.Services
 
         public void Delete(Guid id)
         {
-            var item = _itemRepository.GetById(id)
+            var item = _itemRepository.GetById(id, CurrentUserId)
                 ?? throw new EntityNotFoundException(nameof(TodoListItem), nameof(TodoListItem.Id), id);
+
+            _itemValidator.Validate(item, opt =>
+            {
+                opt.ThrowOnFailures();
+                opt.IncludeRuleSets(RuleSetNames.Delete);
+            });
 
             _itemRepository.Remove(item);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            var item = await _itemRepository.GetByIdAsync(id)
+            var item = await _itemRepository.GetByIdAsync(id, CurrentUserId)
                 ?? throw new EntityNotFoundException(nameof(TodoListItem), nameof(TodoListItem.Id), id);
+
+            _itemValidator.Validate(item, opt =>
+            {
+                opt.ThrowOnFailures();
+                opt.IncludeRuleSets(RuleSetNames.Delete);
+            });
 
             await _itemRepository.RemoveAsync(item);
         }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Application.Models.Dtos.User;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
