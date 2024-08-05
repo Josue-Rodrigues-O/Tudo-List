@@ -32,12 +32,12 @@ namespace Tudo_list.Infrastructure.Repositories
 
         public User? GetByEmail(string email)
         {
-            return _users.AsNoTracking().FirstOrDefault(x => x.Email.Equals(email));
+            return _users.AsNoTracking().FirstOrDefault(user => user.Email.Equals(email));
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _users.AsNoTracking().FirstOrDefaultAsync(x => x.Email.Equals(email));
+            return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Email.Equals(email));
         }
 
         public void Add(User user)
