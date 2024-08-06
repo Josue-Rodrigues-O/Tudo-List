@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { TodoListItem } from '../../../core/models/todo-list-item/todo-list-item';
 import { StatusEnum } from '../../../core/enums/status-enum/status-enum';
 import { TodoListItemService } from '../../../core/services/todo-list-items/todo-list-item.service';
+import { User } from '../../../core/models/user/user';
+import { UserService } from '../../../core/services/users/user.service';
 
 @Component({
   selector: 'app-tudo-list',
@@ -9,16 +11,21 @@ import { TodoListItemService } from '../../../core/services/todo-list-items/todo
   styleUrl: './tudo-list.component.scss',
 })
 export class TudoListComponent {
+  user: User = new User();
   tasks: Array<TodoListItem> = [];
   statusEnum = StatusEnum;
   selectedTask: TodoListItem = new TodoListItem();
   currentTask: TodoListItem = new TodoListItem();
   isEditing = false;
 
-  constructor(private todoListItemService: TodoListItemService) {
-    this.todoListItemService
-      .getAll()
-      .subscribe((tasks) => (this.tasks = tasks));
+  constructor(
+    private todoListItemService: TodoListItemService,
+    userService: UserService
+  ) {
+    let token = localStorage.getItem('token')?.split('.')[1] || '';
+    let id = JSON.parse(atob(token)).nameid;
+    userService.getById(id).subscribe((res) => (this.user = res));
+    this.updateTaskList();
   }
 
   onClickTaskStatusItem(
@@ -56,14 +63,19 @@ export class TudoListComponent {
   }
 
   onClickRemoveTask() {
-    this.todoListItemService.delete(this.currentTask.id);
+    this.todoListItemService.delete(this.currentTask.id, () =>
+      this.updateTaskList()
+    );
   }
 
   onClickSave() {
-    this.todoListItemService.add(this.currentTask);
-    // this.currentTask.id
-    //   ? this.todoListItemService.update(this.currentTask)
-    //   : this.todoListItemService.add(this.currentTask);
+    this.currentTask.id
+      ? this.todoListItemService.update(this.currentTask, () =>
+          this.updateTaskList()
+        )
+      : this.todoListItemService.add(this.currentTask, () =>
+          this.updateTaskList()
+        );
 
     this.isEditing = false;
   }
@@ -76,5 +88,11 @@ export class TudoListComponent {
     this.currentTask = new TodoListItem();
     this.currentTask.status = StatusEnum.notStarted;
     this.isEditing = true;
+  }
+
+  updateTaskList() {
+    this.todoListItemService
+      .getAll()
+      .subscribe((tasks) => (this.tasks = tasks));
   }
 }

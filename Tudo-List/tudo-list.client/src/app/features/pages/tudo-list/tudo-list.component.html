@@ -21,9 +21,9 @@
             <nav #top_bar style="max-height: 8vh; height: 100%; width: 100%;" class="navbar p-0 shadow-sm bg-white">
                 <div style="width: 100%;" class="container-fluid m-0 justify-content-end">
                     <a #profile class="navbar-brand d-flex align-items-center m-0 me-3" href="#">
+                        <h2 class="profile-name m-0 me-2">{{user.name}}</h2>
                         <img src="../../../assets/images/profile_teste.webp" alt="Tudo-List" width="33" height="33"
                             class="rounded-5">
-                        <h2 class="profile-name m-0 ms-2">Lucas</h2>
                     </a>
                 </div>
             </nav>
@@ -89,7 +89,8 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div style="width: 100%;" class="d-flex justify-content-end">
-                <i style="-webkit-text-stroke: 1px; cursor: pointer;" class="bi bi-x-lg mt-3 me-3" data-bs-dismiss="modal"></i>
+                <i style="-webkit-text-stroke: 1px; cursor: pointer;" class="bi bi-x-lg mt-3 me-3"
+                    data-bs-dismiss="modal"></i>
             </div>
             <div class="modal-body">
                 <div class="form-floating mb-3">

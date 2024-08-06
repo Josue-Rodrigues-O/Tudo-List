@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user/user';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationResult } from '../../models/authentication-result/authentication-result';
 
 @Injectable({
@@ -13,10 +13,29 @@ export class UserRepository {
   constructor(private http: HttpClient) {}
 
   register(user: User) {
-    return this.http.post(`${this.apiUrlUser}/register`, user);
+    const url: string = `${this.apiUrlUser}/register`;
+    return this.http.post(url, user);
   }
 
   login(user: User) {
-    return this.http.post<AuthenticationResult>(`${this.apiUrlLogin}`, user);
+    const url: string = `${this.apiUrlLogin}`;
+    return this.http.post<AuthenticationResult>(url, user);
+  }
+
+  getById(id: string) {
+    const url: string = `${this.apiUrlUser}/get-by-id/${id}`;
+    return this.http.get<User>(url, { headers: this._getHeader() });
+  }
+
+  _getHeader() {
+    let headers!: HttpHeaders;
+
+    headers = new HttpHeaders();
+    headers = headers.append(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token')}`
+    );
+
+    return headers;
   }
 }

@@ -42,16 +42,14 @@
             </div>
             <div style="height: 25%; width: 100%;" class="d-flex align-items-center flex-column justify-content-evenly">
                 @if(isSignIn){
-                <button style="width: 100%; height: 3rem;" class="btn btn-dark rounded-5"
-                    (click)="onClickLogin()">
+                <button style="width: 100%; height: 3rem;" class="btn btn-primary rounded-5" (click)="onClickLogin()">
                     {{ 'pageSignInSignUp.buttonSignIn' | translate }}
                 </button>
                 <a href="" class="link-underline-light">
                     {{ 'pageSignInSignUp.forgotPassword' | translate }}
                 </a>
                 }@else {
-                <button style="width: 100%; height: 3rem;" class="btn btn-dark rounded-5"
-                    (click)="onClickRegister()">
+                <button style="width: 100%; height: 3rem;" class="btn btn-primary rounded-5" (click)="onClickRegister()">
                     {{ 'pageSignInSignUp.buttonSignUp' | translate }}
                 </button>
                 }
@@ -77,3 +75,4 @@
         <img #image src="../../../assets/images/background_image.jpg" />
     </main>
 </div>
+<app-toast></app-toast>

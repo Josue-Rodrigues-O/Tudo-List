@@ -10,7 +10,7 @@ import { SignInSignUpComponent } from './features/pages/sign-in-sign-up/sign-in-
 import { TudoListComponent } from './features/pages/tudo-list/tudo-list.component';
 import { NotFoundComponent } from './features/pages/not-found/not-found.component';
 import { TesteComponent } from './pages-teste/teste/teste.component';
-import { MessageBoxComponent } from './features/fragments/message-box/message-box.component';
+import { ToastComponent } from './features/fragments/toast/toast.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -23,7 +23,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TudoListComponent,
     NotFoundComponent,
     TesteComponent,
-    MessageBoxComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

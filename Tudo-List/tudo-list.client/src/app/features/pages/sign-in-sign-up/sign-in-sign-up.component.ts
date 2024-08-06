@@ -41,21 +41,19 @@ export class SignInSignUpComponent {
     }, 500);
   }
 
-  onClickButtonSigninSignUp() {
-    this.userService.login(this.user);
-    // this.router.navigate(['/tudo-list']);
-  }
-
   estilizarLabel(evento: any, value: any) {
     if (!value) evento.classList.toggle('estilo-label');
   }
 
   onClickLogin() {
-    this.userService.login(this.user);
-    this.router.navigate(['/tudo-list']);
+    this.userService.login(this.user, () =>
+      this.router.navigate(['/tudo-list'])
+    );
   }
 
   onClickRegister() {
-    this.userService.register(this.user);
+    this.userService.register(this.user, () =>
+      this.router.navigate(['/tudo-list'])
+    );
   }
 }

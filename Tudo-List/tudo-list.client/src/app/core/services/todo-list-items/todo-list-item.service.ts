@@ -17,15 +17,60 @@ export class TodoListItemService {
     return this.repository.getById(id);
   }
 
-  add(todoListItem: TodoListItem) {
-    this.repository.add(todoListItem);
+  add(
+    todoListItem: TodoListItem,
+    next: Function = () => {},
+    error: Function = () => {},
+    complete: Function = () => {}
+  ) {
+    this.repository.add(todoListItem).subscribe({
+      next: () => {
+        next();
+      },
+      error: () => {
+        error();
+      },
+      complete: () => {
+        complete();
+      },
+    });
   }
 
-  update(todoListItem: TodoListItem) {
-    this.repository.update(todoListItem);
+  update(
+    todoListItem: TodoListItem,
+    next: Function = () => {},
+    error: Function = () => {},
+    complete: Function = () => {}
+  ) {
+    this.repository.update(todoListItem).subscribe({
+      next: () => {
+        next();
+      },
+      error: () => {
+        error();
+      },
+      complete: () => {
+        complete();
+      },
+    });
   }
 
-  delete(id: string) {
-    this.repository.delete(id);
+  delete(
+    id: string,
+    next: Function = () => {},
+    error: Function = () => {},
+    complete: Function = () => {}
+  ) {
+    this.repository.delete(id).subscribe({
+      next: () => {
+        next();
+      },
+      error: () => {
+        error();
+      },
+      complete: () => {
+        complete();
+      },
+    });
   }
 }

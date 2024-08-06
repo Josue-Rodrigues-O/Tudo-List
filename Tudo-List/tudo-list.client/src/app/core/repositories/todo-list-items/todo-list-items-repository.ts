@@ -8,51 +8,51 @@ import { Injectable } from '@angular/core';
 })
 export class TodoListItemsRepository {
   apiUrl: string = 'api/TodoListItems';
-  headers: HttpHeaders;
 
-  constructor(private http: HttpClient) {
-    this.headers = new HttpHeaders();
-    this.headers = this.headers.append(
-      'Authorization',
-      `Bearer ${localStorage.getItem('token')}`
-    );
-  }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Array<TodoListItem>> {
     const url: string = `${this.apiUrl}/get-all`;
 
     return this.http.get<Array<TodoListItem>>(url, {
-      headers: this.headers,
+      headers: this._getHeader(),
     });
   }
 
   getById(id: string): Observable<TodoListItem> {
     const url: string = `${this.apiUrl}/get-by-id/${id}`;
 
-    return this.http.get<TodoListItem>(url, {
-      headers: this.headers,
-    });
+    return this.http.get<TodoListItem>(url, { headers: this._getHeader() });
   }
 
   add(todoListItem: TodoListItem) {
     const url: string = `${this.apiUrl}/add`;
 
-    this.http.post(url, todoListItem, {
-      headers: this.headers,
-    });
+    return this.http.post(url, todoListItem, { headers: this._getHeader() });
   }
 
   update(todoListItem: TodoListItem) {
     const url: string = `${this.apiUrl}/update`;
 
-    this.http.patch(url, todoListItem, {
-      headers: this.headers,
-    });
+    todoListItem.itemId = todoListItem.id;
+    return this.http.patch(url, todoListItem, { headers: this._getHeader() });
   }
 
   delete(id: string) {
-    const url: string = `${this.apiUrl}/update/${id}`;
+    const url: string = `${this.apiUrl}/delete/${id}`;
 
-    this.http.delete(url, { headers: this.headers });
+    return this.http.delete(url, { headers: this._getHeader() });
+  }
+
+  _getHeader() {
+    let headers!: HttpHeaders;
+
+    headers = new HttpHeaders();
+    headers = headers.append(
+      'Authorization',
+      `Bearer ${localStorage.getItem('token')}`
+    );
+
+    return headers;
   }
 }
