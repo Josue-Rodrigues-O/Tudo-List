@@ -6,9 +6,11 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SignInSignUpComponent } from './pages/sign-in-sign-up/sign-in-sign-up.component';
-import { TudoListComponent } from './pages/tudo-list/tudo-list.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { SignInSignUpComponent } from './features/pages/sign-in-sign-up/sign-in-sign-up.component';
+import { TudoListComponent } from './features/pages/tudo-list/tudo-list.component';
+import { NotFoundComponent } from './features/pages/not-found/not-found.component';
+import { TesteComponent } from './pages-teste/teste/teste.component';
+import { ToastComponent } from './features/fragments/toast/toast.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -20,6 +22,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SignInSignUpComponent,
     TudoListComponent,
     NotFoundComponent,
+    TesteComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
