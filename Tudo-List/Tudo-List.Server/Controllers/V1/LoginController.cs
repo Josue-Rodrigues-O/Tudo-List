@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using Tudo_List.Application.Dtos.Login;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Application.Interfaces.Services;
-using Tudo_List.Application.Models.Dtos.Login;
 
 namespace Tudo_List.Server.Controllers.V1
 {
@@ -23,8 +23,8 @@ namespace Tudo_List.Server.Controllers.V1
             if (!_authService.CheckPassword(user.Id, model.Password))
                 throw new ValidationException("The password is incorrect!");
 
-            var authResult = _tokenService.GenerateToken(user);
-            return Ok(authResult);
+            var token = _tokenService.GenerateToken(user);
+            return Ok(new { Token = token });
         }
 
         [HttpPost("login-async")]
@@ -35,8 +35,8 @@ namespace Tudo_List.Server.Controllers.V1
             if (!_authService.CheckPassword(user.Id, model.Password))
                 throw new ValidationException("The password is incorrect!");
 
-            var authResult = _tokenService.GenerateToken(user);
-            return Ok(authResult);
+            var token = _tokenService.GenerateToken(user);
+            return Ok(new { Token = token });
         }
     }
 }
