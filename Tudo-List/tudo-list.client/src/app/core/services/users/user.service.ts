@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserRepository } from '../../repositories/user/user-repository';
 import { User } from '../../models/user/user';
-import { AuthenticationResult } from '../../models/authentication-result/authentication-result';
 import { ToastService } from '../../../features/services/toast/toast.service';
 import { ValidationService } from '../validations/validation.service';
 
@@ -86,6 +85,7 @@ export class UserService {
         next();
       },
       error: (err) => {
+        console.log(err)
         this.toastService.show('Erro', 'text-bg-danger');
         error();
       },
@@ -99,7 +99,7 @@ export class UserService {
     return this.repository.getById(id);
   }
 
-  _setToken(authenticationResult: AuthenticationResult) {
-    localStorage.setItem('token', authenticationResult.token);
+  _setToken(obj: any) {
+    localStorage.setItem('token', obj.token);
   }
 }
