@@ -1,4 +1,4 @@
-﻿using Tudo_List.Application.Models.Dtos.User;
+﻿using Tudo_List.Application.Dtos.User;
 
 namespace Tudo_List.Application.Interfaces.Applications
 {

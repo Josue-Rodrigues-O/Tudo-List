@@ -1,4 +1,4 @@
-﻿using Tudo_List.Application.Models.Dtos.TodoListItem;
+﻿using Tudo_List.Application.Dtos.TodoListItem;
 
 namespace Tudo_List.Application.Interfaces.Applications
 {

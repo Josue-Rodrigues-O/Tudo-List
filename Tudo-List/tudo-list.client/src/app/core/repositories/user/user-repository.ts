@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthenticationResult } from '../../models/authentication-result/authentication-result';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +18,7 @@ export class UserRepository {
 
   login(user: User) {
     const url: string = `${this.apiUrlLogin}`;
-    return this.http.post<AuthenticationResult>(url, user);
+    return this.http.post<string>(url, user);
   }
 
   getById(id: string) {

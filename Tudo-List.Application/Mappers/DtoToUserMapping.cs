@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Tudo_List.Application.Models.Dtos.User;
+using Tudo_List.Application.Dtos.User;
 using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Application.Mappers
