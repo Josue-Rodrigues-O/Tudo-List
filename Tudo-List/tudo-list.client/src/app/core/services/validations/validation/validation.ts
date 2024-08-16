@@ -15,7 +15,7 @@ export class Validation {
 
   validate(stopAtTheFirstFailure: boolean): Array<string> {
     let errorsMessages: Array<string> = new Array<string>();
-    let failedValidations = this.rules.filter((x) => x.rule());
+    let failedValidations = this.rules.filter((x) => !x.rule());
     if (failedValidations.length > 0) {
       if (stopAtTheFirstFailure) {
         const firstFailure = failedValidations[0];
