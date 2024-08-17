@@ -6,7 +6,7 @@ import { Validation } from '../validation/validation';
 })
 export class BaseValidatorService {
   private validations: Array<Validation>;
-  private stopAtTheFirstFailure: boolean = false;
+  private isGenericMessage: boolean = false;
 
   constructor() {
     this.validations = new Array<Validation>();
@@ -19,12 +19,24 @@ export class BaseValidatorService {
   }
 
   validate() {
+    let errorMessages: Array<string> = new Array<string>();
     this.validations.forEach((validation) => {
-      validation.validate(this.stopAtTheFirstFailure);
+      let errorsList = validation.validate();
+
+      if (errorsList.length > 0) {
+        errorMessages.push(`- ${errorsList[0]}`);
+      }
     });
+
+    return {
+      isValid: Boolean(errorMessages.length <= 0),
+      title: 'Validation failed',
+      messages: errorMessages,
+      isGenericMessage: this.isGenericMessage,
+    };
   }
 
-  setValidationMode(value: boolean) {
-    this.stopAtTheFirstFailure = value;
+  setIsGenericMessage(value: boolean) {
+    this.isGenericMessage = value;
   }
 }

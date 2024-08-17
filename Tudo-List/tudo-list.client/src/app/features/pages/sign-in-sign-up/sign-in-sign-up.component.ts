@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/users/user.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { RequestService } from '../../../core/services/requestService/request.service';
+import { MessageBoxService } from '../../services/message-box/message-box.service';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -21,6 +22,7 @@ export class SignInSignUpComponent {
     private router: Router,
     private userService: UserService,
     private toastService: ToastService,
+    private messageBox: MessageBoxService,
     private requestService: RequestService
   ) {
     this.translate.addLangs(['en', 'pt']);

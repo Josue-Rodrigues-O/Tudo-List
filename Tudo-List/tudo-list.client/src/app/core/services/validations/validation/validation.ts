@@ -13,18 +13,13 @@ export class Validation {
     this.rules.push({ rule, message });
   }
 
-  validate(stopAtTheFirstFailure: boolean): Array<string> {
+  validate(): Array<string> {
     let errorsMessages: Array<string> = new Array<string>();
     let failedValidations = this.rules.filter((x) => !x.rule());
     if (failedValidations.length > 0) {
-      if (stopAtTheFirstFailure) {
-        const firstFailure = failedValidations[0];
-        errorsMessages.push(firstFailure.message);
-      } else {
-        failedValidations.forEach((rule) => {
-          errorsMessages.push(rule.message);
-        });
-      }
+      failedValidations.forEach((rule) => {
+        errorsMessages.push(rule.message);
+      });
     }
     return errorsMessages;
   }

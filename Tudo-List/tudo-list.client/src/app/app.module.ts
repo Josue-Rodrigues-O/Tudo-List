@@ -11,6 +11,7 @@ import { TudoListComponent } from './features/pages/tudo-list/tudo-list.componen
 import { NotFoundComponent } from './features/pages/not-found/not-found.component';
 import { TesteComponent } from './pages-teste/teste/teste.component';
 import { ToastComponent } from './features/fragments/toast/toast.component';
+import { MessageBoxComponent } from './features/fragments/message-box/message-box.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -24,6 +25,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NotFoundComponent,
     TesteComponent,
     ToastComponent,
+    MessageBoxComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
