@@ -34,6 +34,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
+
             servicesCollection.AddSingleton(mapper);
 
             return servicesCollection;
