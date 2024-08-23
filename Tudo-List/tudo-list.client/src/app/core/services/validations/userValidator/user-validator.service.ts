@@ -19,17 +19,17 @@ export class UserValidatorService extends BaseValidatorService {
         "The values ​​of the 'Password' and 'Password Confirmation' fields must be the same!",
     };
 
-    this.ruleFor(user.email, 'Email').notEmpty().match(this.regexEmail);
+    this.ruleFor(user.email, 'Email', 'idInputEmail').notEmpty().match(this.regexEmail);
 
-    this.ruleFor(user.password, 'Password').notEmpty().minLength(8);
+    this.ruleFor(user.password, 'Password', 'idInputPassword').notEmpty().minLength(8);
 
-    this.ruleFor(user.confirmPassword, 'Confirm Password')
+    this.ruleFor(user.confirmPassword, 'Confirm Password', 'idInputConfirmPassword')
       .notEmpty()
       .must(ruleForConfirmPassword.rule, ruleForConfirmPassword.message);
   }
 
   validationToConnect(user: User) {
-    this.ruleFor(user.email, 'Email').notEmpty().match(this.regexEmail);
-    this.ruleFor(user.password, 'Password').notEmpty().minLength(8);
+    this.ruleFor(user.email, 'Email', 'idInputEmail').notEmpty().match(this.regexEmail);
+    this.ruleFor(user.password, 'Password', 'idInputPassword').notEmpty().minLength(8);
   }
 }

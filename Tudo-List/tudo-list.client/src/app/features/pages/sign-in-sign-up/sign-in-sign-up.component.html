@@ -13,7 +13,7 @@
                     <label #labelEmail for="idInputEmail">
                         {{ 'pageSignInSignUp.placeholder.email' | translate }}
                     </label>
-                    <input id="idInputEmail" class="border" type="text" name="email"
+                    <input id="idInputEmail" class="border form-control" type="text" name="email"
                         (blur)="estilizarLabel(labelEmail, user.email)" (focus)="estilizarLabel(labelEmail, user.email)"
                         [required]="true" [(ngModel)]="user.email" />
                 </div>
@@ -22,7 +22,7 @@
                     <label #labelPassword for="idInputPassword">
                         {{ 'pageSignInSignUp.placeholder.password' | translate }}
                     </label>
-                    <input id="idInputPassword" class="border" name="password" type="password"
+                    <input id="idInputPassword" class="border form-control" name="password" type="password"
                         (blur)="estilizarLabel(labelPassword, user.password)"
                         (focus)="estilizarLabel(labelPassword, user.password)" [required]="true"
                         [(ngModel)]="user.password" />
@@ -33,7 +33,7 @@
                     <label #labelConfirmPassword for="idInputConfirmPassword">
                         {{ 'pageSignInSignUp.placeholder.confirmPassword' | translate }}
                     </label>
-                    <input id="idInputConfirmPassword" class="border" name="confirm-password" type="password"
+                    <input id="idInputConfirmPassword" class="border form-control" name="confirm-password" type="password"
                         (blur)="estilizarLabel(labelConfirmPassword, user.confirmPassword)"
                         (focus)="estilizarLabel(labelConfirmPassword, user.confirmPassword)" [required]="true"
                         [(ngModel)]="user.confirmPassword" />

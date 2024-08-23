@@ -8,6 +8,7 @@ import { TesteComponent } from './pages-teste/teste/teste.component';
 const routes: Routes = [
   { path: '', component: SignInSignUpComponent },
   { path: 'tudo-list', component: TudoListComponent },
+  { path: 'page-test', component: TesteComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

@@ -1,9 +1,11 @@
 export class Validation {
-  private fieldName!: string;
+  private fieldId: string;
+  private fieldName: string;
   private propertyValue: any;
   private rules: Array<RuleWithMessage>;
 
-  constructor(propertyValue: any, fieldName: string) {
+  constructor(propertyValue: any, fieldName: string, fieldId: string) {
+    this.fieldId = fieldId;
     this.fieldName = fieldName;
     this.propertyValue = propertyValue;
     this.rules = new Array<RuleWithMessage>();
@@ -13,7 +15,7 @@ export class Validation {
     this.rules.push({ rule, message });
   }
 
-  validate(): Array<string> {
+  validate() {
     let errorsMessages: Array<string> = new Array<string>();
     let failedValidations = this.rules.filter((x) => !x.rule());
     if (failedValidations.length > 0) {
@@ -21,7 +23,10 @@ export class Validation {
         errorsMessages.push(rule.message);
       });
     }
-    return errorsMessages;
+    return {
+      fieldId: this.fieldId,
+      errorsMessages: errorsMessages,
+    };
   }
 
   must(rule: () => boolean, message: string) {
