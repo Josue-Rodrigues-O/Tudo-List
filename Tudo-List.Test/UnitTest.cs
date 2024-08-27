@@ -8,11 +8,13 @@ namespace Tudo_List.Test
     public abstract class UnitTest
     {
         protected readonly IServiceProvider _serviceProvider;
+        protected readonly ApplicationDbContext _context;
 
         public UnitTest()
         {
             var serviceCollection = GetServiceCollection();
             _serviceProvider = serviceCollection.BuildServiceProvider();
+            _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
         }
 
         private static ServiceCollection GetServiceCollection()
