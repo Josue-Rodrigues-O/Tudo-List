@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, QueryList, ViewChild } from '@angular/core';
 import { User } from '../../../core/models/user/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/users/user.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { RequestService } from '../../../core/services/requestService/request.service';
-import { MessageBoxService } from '../../services/message-box/message-box.service';
+import { InputComponent } from '../../fragments/input/input.component';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -13,16 +13,16 @@ import { MessageBoxService } from '../../services/message-box/message-box.servic
   styleUrl: './sign-in-sign-up.component.scss',
 })
 export class SignInSignUpComponent {
+  @ViewChild(InputComponent) inputComponent!: QueryList<InputComponent>;
   user: User = new User();
   isSignIn: boolean = true;
   canChangeControls: boolean = false;
 
   constructor(
-    private translate: TranslateService,
     private router: Router,
     private userService: UserService,
     private toastService: ToastService,
-    private messageBox: MessageBoxService,
+    private translate: TranslateService,
     private requestService: RequestService
   ) {
     this.translate.addLangs(['en', 'pt']);
@@ -42,6 +42,9 @@ export class SignInSignUpComponent {
       form.className = 'form-sign-in animate-form-left';
       image.className = 'animate-img-right';
     }
+    this.user.email = "";
+    this.user.password = "";
+    this.user.confirmPassword = "";
     setTimeout(() => {
       this.isSignIn = !this.isSignIn;
     }, 500);

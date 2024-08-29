@@ -12,6 +12,7 @@ import { NotFoundComponent } from './features/pages/not-found/not-found.componen
 import { TesteComponent } from './pages-teste/teste/teste.component';
 import { ToastComponent } from './features/fragments/toast/toast.component';
 import { MessageBoxComponent } from './features/fragments/message-box/message-box.component';
+import { InputComponent } from './features/fragments/input/input.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,6 +27,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TesteComponent,
     ToastComponent,
     MessageBoxComponent,
+    InputComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,

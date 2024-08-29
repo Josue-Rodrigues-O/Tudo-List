@@ -15,7 +15,7 @@ export class BaseValidatorService {
   }
 
   private setValueStateError(fieldId: string) {
-    document.getElementById(fieldId)?.classList.toggle('is-valid');
+    document.getElementById(fieldId)?.classList.toggle('is-invalid');
   }
 
   private setValueStateSuccess(fieldId: string) {
