@@ -26,42 +26,34 @@ namespace Tudo_List.Test.Infrastructure
             Assert.Equivalent(users.Count(), usersInDatabase.Count());
         }
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(4)]
-        [InlineData(5)]
-        [InlineData(6)]
-        [InlineData(7)]
-        [InlineData(8)]
-        public void Can_Get_an_User_By_Id_Synchronously(int id)
+        [Fact]
+        public void Can_Get_an_User_By_Id_Synchronously()
         {
-            var user = GetUsers().FirstOrDefault(x => x.Id == id);
-            var userInDatabase = _userRepository.GetById(id);
+            var usersIds = GetUsers().Select(x => x.Id);
 
-            Assert.NotNull(user);
-            Assert.NotNull(userInDatabase);
-            Assert.Equivalent(user, userInDatabase, true);
+            foreach (var id in usersIds)
+            {
+                var user = GetUsers().First(x => x.Id == id);
+                var userInDatabase = _userRepository.GetById(id);
+
+                Assert.NotNull(userInDatabase);
+                Assert.Equivalent(user, userInDatabase, true);
+            }
         }
 
-        [Theory]
-        [InlineData("Lucas@gmail.com")]
-        [InlineData("Josue@gmail.com")]
-        [InlineData("Mateus@gmail.com")]
-        [InlineData("Douglas@gmail.com")]
-        [InlineData("Ana@gmail.com")]
-        [InlineData("Victor@gmail.com")]
-        [InlineData("Eduardo@gmail.com")]
-        [InlineData("Julio@gmail.com")]
-        public void Can_Get_an_User_By_Email_Synchronously(string email)
+        [Fact]
+        public void Can_Get_an_User_By_Email_Synchronously()
         {
-            var user = GetUsers().FirstOrDefault(x => x.Email == email);
-            var userInDatabase = _userRepository.GetByEmail(email);
+            var usersEmails = GetUsers().Select(x => x.Email);
 
-            Assert.NotNull(user);
-            Assert.NotNull(userInDatabase);
-            Assert.Equivalent(user, userInDatabase, true);
+            foreach (var email in usersEmails)
+            {
+                var user = GetUsers().First(x => x.Email == email);
+                var userInDatabase = _userRepository.GetByEmail(email);
+
+                Assert.NotNull(userInDatabase);
+                Assert.Equivalent(user, userInDatabase, true);
+            }
         }
 
         [Fact]
@@ -113,42 +105,34 @@ namespace Tudo_List.Test.Infrastructure
             Assert.Equivalent(users.Count(), usersInDatabase.Count());
         }
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(4)]
-        [InlineData(5)]
-        [InlineData(6)]
-        [InlineData(7)]
-        [InlineData(8)]
-        public async Task Can_Get_an_User_By_Id_Asynchronously(int id)
+        [Fact]
+        public async Task Can_Get_an_User_By_Id_Asynchronously()
         {
-            var user = GetUsers().FirstOrDefault(x => x.Id == id);
-            var userInDatabase = await _userRepository.GetByIdAsync(id);
+            var usersIds = GetUsers().Select(x => x.Id);
 
-            Assert.NotNull(user);
-            Assert.NotNull(userInDatabase);
-            Assert.Equivalent(user, userInDatabase, true);
+            foreach (var id in usersIds)
+            {
+                var user = GetUsers().First(x => x.Id == id);
+                var userInDatabase = await _userRepository.GetByIdAsync(id);
+
+                Assert.NotNull(userInDatabase);
+                Assert.Equivalent(user, userInDatabase, true);
+            }
         }
 
-        [Theory]
-        [InlineData("Lucas@gmail.com")]
-        [InlineData("Josue@gmail.com")]
-        [InlineData("Mateus@gmail.com")]
-        [InlineData("Douglas@gmail.com")]
-        [InlineData("Ana@gmail.com")]
-        [InlineData("Victor@gmail.com")]
-        [InlineData("Eduardo@gmail.com")]
-        [InlineData("Julio@gmail.com")]
-        public async Task Can_Get_an_User_By_Email_Asynchronously(string email)
+        [Fact]
+        public async Task Can_Get_an_User_By_Email_Asynchronously()
         {
-            var user = GetUsers().FirstOrDefault(x => x.Email == email);
-            var userInDatabase = await _userRepository.GetByEmailAsync(email);
+            var usersEmails = GetUsers().Select(x => x.Email);
 
-            Assert.NotNull(user);
-            Assert.NotNull(userInDatabase);
-            Assert.Equivalent(user, userInDatabase, true);
+            foreach (var email in usersEmails)
+            {
+                var user = GetUsers().First(x => x.Email == email);
+                var userInDatabase = await _userRepository.GetByEmailAsync(email);
+
+                Assert.NotNull(userInDatabase);
+                Assert.Equivalent(user, userInDatabase, true);
+            }
         }
 
         [Fact]
