@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Dtos.Login;
 using Tudo_List.Application.Interfaces.Applications;
@@ -21,7 +22,14 @@ namespace Tudo_List.Server.Controllers.V1
             var user = _userApplication.GetByEmail(model.Email);
 
             if (!_authService.CheckPassword(user.Id, model.Password))
-                throw new ValidationException("The password is incorrect!");
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(model.Password), $"The {nameof(model.Password)} is incorrect!")
+                };
+
+                throw new ValidationException(error);
+            }
 
             var token = _tokenService.GenerateToken(user);
             return Ok(new { Token = token });
@@ -33,7 +41,14 @@ namespace Tudo_List.Server.Controllers.V1
             var user = await _userApplication.GetByEmailAsync(model.Email);
 
             if (!_authService.CheckPassword(user.Id, model.Password))
-                throw new ValidationException("The password is incorrect!");
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(model.Password), $"The {nameof(model.Password)} is incorrect!")
+                };
+
+                throw new ValidationException(error);
+            }
 
             var token = _tokenService.GenerateToken(user);
             return Ok(new { Token = token });
