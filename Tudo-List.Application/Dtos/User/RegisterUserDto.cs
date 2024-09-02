@@ -17,5 +17,9 @@ namespace Tudo_List.Application.Dtos.User
         [RequiredProperty]
         [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
         public string Password { get; init; }
+
+        [RequiredProperty]
+        [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
+        public string ConfirmPassword { get; init; }
     }
 }

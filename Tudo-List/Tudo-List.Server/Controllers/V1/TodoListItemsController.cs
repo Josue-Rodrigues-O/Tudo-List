@@ -32,7 +32,7 @@ namespace Tudo_List.Server.Controllers.V1
             var item = _todoListItemApplication.GetById(id);
 
             if (item is null)
-                return NotFound($"{nameof(TodoListItem)} with the id {id} was not found!");
+                return NotFound($"{nameof(TodoListItem)} with id {id} was not found!");
 
             return Ok(item);
         }
@@ -43,7 +43,7 @@ namespace Tudo_List.Server.Controllers.V1
             var item = await _todoListItemApplication.GetByIdAsync(id);
 
             if (item is null)
-                return NotFound($"{nameof(TodoListItem)} with the id {id} was not found!");
+                return NotFound($"{nameof(TodoListItem)} with id {id} was not found!");
 
             return Ok(item);
         }
