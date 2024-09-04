@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -16,6 +19,8 @@ namespace Tudo_List.Domain.Services
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IPasswordStrategyFactory _passwordStrategyFactory = passwordStrategyFactory;
+
+        private const string PasswordProperty = "Password";
 
         public IEnumerable<User> GetAll()
         {
@@ -76,7 +81,7 @@ namespace Tudo_List.Domain.Services
             var user = GetUser(id);
 
             if (newName is null || user.Name.Equals(newName))
-                throw new ValidationException("No property is being updated!");
+                throw new InvalidOperationException("No property is being updated!");
 
             var userValidator = new UserValidator(_userRepository);
 
@@ -96,7 +101,7 @@ namespace Tudo_List.Domain.Services
             var user = await GetUserAsync(id);
 
             if (newName is null || user.Name.Equals(newName))
-                throw new ValidationException("No property is being updated!");
+                throw new InvalidOperationException("No property is being updated!");
 
             var userValidator = new UserValidator(_userRepository);
 
@@ -115,10 +120,16 @@ namespace Tudo_List.Domain.Services
             var user = GetUser(id);
 
             if (user.Email.Equals(newEmail))
-                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)));
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(User.Email), ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
+                };
 
+                throw new ValidationException(error);
+            }
             new UserValidator(_userRepository)
-                .WithEmail(newEmail)
+            .WithEmail(newEmail)
                 .Validate();
 
             ValidateUserPassword(user, currentPassword);
@@ -132,7 +143,14 @@ namespace Tudo_List.Domain.Services
             var user = await GetUserAsync(id);
 
             if (user.Email.Equals(newEmail))
-                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)));
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(User.Email), ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
+                };
+
+                throw new ValidationException(error);
+            }
 
             new UserValidator(_userRepository)
                 .WithEmail(newEmail)
@@ -153,7 +171,14 @@ namespace Tudo_List.Domain.Services
                 .Validate();
 
             if (newPassword.Equals(currentPassword))
-                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(UserValidationConstants.PasswordProperty));
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(PasswordProperty, ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
+                };
+
+                throw new ValidationException(error);
+            }
 
             ValidateUserPassword(user, currentPassword);
             DefineUserPasswordHash(user, newPassword);
@@ -170,7 +195,14 @@ namespace Tudo_List.Domain.Services
                 .Validate();
 
             if (newPassword.Equals(currentPassword))
-                throw new ValidationException(ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(UserValidationConstants.PasswordProperty));
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(PasswordProperty, ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
+                };
+
+                throw new ValidationException(error);
+            }
 
             ValidateUserPassword(user, currentPassword);
             DefineUserPasswordHash(user, newPassword);
@@ -207,7 +239,14 @@ namespace Tudo_List.Domain.Services
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
 
             if (!passwordStrategy.VerifyPassword(password, user.PasswordHash, user.Salt))
-                throw new ValidationException("The password is incorrect!");
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(PasswordProperty, $"The {PasswordProperty} is incorrect!")
+                };
+
+                throw new ValidationException(error);
+            }
         }
 
         private void DefineUserPasswordHash(User user, string password)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using Tudo_List.Application.Dtos.User;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -64,11 +65,31 @@ namespace Tudo_List.Application
 
         public void Register(RegisterUserDto model)
         {
+            if (model.Password != model.ConfirmPassword)
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(model.Password), ValidationHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
+                };
+
+                throw new ValidationException(error);
+            }
+
             _userService.Register(_mapper.Map<User>(model), model.Password);
         }
         
         public async Task RegisterAsync(RegisterUserDto model)
         {
+            if (model.Password != model.ConfirmPassword)
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(model.Password), ValidationHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
+                };
+
+                throw new ValidationException(error);
+            }
+
             await _userService.RegisterAsync(_mapper.Map<User>(model), model.Password);
         }
 
@@ -110,7 +131,14 @@ namespace Tudo_List.Application
                 throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePassword)));
 
             if (model.NewPassword != model.ConfirmNewPassword)
-                throw new ValidationException(ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)));
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(model.NewPassword), ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)))
+                };
+
+                throw new ValidationException(error);
+            }
 
             _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
         }
@@ -121,7 +149,14 @@ namespace Tudo_List.Application
                 throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePasswordAsync)));
 
             if (model.NewPassword != model.ConfirmNewPassword)
-                throw new ValidationException(ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)));
+            {
+                var error = new ValidationFailure[]
+                {
+                    new(nameof(model.NewPassword), ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)))
+                };
+
+                throw new ValidationException(error);
+            }
 
             await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
         }
