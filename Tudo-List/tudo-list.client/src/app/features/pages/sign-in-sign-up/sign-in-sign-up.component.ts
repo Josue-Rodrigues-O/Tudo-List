@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { User } from '../../../core/models/user/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { UserService } from '../../../core/services/users/user.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { RequestService } from '../../../core/services/requestService/request.service';
 import { InputComponent } from '../../fragments/input/input.component';
+import { MessageBoxService } from '../../services/message-box/message-box.service';
+import { ProblemDetailsMessagesService } from '../../../core/services/problemDetailsMessages/problem-details-messages.service';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -24,8 +26,10 @@ export class SignInSignUpComponent {
     private router: Router,
     private userService: UserService,
     private toastService: ToastService,
+    private messageBox: MessageBoxService,
     private translate: TranslateService,
-    private requestService: RequestService
+    private requestService: RequestService,
+    private problemDetailsMessagesService: ProblemDetailsMessagesService
   ) {
     this.translate.addLangs(['en', 'pt']);
     this.translate.setDefaultLang('en');
@@ -81,7 +85,9 @@ export class SignInSignUpComponent {
         this.toastService.show('Sucesso', 'text-bg-success');
       },
       error: (err) => {
-        this.toastService.show('Erro', 'text-bg-danger');
+        let errors = this.problemDetailsMessagesService.getMessages(err.error);
+        this.messageBox.open(errors.title, errors.messages);
+        // this.toastService.show('Erro', 'text-bg-danger');
       },
     });
   }
@@ -94,7 +100,9 @@ export class SignInSignUpComponent {
         this.router.navigate(['/tudo-list']);
       },
       error: (err) => {
-        this.toastService.show('Erro', 'text-bg-danger');
+        let errors = this.problemDetailsMessagesService.getMessages(err.error);
+        this.messageBox.open(errors.title, errors.messages);
+        // this.toastService.show('Erro', 'text-bg-danger');
       },
     });
   }
