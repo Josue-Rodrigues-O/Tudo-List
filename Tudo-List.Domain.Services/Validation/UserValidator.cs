@@ -3,6 +3,7 @@ using FluentValidation.Results;
 using System.Text.RegularExpressions;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Validation;
+using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Helpers;
 using Tudo_List.Domain.Services.Helpers;
 using Tudo_List.Domain.Services.Validation.Constants;
@@ -64,7 +65,7 @@ namespace Tudo_List.Domain.Services.Validation
 
         private void ValidateName(string name)
         {
-            const string nameProperty = UserValidationConstants.NameProperty;
+            const string nameProperty = nameof(User.Name);
 
             if (string.IsNullOrWhiteSpace(name))
             {
@@ -83,7 +84,7 @@ namespace Tudo_List.Domain.Services.Validation
 
         private void ValidateEmail(string email)
         {
-            const string emailProperty = UserValidationConstants.EmailProperty;
+            const string emailProperty = nameof(User.Email);
 
             if (_userRepository is null)
                 throw new ArgumentNullException(nameof(_userRepository), "You must inject the repository dependency via constructor to validate email!");
@@ -104,7 +105,7 @@ namespace Tudo_List.Domain.Services.Validation
 
         private void ValidatePassword(string password)
         {
-            const string passwordProperty = UserValidationConstants.PasswordProperty;
+            const string passwordProperty = "Password";
 
             if (string.IsNullOrWhiteSpace(password))
             {

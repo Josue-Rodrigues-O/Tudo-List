@@ -12,6 +12,7 @@ namespace Tudo_List.Server.Helpers
             { typeof(ArgumentOutOfRangeException), StatusCodes.Status400BadRequest },
             { typeof(BadHttpRequestException), StatusCodes.Status400BadRequest },
             { typeof(DtoValidationException), StatusCodes.Status400BadRequest },
+            { typeof(InvalidOperationException), StatusCodes.Status400BadRequest },
             { typeof(ValidationException), StatusCodes.Status400BadRequest },
             { typeof(UnauthorizedAccessException), StatusCodes.Status401Unauthorized },
             { typeof(EntityNotFoundException), StatusCodes.Status404NotFound },
@@ -32,22 +33,19 @@ namespace Tudo_List.Server.Helpers
         {
             var validationProblemDetails = new ValidationProblemDetails()
             {
-                Title = "Validation Failed!",
                 Status = SpecialStatusCodeByExceptionType[typeof(ValidationException)],
                 Instance = context.Request.HttpContext.Request.Path,
             };
 
             if (validationException.Errors.Any())
             {
+                validationProblemDetails.Title = "Validation Failed!";
                 validationProblemDetails.Detail = "Please refer to the errors property for additional details";
                 validationProblemDetails.Errors = validationException.Errors.ToDictionary(error => error.PropertyName, error => new string[] { error.ErrorMessage });
             }
             else
             {
-                const string errorProperty = "error";
-
-                validationProblemDetails.Detail = $"Please refer to the {errorProperty} property for additional details";
-                validationProblemDetails.Extensions.Add(errorProperty, validationException.Message);
+                validationProblemDetails.Title = validationException.Message;
             }
 
             return validationProblemDetails;
