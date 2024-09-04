@@ -1,14 +1,11 @@
 import { BaseValidatorService } from '../baseValidator/base-validator.service';
 import { User } from '../../../models/user/user';
-import { Injectable } from '@angular/core';
+import { FieldsForUserValidation } from './fields-for-user-validation';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class UserValidatorService extends BaseValidatorService {
   private regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
 
-  constructor() {
+  constructor(private fieldsForUserValidation: FieldsForUserValidation) {
     super();
   }
 
@@ -19,17 +16,37 @@ export class UserValidatorService extends BaseValidatorService {
         "The values ​​of the 'Password' and 'Password Confirmation' fields must be the same!",
     };
 
-    this.ruleFor(user.email, 'Email', 'idInputEmail').notEmpty().match(this.regexEmail);
+    this.ruleFor(user.email, 'Email', this.fieldsForUserValidation.email)
+      .notEmpty()
+      .match(this.regexEmail);
 
-    this.ruleFor(user.password, 'Password', 'idInputPassword').notEmpty().minLength(8);
+    this.ruleFor(
+      user.password,
+      'Password',
+      this.fieldsForUserValidation.password
+    )
+      .notEmpty()
+      .minLength(8);
 
-    this.ruleFor(user.confirmPassword, 'Confirm Password', 'idInputConfirmPassword')
+    this.ruleFor(
+      user.confirmPassword,
+      'Confirm Password',
+      this.fieldsForUserValidation.confirmPassword
+    )
       .notEmpty()
       .must(ruleForConfirmPassword.rule, ruleForConfirmPassword.message);
   }
 
   validationToConnect(user: User) {
-    this.ruleFor(user.email, 'Email', 'idInputEmail').notEmpty().match(this.regexEmail);
-    this.ruleFor(user.password, 'Password', 'idInputPassword').notEmpty().minLength(8);
+    this.ruleFor(user.email, 'Email', this.fieldsForUserValidation.email)
+      .notEmpty()
+      .match(this.regexEmail);
+    this.ruleFor(
+      user.password,
+      'Password',
+      this.fieldsForUserValidation.password
+    )
+      .notEmpty()
+      .minLength(8);
   }
 }

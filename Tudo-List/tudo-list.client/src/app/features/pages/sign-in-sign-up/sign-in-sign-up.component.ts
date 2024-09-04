@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { User } from '../../../core/models/user/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
@@ -13,7 +13,9 @@ import { InputComponent } from '../../fragments/input/input.component';
   styleUrl: './sign-in-sign-up.component.scss',
 })
 export class SignInSignUpComponent {
-  @ViewChild(InputComponent) inputComponent!: QueryList<InputComponent>;
+  @ViewChild('inpEmail') inpEmail!: InputComponent;
+  @ViewChild('inpPassword') inpPassword!: InputComponent;
+  @ViewChild('inpConrfirmPassword') inpConrfirmPassword!: InputComponent;
   user: User = new User();
   isSignIn: boolean = true;
   canChangeControls: boolean = false;
@@ -42,9 +44,9 @@ export class SignInSignUpComponent {
       form.className = 'form-sign-in animate-form-left';
       image.className = 'animate-img-right';
     }
-    this.user.email = "";
-    this.user.password = "";
-    this.user.confirmPassword = "";
+    this.user.email = '';
+    this.user.password = '';
+    this.user.confirmPassword = '';
     setTimeout(() => {
       this.isSignIn = !this.isSignIn;
     }, 500);
@@ -55,11 +57,21 @@ export class SignInSignUpComponent {
   }
 
   onClickLogin() {
+    this._bindFieldsForUserValidation();
     this._login();
   }
 
   onClickRegister() {
+    this._bindFieldsForUserValidation();
     this._register();
+  }
+
+  _bindFieldsForUserValidation() {
+    this.userService.bindFieldsForUserValidation({
+      email: this.inpEmail,
+      password: this.inpPassword,
+      confirmPassword: this.inpConrfirmPassword,
+    });
   }
 
   _register() {
@@ -82,7 +94,6 @@ export class SignInSignUpComponent {
         this.router.navigate(['/tudo-list']);
       },
       error: (err) => {
-        console.log(err);
         this.toastService.show('Erro', 'text-bg-danger');
       },
     });

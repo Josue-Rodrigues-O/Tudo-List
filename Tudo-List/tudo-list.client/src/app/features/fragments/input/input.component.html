@@ -1,7 +1,33 @@
-<div class="col-md-3">
-    <label for="validationCustom05" class="form-label">{{ label }}</label>
-    <input id={{fieldId}} type="text" class="form-control">
+<div class="form-floating my-2">
+    <input #input type={{type}} placeholder={{placeholder}} [(ngModel)]="model" class="form-control"
+        (ngModelChange)="onModelChange($event)">
+    <label>{{ label }}</label>
     <div class="invalid-feedback">
         {{ text }}
     </div>
 </div>
+
+<!-- <div class="form-floating mb-3">
+    <input type="email" class="form-control" placeholder="name@example.com" [(ngModel)]="model"
+        (ngModelChange)="onModelChange($event)">
+    <label>Email address</label>
+</div> -->
+
+<!-- <div class="col-md-3 form-floating m-5">
+    <label for="validationCustom05" class="form-label">{{ label }}</label>
+    <input type="text" class="form-control">
+    <div class="invalid-feedback">
+        {{ text }}
+    </div>
+</div> -->
+
+<!-- <div>
+    <label> {{ label }} </label>
+
+    <input class="border form-control" type={{type}}
+        (blur)="estilizarLabel(this, user.email)" 
+        (focus)="estilizarLabel(this, user.email)" 
+        [(ngModel)]="user.email" />
+
+    <div style="position: fixed;" class="invalid-feedback"> {{ text }} </div>
+</div> -->

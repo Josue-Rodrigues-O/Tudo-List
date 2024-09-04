@@ -9,44 +9,13 @@
                 }
             </div>
             <div style="width: 100%;" class="d-flex flex-column">
-                <div>
-                    <label #labelEmail for="idInputEmail">
-                        {{ 'pageSignInSignUp.placeholder.email' | translate }}
-                    </label>
-                    <input id="idInputEmail" class="border form-control" type="text" name="email"
-                        (blur)="estilizarLabel(labelEmail, user.email)" (focus)="estilizarLabel(labelEmail, user.email)"
-                        [required]="true" [(ngModel)]="user.email" />
-                    <div style="position: fixed;" class="invalid-feedback">
-                        Please fill in the email field correctly.
-                    </div>
-                </div>
+                <app-input #inpEmail label="Email" placeholder="Email" [(model)]="user.email"></app-input>
 
-                <div>
-                    <label #labelPassword for="idInputPassword">
-                        {{ 'pageSignInSignUp.placeholder.password' | translate }}
-                    </label>
-                    <input id="idInputPassword" class="border form-control" name="password" type="password"
-                        (blur)="estilizarLabel(labelPassword, user.password)"
-                        (focus)="estilizarLabel(labelPassword, user.password)" [required]="true"
-                        [(ngModel)]="user.password" />
-                    <div style="position: fixed;" class="invalid-feedback">
-                        Please fill in the password field correctly.
-                    </div>
-                </div>
+                <app-input #inpPassword type="password" label="Senha" placeholder="Senha" [(model)]="user.password"></app-input>
 
                 @if(!isSignIn){
-                <div>
-                    <label #labelConfirmPassword for="idInputConfirmPassword">
-                        {{ 'pageSignInSignUp.placeholder.confirmPassword' | translate }}
-                    </label>
-                    <input id="idInputConfirmPassword" class="border form-control" name="confirm-password"
-                        type="password" (blur)="estilizarLabel(labelConfirmPassword, user.confirmPassword)"
-                        (focus)="estilizarLabel(labelConfirmPassword, user.confirmPassword)" [required]="true"
-                        [(ngModel)]="user.confirmPassword" />
-                    <div style="position: fixed;" class="invalid-feedback">
-                        Please fill in the password confirmation field correctly.
-                    </div>
-                </div>
+                <app-input #inpConrfirmPassword type="password" label="Confirmação de Senha" placeholder="ConfirmacaoDeSenha" [(model)]="user.confirmPassword"></app-input>
+
                 }
             </div>
             <div style="height: 25%; width: 100%;" class="d-flex align-items-center flex-column justify-content-evenly">

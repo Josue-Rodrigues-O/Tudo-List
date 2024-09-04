@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import { User } from '../../models/user/user';
 import { ToastService } from '../../../features/services/toast/toast.service';
 import { HttpClient } from '@angular/common/http';
@@ -6,11 +6,15 @@ import { Observable } from 'rxjs';
 import { RequestService } from '../requestService/request.service';
 import { UserValidatorService } from '../validations/userValidator/user-validator.service';
 import { MessageBoxService } from '../../../features/services/message-box/message-box.service';
+import { InputComponent } from '../../../features/fragments/input/input.component';
+import { FieldsForUserValidation } from '../validations/userValidator/fields-for-user-validation';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
+  private fieldsForUserValidation!: FieldsForUserValidation;
+
   private apiUrlLogin: string = 'api/Login';
   private apiUrlUser: string = 'api/Users';
 
@@ -22,7 +26,7 @@ export class UserService {
   ) {}
 
   private validate(userValidator: UserValidatorService) {
-    userValidator.setIsGenericMessage(false);
+    userValidator.setIsGenericMessage(true);
     let userValidation = userValidator.validate();
 
     if (!userValidation.isValid) {
@@ -34,21 +38,27 @@ export class UserService {
   }
 
   private validationToRegister(user: User) {
-    let userValidator = new UserValidatorService();
+    let userValidator = new UserValidatorService(this.fieldsForUserValidation);
     userValidator.validationToRegister(user);
     this.validate(userValidator);
   }
 
   private validationToConnect(user: User) {
-    let userValidator = new UserValidatorService();
+    let userValidator = new UserValidatorService(this.fieldsForUserValidation);
     userValidator.validationToConnect(user);
     this.validate(userValidator);
+  }
+
+  bindFieldsForUserValidation(
+    fieldsForUserValidation: FieldsForUserValidation
+  ) {
+    this.fieldsForUserValidation = fieldsForUserValidation;
   }
 
   register(user: User): Observable<any> {
     user.name = user.email.split('@')[0];
     this.validationToRegister(user);
-    
+
     const url: string = `${this.apiUrlUser}/register`;
     return this.http.post(url, user);
   }

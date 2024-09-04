@@ -1,11 +1,14 @@
+import { ElementRef } from "@angular/core";
+import { InputComponent } from "../../../../features/fragments/input/input.component";
+
 export class Validation {
-  private fieldId: string;
+  private field: InputComponent;
   private fieldName: string;
   private propertyValue: any;
   private rules: Array<RuleWithMessage>;
 
-  constructor(propertyValue: any, fieldName: string, fieldId: string) {
-    this.fieldId = fieldId;
+  constructor(propertyValue: any, fieldName: string, field: InputComponent) {
+    this.field = field;
     this.fieldName = fieldName;
     this.propertyValue = propertyValue;
     this.rules = new Array<RuleWithMessage>();
@@ -24,7 +27,7 @@ export class Validation {
       });
     }
     return {
-      fieldId: this.fieldId,
+      field: this.field,
       errorsMessages: errorsMessages,
     };
   }

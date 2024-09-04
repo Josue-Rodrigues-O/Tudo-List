@@ -1,4 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
 
 @Component({
@@ -7,24 +14,32 @@ import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum'
   styleUrl: './input.component.scss',
 })
 export class InputComponent {
-  @Input() fieldId: string = '';
+  @ViewChild('input') private input!: ElementRef;
+  @Input() placeholder: string = '';
   @Input() label: string = '';
+  @Input() type: string = 'text';
+  @Input() model: any;
+  @Output() modelChange: EventEmitter<any> = new EventEmitter<any>();
   text: string = '';
 
   private error: string = 'is-invalid';
   private success: string = 'is-valid';
 
   private setValueStateNone() {
-    document.getElementById(this.fieldId)?.classList.toggle(this.error, false);
-    document.getElementById(this.fieldId)?.classList.toggle(this.success, false);
+    this.input.nativeElement?.classList.toggle(this.error, false);
+    this.input.nativeElement?.classList.toggle(this.success, false);
   }
 
   private setValueStateError() {
-    document.getElementById(this.fieldId)?.classList.toggle(this.error);
+    this.input.nativeElement?.classList.toggle(this.error);
   }
 
   private setValueStateSuccess() {
-    document.getElementById(this.fieldId)?.classList.toggle(this.success);
+    this.input.nativeElement?.classList.toggle(this.success);
+  }
+
+  onModelChange(value: any) {
+    this.modelChange.emit(value);
   }
 
   setValueText(value: string) {
@@ -32,6 +47,7 @@ export class InputComponent {
   }
 
   setValueState(valueState: ValueStateEnum) {
+    this.setValueStateNone();
     switch (valueState) {
       case ValueStateEnum.none:
         this.setValueStateNone();

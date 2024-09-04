@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { InputComponent } from '../../features/fragments/input/input.component';
 
 @Component({
   selector: 'app-teste',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrl: './teste.component.scss',
 })
 export class TesteComponent {
-  
+  @ViewChild('teste') abcasdsad!: ElementRef<InputComponent>;
+  constructor() {}
 }
