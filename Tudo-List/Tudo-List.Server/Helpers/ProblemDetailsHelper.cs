@@ -33,6 +33,7 @@ namespace Tudo_List.Server.Helpers
         {
             var validationProblemDetails = new ValidationProblemDetails()
             {
+                Title = validationException.Message,
                 Status = SpecialStatusCodeByExceptionType[typeof(ValidationException)],
                 Instance = context.Request.HttpContext.Request.Path,
             };
@@ -42,10 +43,6 @@ namespace Tudo_List.Server.Helpers
                 validationProblemDetails.Title = "Validation Failed!";
                 validationProblemDetails.Detail = "Please refer to the errors property for additional details";
                 validationProblemDetails.Errors = validationException.Errors.ToDictionary(error => error.PropertyName, error => new string[] { error.ErrorMessage });
-            }
-            else
-            {
-                validationProblemDetails.Title = validationException.Message;
             }
 
             return validationProblemDetails;

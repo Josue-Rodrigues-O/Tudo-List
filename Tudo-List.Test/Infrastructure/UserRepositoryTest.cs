@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Immutable;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
@@ -96,6 +97,64 @@ namespace Tudo_List.Test.Infrastructure
         }
 
         [Fact]
+        public void Can_Update_an_User_Synchronously()
+        {
+            var user = new User
+            {
+                Name = "Update",
+                Email = "UpdateTest@gmail.com",
+                PasswordHash = "lngGsw5S234",
+                PasswordStrategy = PasswordStrategy.BCrypt
+            };
+
+            _context.Add(user);
+            _context.SaveChanges();
+
+            user.Name = "UpdateTest";
+            
+            _userRepository.Update(user);
+
+            var userInDatabase = _context.Users.Find(user.Id);
+
+            Assert.Equal(user.Name, userInDatabase?.Name);
+        }
+
+        [Fact]
+        public void Can_Remove_An_User_Synchronously()
+        {
+            var user = new User
+            {
+                Name = "RemoveTest",
+                Email = "RemoveTest@gmail.com",
+                PasswordHash = "lngGsw5S234",
+                PasswordStrategy = PasswordStrategy.BCrypt
+            };
+
+            _context.Add(user);
+            _context.SaveChanges();
+
+            _userRepository.Remove(user);
+
+            var userInDatabase = _context.Users.Find(user.Id);
+
+            Assert.Null(userInDatabase);
+        }
+        
+        [Fact]
+        public void Cant_Remove_An_Inexisting_User_Synchronously()
+        {
+            var user = new User
+            {
+                Name = "RemoveTest",
+                Email = "RemoveTest@gmail.com",
+                PasswordHash = "lngGsw5S234",
+                PasswordStrategy = PasswordStrategy.BCrypt
+            };
+
+            Assert.Throws<DbUpdateConcurrencyException>(() => _userRepository.Remove(user));
+        }
+
+        [Fact]
         public async Task Can_Get_All_Users_Asynchronously()
         {
             var users = GetUsers();
@@ -174,7 +233,65 @@ namespace Tudo_List.Test.Infrastructure
             await Assert.ThrowsAsync<DbUpdateException>(async () => await _userRepository.AddAsync(user));
         }
 
-        private static IEnumerable<User> GetUsers()
+        [Fact]
+        public async Task Can_Update_an_User_Asynchronously()
+        {
+            var user = new User
+            {
+                Name = "Update",
+                Email = "UpdateTest@gmail.com",
+                PasswordHash = "lngGsw5S234",
+                PasswordStrategy = PasswordStrategy.BCrypt
+            };
+
+            await _context.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            user.Name = "UpdateTest";
+
+            await _userRepository.UpdateAsync(user);
+
+            var userInDatabase = await _context.Users.FindAsync(user.Id);
+
+            Assert.Equal(user.Name, userInDatabase?.Name);
+        }
+
+        [Fact]
+        public async Task Can_Remove_An_User_Asynchronously()
+        {
+            var user = new User
+            {
+                Name = "RemoveTest",
+                Email = "RemoveTest@gmail.com",
+                PasswordHash = "lngGsw5S234",
+                PasswordStrategy = PasswordStrategy.BCrypt
+            };
+
+            await _context.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            await _userRepository.RemoveAsync(user);
+
+            var userInDatabase = await _context.Users.FindAsync(user.Id);
+
+            Assert.Null(userInDatabase);
+        }
+
+        [Fact]
+        public async Task Cant_Remove_An_Inexisting_User_Asynchronously()
+        {
+            var user = new User
+            {
+                Name = "RemoveTest",
+                Email = "RemoveTest@gmail.com",
+                PasswordHash = "lngGsw5S234",
+                PasswordStrategy = PasswordStrategy.BCrypt
+            };
+
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await _userRepository.RemoveAsync(user));
+        }
+
+        private static IImmutableList<User> GetUsers()
         {
             const PasswordStrategy strategy = PasswordStrategy.BCrypt;
 
