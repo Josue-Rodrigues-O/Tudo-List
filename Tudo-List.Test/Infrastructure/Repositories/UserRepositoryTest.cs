@@ -5,7 +5,7 @@ using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 
-namespace Tudo_List.Test.Infrastructure
+namespace Tudo_List.Test.Infrastructure.Repositories
 {
     public class UserRepositoryTest : UnitTest
     {
@@ -62,12 +62,12 @@ namespace Tudo_List.Test.Infrastructure
         {
             const PasswordStrategy strategy = PasswordStrategy.BCrypt;
 
-            var user = new User 
-            { 
-                Name = "Jesus", 
-                Email = "Jesus@gmail.com", 
-                PasswordHash = "ljYRhBNHu2", 
-                PasswordStrategy = strategy 
+            var user = new User
+            {
+                Name = "Jesus",
+                Email = "Jesus@gmail.com",
+                PasswordHash = "ljYRhBNHu2",
+                PasswordStrategy = strategy
             };
 
             _userRepository.Add(user);
@@ -111,7 +111,7 @@ namespace Tudo_List.Test.Infrastructure
             _context.SaveChanges();
 
             user.Name = "UpdateTest";
-            
+
             _userRepository.Update(user);
 
             var userInDatabase = _context.Users.Find(user.Id);
@@ -139,7 +139,7 @@ namespace Tudo_List.Test.Infrastructure
 
             Assert.Null(userInDatabase);
         }
-        
+
         [Fact]
         public void Cant_Remove_An_Inexisting_User_Synchronously()
         {

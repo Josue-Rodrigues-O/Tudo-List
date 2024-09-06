@@ -3,7 +3,6 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Tudo_list.Infrastructure.Configuration;
 using Tudo_list.Infrastructure.Configuration.Constants;
 using Tudo_list.Infrastructure.Context;
 using Tudo_list.Infrastructure.Repositories;
