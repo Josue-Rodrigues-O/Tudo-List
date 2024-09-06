@@ -8,6 +8,7 @@ import { RequestService } from '../../../core/services/requestService/request.se
 import { InputComponent } from '../../fragments/input/input.component';
 import { MessageBoxService } from '../../services/message-box/message-box.service';
 import { ProblemDetailsMessagesService } from '../../../core/services/problemDetailsMessages/problem-details-messages.service';
+import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -51,6 +52,9 @@ export class SignInSignUpComponent {
     this.user.email = '';
     this.user.password = '';
     this.user.confirmPassword = '';
+    this.inpEmail.setValueState(ValueStateEnum.none);
+    this.inpPassword.setValueState(ValueStateEnum.none);
+    this.inpConrfirmPassword?.setValueState(ValueStateEnum.none);
     setTimeout(() => {
       this.isSignIn = !this.isSignIn;
     }, 500);
