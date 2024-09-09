@@ -1,5 +1,4 @@
-import { ElementRef } from "@angular/core";
-import { InputComponent } from "../../../../features/fragments/input/input.component";
+import { InputComponent } from '../../../../features/fragments/input/input.component';
 
 export class Validation {
   private field: InputComponent;
@@ -20,12 +19,11 @@ export class Validation {
 
   validate() {
     let errorsMessages: Array<string> = new Array<string>();
-    let failedValidations = this.rules.filter((x) => !x.rule());
-    if (failedValidations.length > 0) {
-      failedValidations.forEach((rule) => {
-        errorsMessages.push(rule.message);
-      });
-    }
+
+    this.rules.forEach((ruleWithMessage) => {
+      if (!ruleWithMessage.rule()) errorsMessages.push(ruleWithMessage.message);
+    });
+
     return {
       field: this.field,
       errorsMessages: errorsMessages,

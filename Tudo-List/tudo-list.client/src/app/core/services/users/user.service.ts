@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { RequestService } from '../requestService/request.service';
 import { UserValidatorService } from '../validations/userValidator/user-validator.service';
 import { MessageBoxService } from '../../../features/services/message-box/message-box.service';
-import { InputComponent } from '../../../features/fragments/input/input.component';
 import { FieldsForUserValidation } from '../validations/userValidator/fields-for-user-validation';
+import { ValueStateEnum } from '../../enums/value-state/valueState-enum';
 
 @Injectable({
   providedIn: 'root',
@@ -30,10 +30,9 @@ export class UserService {
     let userValidation = userValidator.validate();
 
     if (!userValidation.isValid) {
-      if (userValidation.isGenericMessage) {
-        throw this.toast.show(userValidation.title, 'text-bg-danger');
-      }
-      throw this.messageBox.open(userValidation.title, userValidation.messages);
+      throw userValidation.isGenericMessage
+        ? this.toast.show(userValidation.title, ValueStateEnum.error)
+        : this.messageBox.open(userValidation.title, userValidation.messages);
     }
   }
 
@@ -56,7 +55,7 @@ export class UserService {
   }
 
   register(user: User): Observable<any> {
-    user.name = user.email.split('@')[0];
+    user.name = `_${user.email.split('@')[0]}`;
     this.validationToRegister(user);
 
     const url: string = `${this.apiUrlUser}/register`;

@@ -1,4 +1,4 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Validation } from '../validation/validation';
 import { ValueStateEnum } from '../../../enums/value-state/valueState-enum';
 import { InputComponent } from '../../../../features/fragments/input/input.component';
@@ -25,17 +25,19 @@ export class BaseValidatorService {
     this.validations.forEach((validation) => {
       let errors = validation.validate();
 
+      let valueState = ValueStateEnum.success;
+
       if (errors.errorsMessages.length > 0) {
+        valueState = ValueStateEnum.error;
         errorMessages.push(`- ${errors.errorsMessages[0]}`);
         errors.field?.setValueText(errors.errorsMessages[0]);
-        errors.field?.setValueState(ValueStateEnum.error);
-      } else {
-        errors.field?.setValueState(ValueStateEnum.success);
       }
+
+      errors.field?.setValueState(valueState);
     });
 
     return {
-      isValid: Boolean(errorMessages.length <= 0),
+      isValid: errorMessages.length <= 0,
       title: 'Validation failed',
       messages: errorMessages,
       isGenericMessage: this.isGenericMessage,

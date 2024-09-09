@@ -86,12 +86,11 @@ export class SignInSignUpComponent {
     this.userService.register(this.user).subscribe({
       next: () => {
         this._login();
-        this.toastService.show('Sucesso', 'text-bg-success');
+        this.toastService.show('Sucesso', ValueStateEnum.success);
       },
       error: (err) => {
         let errors = this.problemDetailsMessagesService.getMessages(err.error);
         this.messageBox.open(errors.title, errors.messages);
-        // this.toastService.show('Erro', 'text-bg-danger');
       },
     });
   }
@@ -100,13 +99,12 @@ export class SignInSignUpComponent {
     this.userService.login(this.user).subscribe({
       next: (res) => {
         this.requestService.setToken(res);
-        this.toastService.show('Sucesso', 'text-bg-success');
+        this.toastService.show('Sucesso', ValueStateEnum.success);
         this.router.navigate(['/tudo-list']);
       },
       error: (err) => {
         let errors = this.problemDetailsMessagesService.getMessages(err.error);
         this.messageBox.open(errors.title, errors.messages);
-        // this.toastService.show('Erro', 'text-bg-danger');
       },
     });
   }

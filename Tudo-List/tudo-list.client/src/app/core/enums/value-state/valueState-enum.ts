@@ -1,5 +1,5 @@
 export enum ValueStateEnum {
-    success,
-    error,
-    none
+  success,
+  error,
+  none,
 }
