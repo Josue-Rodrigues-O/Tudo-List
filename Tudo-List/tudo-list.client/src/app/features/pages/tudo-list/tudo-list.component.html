@@ -66,13 +66,16 @@
                             }
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item items-select"
-                                    (click)="onClickTaskStatusItem(statusEnum.notStarted, task, status)">Não iniciado
+                                    (click)="onClickTaskStatusItem(statusEnum.notStarted, task, status)"
+                                    (click)="onClickSave(task.id)">Não iniciado
                                 </li>
                                 <li class="dropdown-item items-select"
-                                    (click)="onClickTaskStatusItem(statusEnum.inProgress, task, status)">Em progresso
+                                    (click)="onClickTaskStatusItem(statusEnum.inProgress, task, status)"
+                                    (click)="onClickSave(task.id)">Em progresso
                                 </li>
                                 <li class="dropdown-item items-select"
-                                    (click)="onClickTaskStatusItem(statusEnum.completed, task, status)">Concluído</li>
+                                    (click)="onClickTaskStatusItem(statusEnum.completed, task, status)"
+                                    (click)="onClickSave(task.id)">Concluído</li>
                             </ul>
                         </div>
                     </div>
@@ -111,10 +114,10 @@
                 <button type="button" class="btn btn-secondary btn-sm" (click)="onClickCancelEdit()">Cancelar</button>
                 <button type="button" class="btn btn-primary btn-sm" (click)="onClickSave()">Salvar</button>
                 }@else {
-                <button type="button" class="btn btn-secondary btn-sm bi bi-trash3-fill" data-bs-dismiss="modal"
-                    (click)="onClickRemoveTask()"></button>
                 <button type="button" class="btn btn-primary btn-sm bi bi-pencil-fill"
                     (click)="onClickEditTask()"></button>
+                <button type="button" class="btn btn-secondary btn-sm bi bi-trash3-fill" data-bs-dismiss="modal"
+                    (click)="onClickRemoveTask()"></button>
                 }
             </div>
         </div>
