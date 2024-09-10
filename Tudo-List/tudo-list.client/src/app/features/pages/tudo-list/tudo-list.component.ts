@@ -68,7 +68,9 @@ export class TudoListComponent {
     );
   }
 
-  onClickSave() {
+  onClickSave(id: string = '') {
+    let index = id ? this.tasks.findIndex((x) => x.id == id) : 0;
+    this.currentTask = id && index ? this.tasks[index] : this.currentTask;
     this.currentTask.id
       ? this.todoListItemService.update(this.currentTask, () =>
           this.updateTaskList()
