@@ -38,7 +38,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain.Services\" />
+    <Folder Include="Application\DtoValidation\" />
+    <Folder Include="Application\Mappers\" />
+    <Folder Include="Application\Services\Factories\" />
+    <Folder Include="Application\Services\Helpers\" />
+    <Folder Include="Application\Services\Validation\" />
+    <Folder Include="Application\Services\Strategies\" />
+    <Folder Include="Domain\Services\" />
+    <Folder Include="Server\Helpers\" />
   </ItemGroup>
 
 </Project>

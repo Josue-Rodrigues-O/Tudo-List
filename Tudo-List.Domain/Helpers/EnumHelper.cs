@@ -28,22 +28,13 @@ namespace Tudo_List.Domain.Helpers
             return enumValues[index];
         }
 
-        public static Status ParseStatus(int value)
+        public static T AsEnum<T>(this int value) where T : struct, Enum
         {
-            if (!Enum.IsDefined(typeof(Status), value))
+            if (!Enum.IsDefined(typeof(T), value))
             {
                 throw new ArgumentOutOfRangeException(nameof(TodoListItem.Status), $"{value} is not a valid status");
             }
-            return (Status)value;
-        }
-
-        public static Priority ParsePriority(int value)
-        {
-            if (!Enum.IsDefined(typeof(Priority), value))
-            {
-                throw new ArgumentOutOfRangeException(nameof(TodoListItem.Priority), $"{value} is not a valid status");
-            }
-            return (Priority)value;
+            return (T)(object)value;
         }
     }
 }
