@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Tudo_List.Application.Dtos.TodoListItem;
 using Tudo_List.Application.Interfaces.Applications;
-using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Exceptions;

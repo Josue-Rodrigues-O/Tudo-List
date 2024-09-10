@@ -1,20 +1,50 @@
-using System.Drawing;
-using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Enums;
-using Tudo_List.Domain.Services;
-using Tudo_List.Domain.Services.Strategies;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Tudo_list.Infrastructure.Context;
+using Tudo_list.Infrastructure.CrossCutting.Ioc;
 
 namespace Tudo_List.Test
 {
-    public class UnitTest
+    public abstract class UnitTest
     {
-        [Fact]
-        public void Test()
+        protected readonly IServiceProvider _serviceProvider;
+        protected readonly ApplicationDbContext _context;
+
+        public UnitTest()
         {
-            ehVerdade(null);
+            var serviceCollection = GetServiceCollection();
+            _serviceProvider = serviceCollection.BuildServiceProvider();
+            _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
         }
 
-        private bool ehVerdade(string teste)
-            => teste.Any(x => x == '1');
+        private static ServiceCollection GetServiceCollection()
+        {
+            var services = new ServiceCollection();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString());
+            });
+
+            services.AddScoped<ApplicationDbContext>();
+
+            services.AddDomainServices();
+            services.AddApplicationSecrets();
+            services.AddAutoMapper();
+            services.AddRepositories();
+            services.AddApplicationServices();
+
+            return services;
+        }
+
+        protected void InitializeInMemoryDatabase<T>(IEnumerable<T> collection) where T : class
+        {
+            foreach (var item in collection)
+            {
+                _context.Add(item);
+            }
+
+            _context.SaveChanges();
+        }
     }
 }

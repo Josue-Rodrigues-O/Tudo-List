@@ -17,9 +17,9 @@ namespace Tudo_List.Application
     {
         private readonly IUserService _userService = userService;
         private readonly IMapper _mapper = mapper;
-        private readonly ICurrentUserService _currentUserService = currentUserService;
-
-        private int CurrentUserId => int.Parse(_currentUserService.Id);
+        
+        private int CurrentUserId 
+            => int.Parse(currentUserService.Id);
 
         public IEnumerable<UserDto> GetAll()
         {
