@@ -37,14 +37,14 @@ namespace Tudo_List.Test
             return services;
         }
 
-        protected static void InitializeInMemoryDatabase<T>(ApplicationDbContext context, IEnumerable<T> collection) where T : class
+        protected void InitializeInMemoryDatabase<T>(IEnumerable<T> collection) where T : class
         {
             foreach (var item in collection)
             {
-                context.Add(item);
+                _context.Add(item);
             }
 
-            context.SaveChanges();
+            _context.SaveChanges();
         }
     }
 }

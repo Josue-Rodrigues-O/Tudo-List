@@ -14,7 +14,8 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         public UserRepositoryTest()
         {
             _userRepository = _serviceProvider.GetRequiredService<IUserRepository>();
-            InitializeInMemoryDatabase(_context, GetUsers());
+            
+            InitializeInMemoryDatabase(GetUsers());
         }
 
         [Fact]
