@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Helpers
 {
@@ -30,9 +28,11 @@ namespace Tudo_List.Domain.Helpers
 
         public static T AsEnum<T>(this int value) where T : struct, Enum
         {
+            const string enumName = nameof(T);
+
             if (!Enum.IsDefined(typeof(T), value))
             {
-                throw new ArgumentOutOfRangeException(nameof(TodoListItem.Status), $"{value} is not a valid status");
+                throw new ArgumentOutOfRangeException(enumName, $"{value} is out of range for Enum {enumName}");
             }
             return (T)(object)value;
         }
