@@ -25,7 +25,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
 
             var usersInDatabase = _userRepository.GetAll();
 
-            Assert.Equivalent(users.Count(), usersInDatabase.Count());
+            Assert.Equivalent(users.Count, usersInDatabase.Count());
         }
 
         [Fact]

@@ -69,7 +69,7 @@ namespace Tudo_List.Application
             {
                 var error = new ValidationFailure[]
                 {
-                    new(nameof(model.Password), ValidationHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
+                    new(nameof(model.Password), ValidationMessageHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
                 };
 
                 throw new ValidationException(error);
@@ -84,7 +84,7 @@ namespace Tudo_List.Application
             {
                 var error = new ValidationFailure[]
                 {
-                    new(nameof(model.Password), ValidationHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
+                    new(nameof(model.Password), ValidationMessageHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
                 };
 
                 throw new ValidationException(error);
@@ -96,7 +96,7 @@ namespace Tudo_List.Application
         public void Update(UpdateUserDto model)
         {
             if (model.UserId != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Update)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Update)));
 
             _userService.Update(model.UserId, model.NewName);
         }
@@ -104,7 +104,7 @@ namespace Tudo_List.Application
         public async Task UpdateAsync(UpdateUserDto model)
         {
             if (model.UserId != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateAsync)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateAsync)));
 
             await _userService.UpdateAsync(model.UserId, model.NewName);
         }
@@ -112,7 +112,7 @@ namespace Tudo_List.Application
         public void UpdateEmail(UpdateEmailDto model)
         {
             if (model.UserId != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmail)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmail)));
 
             _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
         }
@@ -120,7 +120,7 @@ namespace Tudo_List.Application
         public async Task UpdateEmailAsync(UpdateEmailDto model)
         {
             if (model.UserId != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmailAsync)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmailAsync)));
 
             await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
         }
@@ -128,13 +128,13 @@ namespace Tudo_List.Application
         public void UpdatePassword(UpdatePasswordDto model)
         {
             if (model.UserId != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePassword)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePassword)));
 
             if (model.NewPassword != model.ConfirmNewPassword)
             {
                 var error = new ValidationFailure[]
                 {
-                    new(nameof(model.NewPassword), ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)))
+                    new(nameof(model.NewPassword), ValidationMessageHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)))
                 };
 
                 throw new ValidationException(error);
@@ -146,13 +146,13 @@ namespace Tudo_List.Application
         public async Task UpdatePasswordAsync(UpdatePasswordDto model)
         {
             if (model.UserId != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePasswordAsync)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdatePasswordAsync)));
 
             if (model.NewPassword != model.ConfirmNewPassword)
             {
                 var error = new ValidationFailure[]
                 {
-                    new(nameof(model.NewPassword), ValidationHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)))
+                    new(nameof(model.NewPassword), ValidationMessageHelper.GetMustBeEqualMessage(nameof(model.NewPassword), nameof(model.ConfirmNewPassword)))
                 };
 
                 throw new ValidationException(error);
@@ -164,7 +164,7 @@ namespace Tudo_List.Application
         public void Delete(int id)
         {
             if (id != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
 
             _userService.Delete(id);
         }
@@ -172,7 +172,7 @@ namespace Tudo_List.Application
         public async Task DeleteAsync(int id)
         {
             if (id != CurrentUserId)
-                throw new UnauthorizedAccessException(ValidationHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
+                throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
 
             await _userService.DeleteAsync(id);
         }
