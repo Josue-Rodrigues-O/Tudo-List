@@ -6,7 +6,7 @@ namespace Tudo_List.Test.Mock
     internal class CurrentUserServiceMock : ICurrentUserService
     {
         private static User CurrentUserMock 
-            => MockData.GetCurrentUserMock();
+            => MockData.GetCurrentUser();
 
         public string Id => CurrentUserMock.Id.ToString();
 

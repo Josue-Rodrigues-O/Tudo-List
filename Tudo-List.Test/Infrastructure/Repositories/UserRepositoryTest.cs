@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Immutable;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
+using Tudo_List.Test.Mock;
 
 namespace Tudo_List.Test.Infrastructure.Repositories
 {
@@ -14,14 +14,13 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         public UserRepositoryTest()
         {
             _userRepository = _serviceProvider.GetRequiredService<IUserRepository>();
-            
-            InitializeInMemoryDatabase(GetUsers());
+            InitializeInMemoryDatabase(MockData.GetUsers());
         }
 
         [Fact]
         public void Can_Get_All_Users_Synchronously()
         {
-            var users = GetUsers();
+            var users = MockData.GetUsers();
 
             var usersInDatabase = _userRepository.GetAll();
 
@@ -31,11 +30,11 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public void Can_Get_an_User_By_Id_Synchronously()
         {
-            var usersIds = GetUsers().Select(x => x.Id);
+            var usersIds = MockData.GetUsers().Select(x => x.Id);
 
             foreach (var id in usersIds)
             {
-                var user = GetUsers().First(x => x.Id == id);
+                var user = MockData.GetUsers().First(x => x.Id == id);
                 var userInDatabase = _userRepository.GetById(id);
 
                 Assert.NotNull(userInDatabase);
@@ -46,11 +45,11 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public void Can_Get_an_User_By_Email_Synchronously()
         {
-            var usersEmails = GetUsers().Select(x => x.Email);
+            var usersEmails = MockData.GetUsers().Select(x => x.Email);
 
             foreach (var email in usersEmails)
             {
-                var user = GetUsers().First(x => x.Email == email);
+                var user = MockData.GetUsers().First(x => x.Email == email);
                 var userInDatabase = _userRepository.GetByEmail(email);
 
                 Assert.NotNull(userInDatabase);
@@ -142,7 +141,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public void Cant_Remove_An_Inexisting_User_Synchronously()
+        public void Cant_Remove_An_Non_Existent_User_Synchronously()
         {
             var user = new User
             {
@@ -158,21 +157,21 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public async Task Can_Get_All_Users_Asynchronously()
         {
-            var users = GetUsers();
+            var users = MockData.GetUsers();
 
             var usersInDatabase = await _userRepository.GetAllAsync();
 
-            Assert.Equivalent(users.Count(), usersInDatabase.Count());
+            Assert.Equivalent(users.Count, usersInDatabase.Count());
         }
 
         [Fact]
         public async Task Can_Get_an_User_By_Id_Asynchronously()
         {
-            var usersIds = GetUsers().Select(x => x.Id);
+            var usersIds = MockData.GetUsers().Select(x => x.Id);
 
             foreach (var id in usersIds)
             {
-                var user = GetUsers().First(x => x.Id == id);
+                var user = MockData.GetUsers().First(x => x.Id == id);
                 var userInDatabase = await _userRepository.GetByIdAsync(id);
 
                 Assert.NotNull(userInDatabase);
@@ -183,11 +182,11 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public async Task Can_Get_an_User_By_Email_Asynchronously()
         {
-            var usersEmails = GetUsers().Select(x => x.Email);
+            var usersEmails = MockData.GetUsers().Select(x => x.Email);
 
             foreach (var email in usersEmails)
             {
-                var user = GetUsers().First(x => x.Email == email);
+                var user = MockData.GetUsers().First(x => x.Email == email);
                 var userInDatabase = await _userRepository.GetByEmailAsync(email);
 
                 Assert.NotNull(userInDatabase);
@@ -279,7 +278,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Cant_Remove_An_Inexisting_User_Asynchronously()
+        public async Task Cant_Remove_An_Non_Existent_User_Asynchronously()
         {
             var user = new User
             {
@@ -290,22 +289,6 @@ namespace Tudo_List.Test.Infrastructure.Repositories
             };
 
             await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await _userRepository.RemoveAsync(user));
-        }
-
-        private static IImmutableList<User> GetUsers()
-        {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
-            return [
-                    new() { Id = 1, Name = "Lucas", Email = "Lucas@gmail.com", PasswordHash = "lngGsw5S", PasswordStrategy = strategy },
-                    new() { Id = 2, Name = "Josué", Email = "Josue@gmail.com", PasswordHash = "K7wPzC7o", PasswordStrategy = strategy },
-                    new() { Id = 3, Name = "Mateus", Email = "Mateus@gmail.com", PasswordHash = "bEMfTXVz", PasswordStrategy = strategy },
-                    new() { Id = 4, Name = "Douglas", Email = "Douglas@gmail.com", PasswordHash = "APlhcwsW9dqu0yN3Hl5u", PasswordStrategy = strategy },
-                    new() { Id = 5, Name = "Ana Carolina", Email = "Ana@gmail.com", PasswordHash = "fmzQxo9lSP41hmujCp6c", PasswordStrategy = strategy },
-                    new() { Id = 6, Name = "Victor", Email = "Victor@gmail.com", PasswordHash = "tqA=Oj;dc2fSHAZ9", PasswordStrategy = strategy },
-                    new() { Id = 7, Name = "Eduardo", Email = "Eduardo@gmail.com", PasswordHash = "=cZnI)CLW+%pam00{$rW=", PasswordStrategy = strategy },
-                    new() { Id = 8, Name = "Júlio", Email = "Julio@gmail.com", PasswordHash = "r=V3^Na-Z", PasswordStrategy = strategy },
-            ];
         }
     }
 }
