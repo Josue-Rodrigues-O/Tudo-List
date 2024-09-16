@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -11,7 +9,6 @@ using Tudo_List.Domain.Exceptions;
 using Tudo_List.Domain.Helpers;
 using Tudo_List.Domain.Services.Helpers;
 using Tudo_List.Domain.Services.Validation;
-using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Domain.Services
 {
@@ -129,7 +126,7 @@ namespace Tudo_List.Domain.Services
                 throw new ValidationException(error);
             }
             new UserValidator(_userRepository)
-            .WithEmail(newEmail)
+                .WithEmail(newEmail)
                 .Validate();
 
             ValidateUserPassword(user, currentPassword);
