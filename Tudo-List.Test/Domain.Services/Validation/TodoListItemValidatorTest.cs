@@ -9,7 +9,7 @@ namespace Tudo_List.Test.Domain.Services.Validation
     public class TodoListItemValidatorTest : UnitTest
     {
         private readonly IValidator<TodoListItem> _itemValidator;
-        private static User CurrentUserMock => MockData.GetCurrentUserMock();
+        private static User CurrentUserMock => MockData.GetCurrentUser();
 
         public TodoListItemValidatorTest()
         {
