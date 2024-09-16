@@ -54,7 +54,7 @@ namespace Tudo_List.Test.Domain.Services.Validation
         [Fact]
         public void Validation_Should_Fail_When_Email_Is_Already_Registered_In_The_System()
         {
-            var currentUserMock = MockData.GetCurrentUserMock();
+            var currentUserMock = MockData.GetCurrentUser();
             
             _context.Add(currentUserMock);
             _context.SaveChanges();
