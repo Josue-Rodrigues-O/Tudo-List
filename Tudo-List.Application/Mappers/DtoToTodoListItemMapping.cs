@@ -10,6 +10,7 @@ namespace Tudo_List.Application.Mappers
         {
             {
                 CreateMap<TodoListItemDto, TodoListItem>()
+                    .ForMember(dest => dest.UserId, opt => opt.Ignore())
                     .ForMember(dest => dest.User, opt => opt.Ignore())
                     .ReverseMap();
 
