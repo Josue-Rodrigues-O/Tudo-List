@@ -69,17 +69,15 @@ namespace Tudo_List.Domain.Services.Validation
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                _validationFailures.Add(new ValidationFailure(nameProperty, ValidationHelper.GetInvalidPropertyValueMessage(nameProperty, name)));
+                _validationFailures.Add(new ValidationFailure(nameProperty, ValidationMessageHelper.GetInvalidPropertyValueMessage(nameProperty, name)));
                 return;
             }
-
-            var nameWithValidFormat = name.TrimAndCondenseSpaces();
 
             const int minimumLength = UserValidationConstants.NameMinimumLength;
             const int maximumLength = UserValidationConstants.NameMaximumLength;
 
-            if (!nameWithValidFormat.IsLengthBetween(minimumLength, maximumLength))
-                _validationFailures.Add(new ValidationFailure(nameProperty ,ValidationHelper.GetInvalidLengthMessage(nameProperty, minimumLength, maximumLength)));
+            if (!name.TrimAndCondenseSpaces().IsLengthBetween(minimumLength, maximumLength))
+                _validationFailures.Add(new ValidationFailure(nameProperty ,ValidationMessageHelper.GetInvalidLengthMessage(nameProperty, minimumLength, maximumLength)));
         }
 
         private void ValidateEmail(string email)
@@ -98,9 +96,9 @@ namespace Tudo_List.Domain.Services.Validation
             var emailWithValidFormat = email.TrimAndCondenseSpaces();
 
             if (!ValidEmailRegex().IsMatch(emailWithValidFormat))
-                _validationFailures.Add(new ValidationFailure(emailProperty, ValidationHelper.GetInvalidFormatMessage(emailProperty)));
+                _validationFailures.Add(new ValidationFailure(emailProperty, ValidationMessageHelper.GetInvalidFormatMessage(emailProperty)));
             else if (_userRepository.GetByEmail(emailWithValidFormat) != null)
-                _validationFailures.Add(new ValidationFailure(emailProperty,ValidationHelper.GetUniquePropertyMessage(emailProperty)));
+                _validationFailures.Add(new ValidationFailure(emailProperty,ValidationMessageHelper.GetUniquePropertyMessage(emailProperty)));
         }
 
         private void ValidatePassword(string password)
@@ -109,7 +107,7 @@ namespace Tudo_List.Domain.Services.Validation
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                _validationFailures.Add(new ValidationFailure(passwordProperty, ValidationHelper.GetInvalidPropertyValueMessage(passwordProperty, password)));
+                _validationFailures.Add(new ValidationFailure(passwordProperty, ValidationMessageHelper.GetInvalidPropertyValueMessage(passwordProperty, password)));
                 return;
             }
 
@@ -119,7 +117,7 @@ namespace Tudo_List.Domain.Services.Validation
             var passwordWithValidFormat = password.TrimAndCondenseSpaces();
 
             if (!passwordWithValidFormat.IsLengthBetween(minimumLength, maximumLength))
-                _validationFailures.Add(new ValidationFailure(passwordProperty ,ValidationHelper.GetInvalidLengthMessage(passwordProperty, minimumLength, maximumLength)));
+                _validationFailures.Add(new ValidationFailure(passwordProperty ,ValidationMessageHelper.GetInvalidLengthMessage(passwordProperty, minimumLength, maximumLength)));
         }
 
         [GeneratedRegex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$")]

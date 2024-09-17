@@ -14,8 +14,8 @@ namespace Tudo_list.Infrastructure.Repositories
         public IEnumerable<TodoListItem> GetAll(int? userId = null)
         {
             var items = userId is null
-                ? _items
-                : _items.Where(item => item.UserId == userId);
+                ? _items.AsNoTracking()
+                : _items.AsNoTracking().Where(item => item.UserId == userId);
 
             return [.. items];
         }
@@ -23,8 +23,8 @@ namespace Tudo_list.Infrastructure.Repositories
         public async Task<IEnumerable<TodoListItem>> GetAllAsync(int? userId = null)
         {
             var items = userId is null 
-                ? _items 
-                : _items.Where(item => item.UserId == userId);
+                ? _items.AsNoTracking()
+                : _items.AsNoTracking().Where(item => item.UserId == userId);
 
             return await items.ToListAsync();
         }
@@ -33,14 +33,14 @@ namespace Tudo_list.Infrastructure.Repositories
         {
             return userId is null
                 ? _items.Find(id)
-                : _items.AsNoTracking().FirstOrDefault(item => item.Id == id && item.UserId == userId);
+                : _items.FirstOrDefault(item => item.Id == id && item.UserId == userId);
         }
 
         public async Task<TodoListItem?> GetByIdAsync(Guid id, int? userId = null)
         {
             return userId is null
                 ? await _items.FindAsync(id)
-                : await _items.AsNoTracking().FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId);
+                : await _items.FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId);
         }
 
         public void Add(TodoListItem item)

@@ -40,9 +40,9 @@ namespace Tudo_List.Domain.Services.Validation
 
             RuleFor(item => item.Title)
                 .NotEmpty()
-                    .WithMessage(ValidationHelper.GetInvalidPropertyValueMessage(propertyName, propertyValue))
+                    .WithMessage(ValidationMessageHelper.GetInvalidPropertyValueMessage(propertyName, propertyValue))
                 .Length(titleMinimumLength, titleMaximumLength)
-                    .WithMessage(ValidationHelper.GetInvalidLengthMessage(propertyName, titleMinimumLength, titleMaximumLength));
+                    .WithMessage(ValidationMessageHelper.GetInvalidLengthMessage(propertyName, titleMinimumLength, titleMaximumLength));
         }
 
         private void ValidateUserId(string operation)
@@ -51,7 +51,7 @@ namespace Tudo_List.Domain.Services.Validation
 
             RuleFor(item => item.UserId)
                 .Equal(userId)
-                    .WithMessage(ValidationHelper.GetUnauthorizedItemOperationMessage(operation));
+                    .WithMessage(ValidationMessageHelper.GetUnauthorizedItemOperationMessage(operation));
         }
     }
 }

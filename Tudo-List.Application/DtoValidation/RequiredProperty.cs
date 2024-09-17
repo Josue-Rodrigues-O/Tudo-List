@@ -21,7 +21,7 @@ namespace Tudo_List.Application.DtoValidation
 
             return isValidProperty
                     ? ValidationResult.Success
-                    : new ValidationResult(ValidationHelper.GetInvalidPropertyValueMessage(validationContext.DisplayName, value));
+                    : new ValidationResult(ValidationMessageHelper.GetInvalidPropertyValueMessage(validationContext.DisplayName, value));
         }
 
         private static bool IsValidString(string value)

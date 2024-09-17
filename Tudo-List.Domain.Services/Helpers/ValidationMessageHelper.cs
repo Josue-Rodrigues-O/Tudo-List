@@ -1,6 +1,6 @@
 ﻿namespace Tudo_List.Domain.Services.Helpers
 {
-    public static class ValidationHelper
+    public static class ValidationMessageHelper
     {
         public static string GetInvalidPropertyValueMessage(string property, object? value)
         {

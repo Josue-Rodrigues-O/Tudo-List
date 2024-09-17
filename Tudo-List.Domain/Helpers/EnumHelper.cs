@@ -1,6 +1,4 @@
 ﻿using System.ComponentModel;
-using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Enums;
 
 namespace Tudo_List.Domain.Helpers
 {
@@ -28,22 +26,15 @@ namespace Tudo_List.Domain.Helpers
             return enumValues[index];
         }
 
-        public static Status ParseStatus(int value)
+        public static T AsEnum<T>(this int value) where T : struct, Enum
         {
-            if (!Enum.IsDefined(typeof(Status), value))
-            {
-                throw new ArgumentOutOfRangeException(nameof(TodoListItem.Status), $"{value} is not a valid status");
-            }
-            return (Status)value;
-        }
+            const string enumName = nameof(T);
 
-        public static Priority ParsePriority(int value)
-        {
-            if (!Enum.IsDefined(typeof(Priority), value))
+            if (!Enum.IsDefined(typeof(T), value))
             {
-                throw new ArgumentOutOfRangeException(nameof(TodoListItem.Priority), $"{value} is not a valid status");
+                throw new ArgumentOutOfRangeException(enumName, $"{value} is out of range for Enum {enumName}");
             }
-            return (Priority)value;
+            return (T)(object)value;
         }
     }
 }

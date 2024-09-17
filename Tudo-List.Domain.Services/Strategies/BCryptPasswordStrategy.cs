@@ -5,7 +5,7 @@ namespace Tudo_List.Domain.Services.Strategies
 {
     public class BCryptPasswordStrategy : IPasswordStrategy
     {
-        public bool UsesSalting => false;
+        public bool UsesSaltingParameter => false;
 
         public string HashPassword(string password, string? salt = null)
         {

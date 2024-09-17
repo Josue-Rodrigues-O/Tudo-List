@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Services;
@@ -11,7 +9,6 @@ using Tudo_List.Domain.Exceptions;
 using Tudo_List.Domain.Helpers;
 using Tudo_List.Domain.Services.Helpers;
 using Tudo_List.Domain.Services.Validation;
-using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Domain.Services
 {
@@ -123,13 +120,13 @@ namespace Tudo_List.Domain.Services
             {
                 var error = new ValidationFailure[]
                 {
-                    new(nameof(User.Email), ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
+                    new(nameof(User.Email), ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
                 };
 
                 throw new ValidationException(error);
             }
             new UserValidator(_userRepository)
-            .WithEmail(newEmail)
+                .WithEmail(newEmail)
                 .Validate();
 
             ValidateUserPassword(user, currentPassword);
@@ -146,7 +143,7 @@ namespace Tudo_List.Domain.Services
             {
                 var error = new ValidationFailure[]
                 {
-                    new(nameof(User.Email), ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
+                    new(nameof(User.Email), ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
                 };
 
                 throw new ValidationException(error);
@@ -174,7 +171,7 @@ namespace Tudo_List.Domain.Services
             {
                 var error = new ValidationFailure[]
                 {
-                    new(PasswordProperty, ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
+                    new(PasswordProperty, ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
                 };
 
                 throw new ValidationException(error);
@@ -198,7 +195,7 @@ namespace Tudo_List.Domain.Services
             {
                 var error = new ValidationFailure[]
                 {
-                    new(PasswordProperty, ValidationHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
+                    new(PasswordProperty, ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
                 };
 
                 throw new ValidationException(error);
@@ -253,16 +250,18 @@ namespace Tudo_List.Domain.Services
         {
             var strategyToUse = EnumHelper.GetRandomValue<PasswordStrategy>();
             var strategy = _passwordStrategyFactory.CreatePasswordStrategy(strategyToUse);
-            string? salt = null;
+            string? saltString = null;
 
-            if (strategy.UsesSalting)
+            if (strategy.UsesSaltingParameter)
             {
-                salt = PasswordHelper.GenerateBase64String();
-                user.Salt = salt;
+                var saltInBytes = PasswordHelper.GenerateSalt();
+
+                saltString = Convert.ToBase64String(saltInBytes);
+                user.Salt = saltString;
             }
 
             user.PasswordStrategy = strategyToUse;
-            user.PasswordHash = strategy.HashPassword(password, salt);
+            user.PasswordHash = strategy.HashPassword(password, saltString);
         }
     }
 }
