@@ -85,10 +85,10 @@ namespace Tudo_List.Domain.Services
                 item.Description = model.Description;
 
             if (model.Status is not null)
-                item.Status = EnumHelper.ParseStatus((int)model.Status);
+                item.Status = ((int)model.Status).AsEnum<Status>();
 
             if (model.Priority is not null) 
-                item.Priority = EnumHelper.ParsePriority((int)model.Priority);
+                item.Priority = ((int)model.Priority).AsEnum<Priority>();
 
             _itemRepository.Update(item);
         }
@@ -111,10 +111,10 @@ namespace Tudo_List.Domain.Services
                 item.Description = model.Description;
 
             if (model.Status is not null)
-                item.Status = EnumHelper.ParseStatus((int)model.Status);
+                item.Status = ((int)model.Status).AsEnum<Status>();
 
             if (model.Priority is not null)
-                item.Priority = EnumHelper.ParsePriority((int)model.Priority);
+                item.Priority = ((int)model.Priority).AsEnum<Priority>();
 
             await _itemRepository.UpdateAsync(item);
         }

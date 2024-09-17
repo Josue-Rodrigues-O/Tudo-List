@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Tudo_list.Infrastructure.Context;
 using Tudo_list.Infrastructure.CrossCutting.Ioc;
+using Tudo_List.Domain.Core.Interfaces.Services;
+using Tudo_List.Test.Mock;
 
 namespace Tudo_List.Test
 {
@@ -33,6 +35,8 @@ namespace Tudo_List.Test
             services.AddAutoMapper();
             services.AddRepositories();
             services.AddApplicationServices();
+
+            services.AddScoped<ICurrentUserService, CurrentUserServiceMock>();
 
             return services;
         }

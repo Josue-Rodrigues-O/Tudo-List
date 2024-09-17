@@ -1,37 +1,46 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Immutable;
-using Tudo_list.Infrastructure.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
+using Tudo_List.Test.Mock;
 
 namespace Tudo_List.Test.Infrastructure.Repositories
 {
     public class TodoListItemRepositoryTest : UnitTest
     {
         private readonly ITodoListItemRepository _itemRepository;
+        private User CurrentUser => MockData.GetCurrentUser();
 
         public TodoListItemRepositoryTest()
         {
             _itemRepository = _serviceProvider.GetRequiredService<ITodoListItemRepository>();
 
-            _context.Users.Add(new User { Id = 5, Name = "Test", Email = "test@test.com", PasswordHash = "12356789" });
-            InitializeInMemoryDatabase(GetItems());
+            _context.Users.Add(MockData.GetCurrentUser());
+            InitializeInMemoryDatabase(MockData.GetItems());
         }
 
 
         [Fact]
         public void Can_Get_All_TodoListItems_Synchronously()
         {
-            var todoListItems = GetItems();
+            var todoListItems = MockData.GetItems();
             var todoListItemsInDatabase = _itemRepository.GetAll();
 
-            Assert.Equivalent(todoListItems.Count, todoListItemsInDatabase.Count());
+            Assert.Equal(todoListItems.Count, todoListItemsInDatabase.Count());
+        }
+        
+        [Fact]
+        public void Can_Get_All_TodoListItems_From_An_User_Synchronously()
+        {
+            var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
+            var todoListItemsInDatabase = _itemRepository.GetAll(CurrentUser.Id);
+
+            Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
         }
 
         [Fact]
-        public void Can_Get_An_TodoListItem_By_Id_Synchronously()
+        public void Can_Get_Any_TodoListItem_By_Id_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -44,7 +53,8 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            _itemRepository.Add(tudoListItem);
+            _context.Add(tudoListItem);
+            _context.SaveChanges();
 
             var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id);
 
@@ -52,7 +62,53 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public void Can_Add_An_TodoListItem_With_Valid_Properties_Synchronously()
+        public void Can_Get_A_TodoListItem_By_Id_If_It_Is_From_The_Current_User_Synchronously()
+        {
+            var tudoListItem = new TodoListItem()
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTime.Now,
+                Description = "Test",
+                Priority = Priority.Medium,
+                Status = Status.NotStarted,
+                Title = "Test",
+                UserId = CurrentUser.Id
+            };
+
+            _context.Add(tudoListItem);
+            _context.SaveChanges();
+
+            tudoListItem.User = null;
+
+            var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id, CurrentUser.Id);
+
+            Assert.Equivalent(tudoListItem, todoListItemInDatabase, true);
+        }
+
+        [Fact]
+        public void Cant_Get_A_TodoListItem_By_Id_If_It_Is_Not_From_The_Current_User_Synchronously()
+        {
+            var tudoListItem = new TodoListItem()
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTime.Now,
+                Description = "Test",
+                Priority = Priority.Medium,
+                Status = Status.NotStarted,
+                Title = "Test",
+                UserId = 5
+            };
+
+            _context.Add(tudoListItem);
+            _context.SaveChanges();
+
+            var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id, CurrentUser.Id);
+
+            Assert.Null(todoListItemInDatabase);
+        }
+
+        [Fact]
+        public void Can_Add_A_TodoListItem_With_Valid_Properties_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -73,7 +129,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public void Cant_Add_An_TodoListItem_With_Invalid_Property_Synchronously()
+        public void Cant_Add_A_TodoListItem_With_Invalid_Property_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -90,7 +146,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public void Can_Update_An_TodoListItem_Synchronously()
+        public void Can_Update_A_TodoListItem_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -116,7 +172,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public void Can_Remove_An_TodoListItem_Synchronously()
+        public void Can_Remove_A_TodoListItem_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -140,7 +196,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public void Cant_Remove_An_Inexisting_TodoListItem_Synchronously()
+        public void Cant_Remove_An_Non_Existent_TodoListItem_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -159,15 +215,24 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public async Task Can_Get_All_TodoListItems_Asynchronously()
         {
-            var tudoListItems = GetItems();
+            var tudoListItems = MockData.GetItems();
 
             var tudoListItemsInDatabase = await _itemRepository.GetAllAsync();
 
-            Assert.Equivalent(tudoListItems.Count(), tudoListItemsInDatabase.Count());
+            Assert.Equal(tudoListItems.Count, tudoListItemsInDatabase.Count());
         }
 
         [Fact]
-        public async Task Can_Get_An_TodoListItem_By_Id_Asynchronously()
+        public async Task Can_Get_All_TodoListItems_From_An_User_Asynchronously()
+        {
+            var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
+            var todoListItemsInDatabase = await _itemRepository.GetAllAsync(CurrentUser.Id);
+
+            Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
+        }
+
+        [Fact]
+        public async Task Can_Get_Any_TodoListItem_By_Id_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -180,7 +245,8 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await _itemRepository.AddAsync(tudoListItem);
+            await _context.AddAsync(tudoListItem);
+            await _context.SaveChangesAsync();
 
             var todoListItemInDatabase = await _itemRepository.GetByIdAsync(tudoListItem.Id);
 
@@ -188,7 +254,53 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Can_Add_An_TodoListItem_With_Valid_Properties_Asynchronously()
+        public async Task Can_Get_A_TodoListItem_By_Id_If_It_Is_From_The_Current_User_Asynchronously()
+        {
+            var tudoListItem = new TodoListItem()
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTime.Now,
+                Description = "Test",
+                Priority = Priority.Medium,
+                Status = Status.NotStarted,
+                Title = "Test",
+                UserId = CurrentUser.Id
+            };
+
+            await _context.AddAsync(tudoListItem);
+            await _context.SaveChangesAsync();
+
+            tudoListItem.User = null;
+
+            var todoListItemInDatabase = await _itemRepository.GetByIdAsync(tudoListItem.Id, CurrentUser.Id);
+
+            Assert.Equivalent(tudoListItem, todoListItemInDatabase, true);
+        }
+
+        [Fact]
+        public async Task Cant_Get_A_TodoListItem_By_Id_If_It_Is_Not_From_The_Current_User_Asynchronously()
+        {
+            var tudoListItem = new TodoListItem()
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTime.Now,
+                Description = "Test",
+                Priority = Priority.Medium,
+                Status = Status.NotStarted,
+                Title = "Test",
+                UserId = 5
+            };
+
+            await _context.AddAsync(tudoListItem);
+            await _context.SaveChangesAsync();
+
+            var todoListItemInDatabase = await _itemRepository.GetByIdAsync(tudoListItem.Id, CurrentUser.Id);
+
+            Assert.Null(todoListItemInDatabase);
+        }
+
+        [Fact]
+        public async Task Can_Add_A_TodoListItem_With_Valid_Properties_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -209,7 +321,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Cant_Add_An_TodoListItem_With_Invalid_Properties_Asynchronously()
+        public async Task Cant_Add_A_TodoListItem_With_Invalid_Properties_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -226,7 +338,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Can_Update_An_TodoListItem_Asynchronously()
+        public async Task Can_Update_A_TodoListItem_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -252,7 +364,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Can_Remove_An_TodoListItem_Asynchronously()
+        public async Task Can_Remove_A_TodoListItem_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -276,7 +388,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Cant_Remove_An_Inexisting_TodoListItem_Asynchronously()
+        public async Task Cant_Remove_An_Non_Existent_TodoListItem_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -290,15 +402,6 @@ namespace Tudo_List.Test.Infrastructure.Repositories
             };
 
             await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await _itemRepository.RemoveAsync(tudoListItem));
-        }
-
-        private static IImmutableList<TodoListItem> GetItems()
-        {
-            return [
-                new() { Id = Guid.NewGuid(), Title = "Do the dishes", CreationDate = DateTime.Now, Status = Status.Completed, Priority = Priority.Low, UserId = 5 },
-                new() { Id = Guid.NewGuid(), Title = "Clean the house", CreationDate = DateTime.Now, Status = Status.Completed, Priority = Priority.Low, UserId = 5 },
-                new() { Id = Guid.NewGuid(), Title = "Wash the car", CreationDate = DateTime.Now, Status = Status.Completed, Priority = Priority.Low, UserId = 5 },
-            ];
         }
     }
 }
