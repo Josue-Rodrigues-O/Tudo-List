@@ -75,7 +75,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
             servicesCollection.AddScoped<ITodoListItemApplication, TodoListItemApplication>();
             servicesCollection.AddScoped<IAuthService, AuthService>();
             servicesCollection.AddScoped<ICurrentUserService, CurrentUserService>();
-            servicesCollection.AddTransient<ITokenService, TokenService>();
+            servicesCollection.AddTransient<ITokenService, JwtTokenService>();
 
             return servicesCollection;
         }
