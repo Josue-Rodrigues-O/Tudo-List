@@ -5,5 +5,6 @@ namespace Tudo_List.Application.Interfaces.Services
     public interface ITokenService
     {
         string GenerateToken(UserDto user);
+        bool ValidateToken(string token);
     }
 }
