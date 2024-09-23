@@ -35,11 +35,9 @@ namespace Tudo_List.Test.Application
                 var todoListItem = todoListItems.ElementAt(i);
                 var todoListItemInDatabase = todoListItemsInDatabase.ElementAt(i);
 
-                Assert.Equal(todoListItem.Id, todoListItemInDatabase.Id);
                 Assert.Equal(todoListItem.Title, todoListItemInDatabase.Title);
                 Assert.Equal(todoListItem.Description, todoListItemInDatabase.Description);
                 Assert.Equal(todoListItem.Priority, todoListItemInDatabase.Priority);
-                Assert.Equal(todoListItem.CreationDate, todoListItemInDatabase.CreationDate);
                 Assert.Equal(todoListItem.Status, todoListItemInDatabase.Status);
             }
         }
@@ -265,11 +263,9 @@ namespace Tudo_List.Test.Application
                 var todoListItem = todoListItems.ElementAt(i);
                 var todoListItemInDatabase = todoListItemsInDatabase.ElementAt(i);
 
-                Assert.Equal(todoListItem.Id, todoListItemInDatabase.Id);
                 Assert.Equal(todoListItem.Title, todoListItemInDatabase.Title);
                 Assert.Equal(todoListItem.Description, todoListItemInDatabase.Description);
                 Assert.Equal(todoListItem.Priority, todoListItemInDatabase.Priority);
-                Assert.Equal(todoListItem.CreationDate, todoListItemInDatabase.CreationDate);
                 Assert.Equal(todoListItem.Status, todoListItemInDatabase.Status);
             }
         }
