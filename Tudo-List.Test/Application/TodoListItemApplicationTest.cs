@@ -29,15 +29,19 @@ namespace Tudo_List.Test.Application
             var todoListItemsInDatabase = _todoListItemApplication.GetAll();
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
-        }
 
-        [Fact]
-        public async Task Can_Get_All_TodoListItems_From_Current_User_Asynchronously()
-        {
-            var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = await _todoListItemApplication.GetAllAsync();
+            for (int i = 0; i < todoListItemsInDatabase.Count(); i++)
+            {
+                var todoListItem = todoListItems.ElementAt(i);
+                var todoListItemInDatabase = todoListItemsInDatabase.ElementAt(i);
 
-            Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
+                Assert.Equal(todoListItem.Id, todoListItemInDatabase.Id);
+                Assert.Equal(todoListItem.Title, todoListItemInDatabase.Title);
+                Assert.Equal(todoListItem.Description, todoListItemInDatabase.Description);
+                Assert.Equal(todoListItem.Priority, todoListItemInDatabase.Priority);
+                Assert.Equal(todoListItem.CreationDate, todoListItemInDatabase.CreationDate);
+                Assert.Equal(todoListItem.Status, todoListItemInDatabase.Status);
+            }
         }
 
         [Fact]
@@ -77,44 +81,6 @@ namespace Tudo_List.Test.Application
         public void It_Is_Not_Possible_To_Obtain_An_Item_That_Does_Not_Exist_In_The_Bank_Synchronously()
         {
             Assert.Throws<EntityNotFoundException>(() => _todoListItemApplication.GetById(Guid.NewGuid()));
-        }
-
-        [Fact]
-        public async Task Can_Get_A_TodoListItem_From_The_Current_User_Asynchronously()
-        {
-            var tudoListItem = new TodoListItem()
-            {
-                Id = Guid.NewGuid(),
-                CreationDate = DateTime.Now,
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-                Title = "Test",
-                UserId = CurrentUser.Id
-            };
-
-            var expectedItem = new TodoListItemDto()
-            {
-                Id = tudoListItem.Id,
-                CreationDate = tudoListItem.CreationDate,
-                Description = tudoListItem.Description,
-                Priority = (Priority)tudoListItem.Priority,
-                Status = (Status)tudoListItem.Status,
-                Title = tudoListItem.Title,
-            };
-
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
-
-            var todoListItemInDatabase = await _todoListItemApplication.GetByIdAsync(tudoListItem.Id);
-
-            Assert.Equivalent(expectedItem, todoListItemInDatabase, true);
-        }
-
-        [Fact]
-        public async Task It_Is_Not_Possible_To_Obtain_An_Item_That_Does_Not_Exist_In_The_Bank_Asynchronously()
-        {
-            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _todoListItemApplication.GetByIdAsync(Guid.NewGuid()));
         }
 
         [Fact]
@@ -253,7 +219,7 @@ namespace Tudo_List.Test.Application
         }
 
         [Fact]
-        public void Cant_Remove_A_Non_Existent_TodoListItem_Synchronously()
+        public void Cant_Delete_A_Non_Existent_TodoListItem_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -270,7 +236,7 @@ namespace Tudo_List.Test.Application
         }
 
         [Fact]
-        public void Cant_Remove_A_TodoListItem_If_It_Is_Not_From_The_User_Synchronously()
+        public void Cant_Delete_A_TodoListItem_If_It_Is_Not_From_The_User_Synchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -284,6 +250,66 @@ namespace Tudo_List.Test.Application
             };
 
             Assert.Throws<EntityNotFoundException>(() => _todoListItemApplication.Delete(tudoListItem.Id));
+        }
+
+        [Fact]
+        public async Task Can_Get_All_TodoListItems_From_Current_User_Asynchronously()
+        {
+            var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
+            var todoListItemsInDatabase = await _todoListItemApplication.GetAllAsync();
+
+            Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
+
+            for (int i = 0; i < todoListItemsInDatabase.Count(); i++)
+            {
+                var todoListItem = todoListItems.ElementAt(i);
+                var todoListItemInDatabase = todoListItemsInDatabase.ElementAt(i);
+
+                Assert.Equal(todoListItem.Id, todoListItemInDatabase.Id);
+                Assert.Equal(todoListItem.Title, todoListItemInDatabase.Title);
+                Assert.Equal(todoListItem.Description, todoListItemInDatabase.Description);
+                Assert.Equal(todoListItem.Priority, todoListItemInDatabase.Priority);
+                Assert.Equal(todoListItem.CreationDate, todoListItemInDatabase.CreationDate);
+                Assert.Equal(todoListItem.Status, todoListItemInDatabase.Status);
+            }
+        }
+
+        [Fact]
+        public async Task Can_Get_A_TodoListItem_From_The_Current_User_Asynchronously()
+        {
+            var tudoListItem = new TodoListItem()
+            {
+                Id = Guid.NewGuid(),
+                CreationDate = DateTime.Now,
+                Description = "Test",
+                Priority = Priority.Medium,
+                Status = Status.NotStarted,
+                Title = "Test",
+                UserId = CurrentUser.Id
+            };
+
+            var expectedItem = new TodoListItemDto()
+            {
+                Id = tudoListItem.Id,
+                CreationDate = tudoListItem.CreationDate,
+                Description = tudoListItem.Description,
+                Priority = (Priority)tudoListItem.Priority,
+                Status = (Status)tudoListItem.Status,
+                Title = tudoListItem.Title,
+            };
+
+            await _context.AddAsync(tudoListItem);
+            await _context.SaveChangesAsync();
+
+            var todoListItemInDatabase = await _todoListItemApplication.GetByIdAsync(tudoListItem.Id);
+
+            Assert.Equivalent(expectedItem, todoListItemInDatabase, true);
+        }
+
+        [Fact]
+        public async Task It_Is_Not_Possible_To_Obtain_An_Item_That_Does_Not_Exist_In_The_Bank_Asynchronously()
+        {
+            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _todoListItemApplication.GetByIdAsync(Guid.NewGuid()));
         }
 
         [Fact]
@@ -411,7 +437,7 @@ namespace Tudo_List.Test.Application
         }
 
         [Fact]
-        public async Task Cant_Remove_A_Non_Existent_TodoListItem_Asynchronously()
+        public async Task Cant_Delete_A_Non_Existent_TodoListItem_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
@@ -428,7 +454,7 @@ namespace Tudo_List.Test.Application
         }
 
         [Fact]
-        public async Task Cant_Remove_A_TodoListItem_If_It_Is_Not_From_The_User_Asynchronously()
+        public async Task Cant_Delete_A_TodoListItem_If_It_Is_Not_From_The_User_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
             {
