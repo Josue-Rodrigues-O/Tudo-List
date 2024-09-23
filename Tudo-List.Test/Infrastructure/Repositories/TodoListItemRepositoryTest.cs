@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Tudo_list.Infrastructure.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
@@ -59,6 +60,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
             var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id);
 
             Assert.Equivalent(tudoListItem, todoListItemInDatabase, true);
+        }
+
+        [Fact]
+        public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Synchronously()
+        {
+            var item = _itemRepository.GetById(Guid.NewGuid());
+
+            Assert.Null(item);
         }
 
         [Fact]
@@ -254,6 +263,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
+        public async Task Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Asynchronously()
+        {
+            var item = await _itemRepository.GetByIdAsync(Guid.NewGuid());
+
+            Assert.Null(item);
+        }
+
+        [Fact]
         public async Task Can_Get_A_TodoListItem_By_Id_If_It_Is_From_The_Current_User_Asynchronously()
         {
             var tudoListItem = new TodoListItem()
@@ -334,7 +351,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await Assert.ThrowsAsync<DbUpdateException>(async () => await _itemRepository.AddAsync(tudoListItem));
+            await Assert.ThrowsAsync<DbUpdateException>(() => _itemRepository.AddAsync(tudoListItem));
         }
 
         [Fact]
@@ -401,7 +418,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await _itemRepository.RemoveAsync(tudoListItem));
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _itemRepository.RemoveAsync(tudoListItem));
         }
     }
 }

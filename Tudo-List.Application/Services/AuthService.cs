@@ -1,6 +1,8 @@
 ﻿using Tudo_List.Application.Interfaces.Services;
 using Tudo_List.Domain.Core.Interfaces.Factories;
 using Tudo_List.Domain.Core.Interfaces.Services;
+using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Exceptions;
 
 namespace Tudo_List.Application.Services
 {
@@ -11,7 +13,9 @@ namespace Tudo_List.Application.Services
 
         public bool CheckPassword(int userId, string password)
         {
-            var user = _userService.GetById(userId);
+            var user = _userService.GetById(userId)
+                ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), userId);
+
             var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
             
             return passwordStrategy.VerifyPassword(password, user.PasswordHash, user.Salt);

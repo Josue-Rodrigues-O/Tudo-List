@@ -13,10 +13,15 @@ namespace Tudo_List.Test.Mock
                 Id = 404,
                 Name = "UserMock",
                 Email = "UserMock@mock.com",
-                PasswordHash = "Mock123",
+                PasswordHash = "$2a$10$.ZRZ1mQzd8XZwuVqtYd/4OKAaw03lU42dPTIu7u7WRhYHLq1pazhW",
                 PasswordStrategy = PasswordStrategy.BCrypt,
                 Salt = null
             };
+        }
+
+        internal static string GetCurrentUserPassword()
+        {
+            return "12345678";
         }
 
         internal static IImmutableList<TodoListItem> GetItems()

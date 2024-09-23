@@ -49,6 +49,14 @@ namespace Tudo_List.Test.Domain.Services
         }
 
         [Fact]
+        public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Synchronously()
+        {
+            var user = _userService.GetById(120);
+
+            Assert.Null(user);
+        }
+
+        [Fact]
         public void Can_Get_an_User_By_Email_Synchronously()
         {
             var usersEmails = MockData.GetUsers().Select(x => x.Email);
@@ -61,6 +69,14 @@ namespace Tudo_List.Test.Domain.Services
                 Assert.NotNull(userInDatabase);
                 Assert.Equivalent(user, userInDatabase, true);
             }
+        }
+
+        [Fact]
+        public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Email_Synchronously()
+        {
+            var user = _userService.GetByEmail("invalid@invalid.com");
+
+            Assert.Null(user);
         }
 
         [Fact]
@@ -383,6 +399,14 @@ namespace Tudo_List.Test.Domain.Services
         }
 
         [Fact]
+        public async Task Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Asynchronously()
+        {
+            var user = await _userService.GetByIdAsync(120);
+
+            Assert.Null(user);
+        }
+
+        [Fact]
         public async Task Can_Get_an_User_By_Email_Asynchronously()
         {
             var usersEmails = MockData.GetUsers().Select(x => x.Email);
@@ -395,6 +419,14 @@ namespace Tudo_List.Test.Domain.Services
                 Assert.NotNull(userInDatabase);
                 Assert.Equivalent(user, userInDatabase, true);
             }
+        }
+
+        [Fact]
+        public async Task Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Email_Asynchronously()
+        {
+            var user = await _userService.GetByEmailAsync("invalid@invalid.com");
+
+            Assert.Null(user);
         }
 
         [Fact]
@@ -430,7 +462,7 @@ namespace Tudo_List.Test.Domain.Services
                 Email = email,
             };
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _userService.RegisterAsync(user, password));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.RegisterAsync(user, password));
         }
 
         [Fact]
@@ -473,7 +505,7 @@ namespace Tudo_List.Test.Domain.Services
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _userService.UpdateAsync(user.Id, invalidName));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdateAsync(user.Id, invalidName));
         }
 
         [Fact]
@@ -490,7 +522,7 @@ namespace Tudo_List.Test.Domain.Services
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<InvalidOperationException>(async () => await _userService.UpdateAsync(user.Id, user.Name));
+            await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.UpdateAsync(user.Id, user.Name));
         }
 
         [Fact]
@@ -538,7 +570,7 @@ namespace Tudo_List.Test.Domain.Services
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _userService.UpdateEmailAsync(user.Id, newEmail, password + "123"));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdateEmailAsync(user.Id, newEmail, password + "123"));
         }
 
         [Fact]
@@ -582,7 +614,7 @@ namespace Tudo_List.Test.Domain.Services
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _userService.UpdateEmailAsync(user.Id, newEmail, password + "123"));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdateEmailAsync(user.Id, newEmail, password + "123"));
         }
 
         [Fact]
@@ -632,7 +664,7 @@ namespace Tudo_List.Test.Domain.Services
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _userService.UpdatePasswordAsync(user.Id, currentPassword, invalidPassword));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdatePasswordAsync(user.Id, currentPassword, invalidPassword));
         }
 
         [Fact]
@@ -653,7 +685,7 @@ namespace Tudo_List.Test.Domain.Services
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _userService.UpdatePasswordAsync(user.Id, currentPassword, currentPassword));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdatePasswordAsync(user.Id, currentPassword, currentPassword));
         }
 
         [Fact]
@@ -688,7 +720,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _userService.DeleteAsync(user.Id));
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _userService.DeleteAsync(user.Id));
         }
     }
 }
