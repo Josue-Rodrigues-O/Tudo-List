@@ -12,12 +12,12 @@ namespace Tudo_list.Infrastructure.Repositories
 
         public IEnumerable<User> GetAll()
         {
-            return _users;
+            return _users.AsNoTracking();
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _users.ToListAsync();
+            return await _users.AsNoTracking().ToListAsync();
         }
 
         public User? GetById(int id)
@@ -32,12 +32,12 @@ namespace Tudo_list.Infrastructure.Repositories
 
         public User? GetByEmail(string email)
         {
-            return _users.AsNoTracking().FirstOrDefault(user => user.Email.Equals(email));
+            return _users.FirstOrDefault(user => user.Email.Equals(email));
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _users.AsNoTracking().FirstOrDefaultAsync(user => user.Email.Equals(email));
+            return await _users.FirstOrDefaultAsync(user => user.Email.Equals(email));
         }
 
         public void Add(User user)

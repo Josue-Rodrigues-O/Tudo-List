@@ -8,7 +8,7 @@ using Tudo_List.Domain.Core.Interfaces.Configuration;
 
 namespace Tudo_List.Application.Services
 {
-    public class TokenService(ISecrets secrets) : ITokenService
+    public class JwtTokenService(ISecrets secrets) : ITokenService
     {
         private readonly ISecrets _secrets = secrets;
 
@@ -23,13 +23,41 @@ namespace Tudo_List.Application.Services
             {
                 Subject = GenerateClaims(user),
                 SigningCredentials = credentials,
-                Expires = DateTime.UtcNow.AddHours(8),
+                Expires = DateTime.UtcNow.AddYears(100)//.AddHours(8),
             };
 
             var token = handler.CreateToken(tokenDescriptor);
             var strToken = handler.WriteToken(token);
 
             return strToken;
+        }
+
+        public bool ValidateToken(string token)
+        {
+            try
+            {
+                var handler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_secrets.JwtPrivateKey);
+
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+                var principal = handler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private static ClaimsIdentity GenerateClaims(UserDto user)

@@ -289,7 +289,7 @@ namespace Tudo_List.Test.Domain.Services
                 Title = invalidTitle,
             };
 
-            await Assert.ThrowsAsync<ValidationException>(async () => await _itemService.AddAsync(tudoListItem));
+            await Assert.ThrowsAsync<ValidationException>(() => _itemService.AddAsync(tudoListItem));
         }
 
         [Fact]
@@ -341,7 +341,7 @@ namespace Tudo_List.Test.Domain.Services
             tudoListItem.Priority = Priority.Medium;
             tudoListItem.UserId = 5;
 
-            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _itemService.UpdateAsync(tudoListItem));
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _itemService.UpdateAsync(tudoListItem));
         }
 
         [Fact]
@@ -357,7 +357,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id
             };
 
-            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _itemService.UpdateAsync(tudoListItem));
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _itemService.UpdateAsync(tudoListItem));
         }
 
         [Fact]
@@ -398,7 +398,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = 5
             };
 
-            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _itemService.DeleteAsync(tudoListItem.Id));
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _itemService.DeleteAsync(tudoListItem.Id));
         }
 
         [Fact]
@@ -415,7 +415,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = 5
             };
 
-            await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _itemService.DeleteAsync(tudoListItem.Id));
+            await Assert.ThrowsAsync<EntityNotFoundException>(() => _itemService.DeleteAsync(tudoListItem.Id));
         }
     }
 }
