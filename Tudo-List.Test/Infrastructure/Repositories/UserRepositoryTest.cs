@@ -41,6 +41,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 Assert.Equivalent(user, userInDatabase, true);
             }
         }
+        
+        [Fact]
+        public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Synchronously()
+        {
+            var user = _userRepository.GetById(120);
+
+            Assert.Null(user);
+        }
 
         [Fact]
         public void Can_Get_an_User_By_Email_Synchronously()
@@ -55,6 +63,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 Assert.NotNull(userInDatabase);
                 Assert.Equivalent(user, userInDatabase, true);
             }
+        }
+
+        [Fact]
+        public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Email_Synchronously()
+        {
+            var user = _userRepository.GetByEmail("Invalid@Invalid.com");
+
+            Assert.Null(user);
         }
 
         [Fact]
@@ -180,6 +196,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
+        public async Task Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Asynchronously()
+        {
+            var user = await _userRepository.GetByIdAsync(120);
+
+            Assert.Null(user);
+        }
+
+        [Fact]
         public async Task Can_Get_an_User_By_Email_Asynchronously()
         {
             var usersEmails = MockData.GetUsers().Select(x => x.Email);
@@ -192,6 +216,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 Assert.NotNull(userInDatabase);
                 Assert.Equivalent(user, userInDatabase, true);
             }
+        }
+
+        [Fact]
+        public async Task Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Email_Asynchronously()
+        {
+            var user = await _userRepository.GetByEmailAsync("invalid@invalid.com");
+
+            Assert.Null(user);
         }
 
         [Fact]
@@ -230,7 +262,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 PasswordStrategy = strategy
             };
 
-            await Assert.ThrowsAsync<DbUpdateException>(async () => await _userRepository.AddAsync(user));
+            await Assert.ThrowsAsync<DbUpdateException>(() => _userRepository.AddAsync(user));
         }
 
         [Fact]
@@ -288,7 +320,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(async () => await _userRepository.RemoveAsync(user));
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => _userRepository.RemoveAsync(user));
         }
     }
 }
