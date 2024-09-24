@@ -1,76 +1,49 @@
 import { Injectable } from '@angular/core';
-import { TodoListItemsRepository } from '../../repositories/todo-list-items/todo-list-items-repository';
 import { TodoListItem } from '../../models/todo-list-item/todo-list-item';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { RequestService } from '../requestService/request.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoListItemService {
-  constructor(private repository: TodoListItemsRepository) {}
+  private apiUrl: string = 'api/TodoListItems';
+
+  constructor(
+    private http: HttpClient,
+    private requestService: RequestService
+  ) {}
 
   getAll(): Observable<Array<TodoListItem>> {
-    return this.repository.getAll();
+    const url: string = `${this.apiUrl}/get-all`;
+    return this.http.get<Array<TodoListItem>>(
+      url,
+      this.requestService.getHeader()
+    );
   }
 
   getById(id: string): Observable<TodoListItem> {
-    return this.repository.getById(id);
+    const url: string = `${this.apiUrl}/get-by-id/${id}`;
+    return this.http.get<TodoListItem>(url, this.requestService.getHeader());
   }
 
-  add(
-    todoListItem: TodoListItem,
-    next: Function = () => {},
-    error: Function = () => {},
-    complete: Function = () => {}
-  ) {
-    this.repository.add(todoListItem).subscribe({
-      next: () => {
-        next();
-      },
-      error: () => {
-        error();
-      },
-      complete: () => {
-        complete();
-      },
-    });
+  add(todoListItem: TodoListItem) {
+    const url: string = `${this.apiUrl}/add`;
+
+    return this.http.post(url, todoListItem, this.requestService.getHeader());
   }
 
-  update(
-    todoListItem: TodoListItem,
-    next: Function = () => {},
-    error: Function = () => {},
-    complete: Function = () => {}
-  ) {
-    this.repository.update(todoListItem).subscribe({
-      next: () => {
-        next();
-      },
-      error: () => {
-        error();
-      },
-      complete: () => {
-        complete();
-      },
-    });
+  update(todoListItem: TodoListItem) {
+    const url: string = `${this.apiUrl}/update`;
+
+    todoListItem.itemId = todoListItem.id;
+    return this.http.patch(url, todoListItem, this.requestService.getHeader());
   }
 
-  delete(
-    id: string,
-    next: Function = () => {},
-    error: Function = () => {},
-    complete: Function = () => {}
-  ) {
-    this.repository.delete(id).subscribe({
-      next: () => {
-        next();
-      },
-      error: () => {
-        error();
-      },
-      complete: () => {
-        complete();
-      },
-    });
+  delete(id: string) {
+    const url: string = `${this.apiUrl}/delete/${id}`;
+
+    return this.http.delete(url, this.requestService.getHeader());
   }
 }

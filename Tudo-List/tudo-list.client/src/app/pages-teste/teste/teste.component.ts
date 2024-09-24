@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { InputComponent } from '../../features/fragments/input/input.component';
+import { InputComponent } from '../../features/components/input/input.component';
 
 @Component({
   selector: 'app-teste',
