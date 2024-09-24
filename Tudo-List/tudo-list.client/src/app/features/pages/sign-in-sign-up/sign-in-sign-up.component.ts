@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../../core/services/users/user.service';
 import { ToastService } from '../../services/toast/toast.service';
 import { RequestService } from '../../../core/services/requestService/request.service';
-import { InputComponent } from '../../fragments/input/input.component';
+import { InputComponent } from '../../components/input/input.component';
 import { MessageBoxService } from '../../services/message-box/message-box.service';
 import { ProblemDetailsMessagesService } from '../../../core/services/problemDetailsMessages/problem-details-messages.service';
 import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
@@ -65,16 +65,16 @@ export class SignInSignUpComponent {
   }
 
   onClickLogin() {
-    this._bindFieldsForUserValidation();
-    this._login();
+    this.bindFieldsForUserValidation();
+    this.login();
   }
 
   onClickRegister() {
-    this._bindFieldsForUserValidation();
-    this._register();
+    this.bindFieldsForUserValidation();
+    this.register();
   }
 
-  _bindFieldsForUserValidation() {
+  private bindFieldsForUserValidation() {
     this.userService.bindFieldsForUserValidation({
       email: this.inpEmail,
       password: this.inpPassword,
@@ -82,10 +82,10 @@ export class SignInSignUpComponent {
     });
   }
 
-  _register() {
+  private register() {
     this.userService.register(this.user).subscribe({
       next: () => {
-        this._login();
+        this.login();
         this.toastService.show('Sucesso', ValueStateEnum.success);
       },
       error: (err) => {
@@ -95,7 +95,7 @@ export class SignInSignUpComponent {
     });
   }
 
-  _login() {
+  private login() {
     this.userService.login(this.user).subscribe({
       next: (res) => {
         this.requestService.setToken(res);
