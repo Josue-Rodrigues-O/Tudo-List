@@ -74,10 +74,6 @@ export class TudoListComponent {
     this.isEditing = false;
   }
 
-  onClickCancelEdit() {
-    this.isEditing = false;
-  }
-
   onClickAddTask() {
     this.currentTask = new TodoListItem();
     this.currentTask.status = StatusEnum.notStarted;
