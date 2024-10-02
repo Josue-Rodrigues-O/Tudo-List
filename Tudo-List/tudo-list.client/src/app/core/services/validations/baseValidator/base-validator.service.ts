@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Validation } from '../validation/validation';
 import { ValueStateEnum } from '../../../enums/value-state/valueState-enum';
-import { InputComponent } from '../../../../features/fragments/input/input.component';
+import { InputComponent } from '../../../../features/components/input/input.component';
 
 @Injectable({
   providedIn: 'root',

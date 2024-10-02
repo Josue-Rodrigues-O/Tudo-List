@@ -10,9 +10,9 @@ import { SignInSignUpComponent } from './features/pages/sign-in-sign-up/sign-in-
 import { TudoListComponent } from './features/pages/tudo-list/tudo-list.component';
 import { NotFoundComponent } from './features/pages/not-found/not-found.component';
 import { TesteComponent } from './pages-teste/teste/teste.component';
-import { ToastComponent } from './features/fragments/toast/toast.component';
-import { MessageBoxComponent } from './features/fragments/message-box/message-box.component';
-import { InputComponent } from './features/fragments/input/input.component';
+import { ToastComponent } from './features/components/toast/toast.component';
+import { MessageBoxComponent } from './features/components/message-box/message-box.component';
+import { InputComponent } from './features/components/input/input.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

@@ -63,26 +63,14 @@ export class TudoListComponent {
   }
 
   onClickRemoveTask() {
-    this.todoListItemService.delete(this.currentTask.id, () =>
-      this.updateTaskList()
-    );
+    this.remove();
   }
 
   onClickSave(id: string = '') {
     let index = id ? this.tasks.findIndex((x) => x.id == id) : 0;
     this.currentTask = id && index ? this.tasks[index] : this.currentTask;
-    this.currentTask.id
-      ? this.todoListItemService.update(this.currentTask, () =>
-          this.updateTaskList()
-        )
-      : this.todoListItemService.add(this.currentTask, () =>
-          this.updateTaskList()
-        );
+    this.currentTask.id ? this.update() : this.add();
 
-    this.isEditing = false;
-  }
-
-  onClickCancelEdit() {
     this.isEditing = false;
   }
 
@@ -92,9 +80,33 @@ export class TudoListComponent {
     this.isEditing = true;
   }
 
-  updateTaskList() {
+  private updateTaskList() {
     this.todoListItemService
       .getAll()
       .subscribe((tasks) => (this.tasks = tasks));
+  }
+
+  private add() {
+    this.todoListItemService.add(this.currentTask).subscribe({
+      next: () => this.updateTaskList(),
+      error: () => {},
+      complete: () => {},
+    });
+  }
+
+  private update() {
+    this.todoListItemService.update(this.currentTask).subscribe({
+      next: () => this.updateTaskList(),
+      error: () => {},
+      complete: () => {},
+    });
+  }
+
+  private remove() {
+    this.todoListItemService.delete(this.currentTask.id).subscribe({
+      next: () => this.updateTaskList(),
+      error: () => {},
+      complete: () => {},
+    });
   }
 }

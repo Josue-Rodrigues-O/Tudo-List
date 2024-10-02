@@ -111,7 +111,7 @@
             <div class="modal-footer">
                 <!-- data-bs-dismiss="modal"  //Fecha modal -->
                 @if (isEditing) {
-                <button type="button" class="btn btn-secondary btn-sm" (click)="onClickCancelEdit()">Cancelar</button>
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary btn-sm" (click)="onClickSave()">Salvar</button>
                 }@else {
                 <button type="button" class="btn btn-primary btn-sm bi bi-pencil-fill"

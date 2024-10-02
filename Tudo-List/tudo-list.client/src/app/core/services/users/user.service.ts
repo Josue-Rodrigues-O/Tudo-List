@@ -1,4 +1,4 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { User } from '../../models/user/user';
 import { ToastService } from '../../../features/services/toast/toast.service';
 import { HttpClient } from '@angular/common/http';
