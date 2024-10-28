@@ -1,5 +1,4 @@
-import { ElementRef } from '@angular/core';
-import { InputComponent } from '../../../../features/components/input/input.component';
+import { InputComponent } from '../../../features/components/input/input.component';
 
 export class FieldsForUserValidation {
   public email!: InputComponent;

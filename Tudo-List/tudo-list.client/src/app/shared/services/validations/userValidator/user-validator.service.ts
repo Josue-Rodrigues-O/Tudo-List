@@ -1,6 +1,6 @@
 import { BaseValidatorService } from '../baseValidator/base-validator.service';
-import { User } from '../../../models/user/user';
-import { FieldsForUserValidation } from './fields-for-user-validation';
+import { User } from '../../../../core/models/user/user';
+import { FieldsForUserValidation } from '../../../../core/models/fields-for-user-validation/fields-for-user-validation';
 
 export class UserValidatorService extends BaseValidatorService {
   private regexEmail = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;

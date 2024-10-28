@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MessageBoxService } from '../../services/message-box/message-box.service';
+import { MessageBoxService } from '../../../shared/services/message-box/message-box.service';
 
 @Component({
   selector: 'app-message-box',

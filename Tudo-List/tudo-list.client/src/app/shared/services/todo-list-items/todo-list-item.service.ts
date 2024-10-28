@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TodoListItem } from '../../models/todo-list-item/todo-list-item';
+import { TodoListItem } from '../../../core/models/todo-list-item/todo-list-item';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { RequestService } from '../requestService/request.service';
