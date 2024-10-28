@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Validation } from '../validation/validation';
-import { ValueStateEnum } from '../../../enums/value-state/valueState-enum';
+import { ValueStateEnum } from '../../../../core/enums/value-state/valueState-enum';
 import { InputComponent } from '../../../../features/components/input/input.component';
 
 @Injectable({

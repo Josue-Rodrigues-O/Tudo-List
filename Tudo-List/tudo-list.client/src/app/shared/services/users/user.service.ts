@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../models/user/user';
-import { ToastService } from '../../../features/services/toast/toast.service';
+import { User } from '../../../core/models/user/user';
+import { ToastService } from '../toast/toast.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RequestService } from '../requestService/request.service';
 import { UserValidatorService } from '../validations/userValidator/user-validator.service';
-import { MessageBoxService } from '../../../features/services/message-box/message-box.service';
-import { FieldsForUserValidation } from '../validations/userValidator/fields-for-user-validation';
-import { ValueStateEnum } from '../../enums/value-state/valueState-enum';
+import { MessageBoxService } from '../message-box/message-box.service';
+import { FieldsForUserValidation } from '../../../core/models/fields-for-user-validation/fields-for-user-validation';
+import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
 
 @Injectable({
   providedIn: 'root',

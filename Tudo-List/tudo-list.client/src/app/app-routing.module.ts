@@ -3,12 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { SignInSignUpComponent } from './features/pages/sign-in-sign-up/sign-in-sign-up.component';
 import { TudoListComponent } from './features/pages/tudo-list/tudo-list.component';
 import { NotFoundComponent } from './features/pages/not-found/not-found.component';
-import { TesteComponent } from './pages-teste/teste/teste.component';
 
 const routes: Routes = [
   { path: '', component: SignInSignUpComponent },
   { path: 'tudo-list', component: TudoListComponent },
-  { path: 'page-test', component: TesteComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

@@ -2,12 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { User } from '../../../core/models/user/user';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { UserService } from '../../../core/services/users/user.service';
-import { ToastService } from '../../services/toast/toast.service';
-import { RequestService } from '../../../core/services/requestService/request.service';
+import { UserService } from '../../../shared/services/users/user.service';
+import { ToastService } from '../../../shared/services/toast/toast.service';
+import { RequestService } from '../../../shared/services/requestService/request.service';
 import { InputComponent } from '../../components/input/input.component';
-import { MessageBoxService } from '../../services/message-box/message-box.service';
-import { ProblemDetailsMessagesService } from '../../../core/services/problemDetailsMessages/problem-details-messages.service';
+import { MessageBoxService } from '../../../shared/services/message-box/message-box.service';
+import { ProblemDetailsMessagesService } from '../../../shared/services/problemDetailsMessages/problem-details-messages.service';
 import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
 
 @Component({

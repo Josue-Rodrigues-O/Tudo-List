@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { TodoListItem } from '../../../core/models/todo-list-item/todo-list-item';
 import { StatusEnum } from '../../../core/enums/status-enum/status-enum';
-import { TodoListItemService } from '../../../core/services/todo-list-items/todo-list-item.service';
+import { TodoListItemService } from '../../../shared/services/todo-list-items/todo-list-item.service';
 import { User } from '../../../core/models/user/user';
-import { UserService } from '../../../core/services/users/user.service';
+import { UserService } from '../../../shared/services/users/user.service';
 
 @Component({
   selector: 'app-tudo-list',
@@ -67,8 +67,8 @@ export class TudoListComponent {
   }
 
   onClickSave(id: string = '') {
-    let index = id ? this.tasks.findIndex((x) => x.id == id) : 0;
-    this.currentTask = id && index ? this.tasks[index] : this.currentTask;
+    let index = id ? this.tasks.findIndex((x) => x.id == id) : -1;
+    this.currentTask = id && index != -1 ? this.tasks[index] : this.currentTask;
     this.currentTask.id ? this.update() : this.add();
 
     this.isEditing = false;
