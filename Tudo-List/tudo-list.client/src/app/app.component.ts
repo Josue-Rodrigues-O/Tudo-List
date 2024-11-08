@@ -13,8 +13,5 @@ interface WeatherForecast {
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  ngOnInit() {
-    throw new Error('Method not implemented.');
-  }
 
 }
