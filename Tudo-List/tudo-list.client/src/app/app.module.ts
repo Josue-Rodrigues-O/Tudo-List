@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -12,6 +12,10 @@ import { NotFoundComponent } from './features/pages/not-found/not-found.componen
 import { ToastComponent } from './features/components/toast/toast.component';
 import { MessageBoxComponent } from './features/components/message-box/message-box.component';
 import { InputComponent } from './features/components/input/input.component';
+import { ngxLoadingAnimationTypes, NgxLoadingModule } from 'ngx-loading';
+import { authInterceptor } from './core/interceptor/auth/auth.interceptor';
+import { loadingInterceptor } from './core/interceptor/loading/loading.interceptor';
+import { LoaderComponent } from './features/components/loader/loader.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,6 +30,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ToastComponent,
     MessageBoxComponent,
     InputComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -39,8 +44,17 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    NgxLoadingModule.forRoot({
+      fullScreenBackdrop: true,
+      animationType: ngxLoadingAnimationTypes.chasingDots,
+      primaryColour: "#5C60F5",
+      secondaryColour: "#5a43b0"
+    })
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: authInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: loadingInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
