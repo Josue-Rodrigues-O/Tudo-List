@@ -71,6 +71,6 @@ export class UserService {
 
   getById(id: string) {
     const url: string = `${this.apiUrlUser}/get-by-id/${id}`;
-    return this.http.get<User>(url, this.requestService.getHeader());
+    return this.http.get<User>(url);
   }
 }
