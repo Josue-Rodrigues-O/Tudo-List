@@ -1,0 +1,25 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/https:/root/.aspnet/https:ro
+    depends_on:
+      - db
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "1"
+      SA_PASSWORD: "tudolist@1234"
+      MSSQL_PID: Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - C:\Users\Iglesias\Documents\volumes\mssql\mssql_data:/var/opt/mssql/data
