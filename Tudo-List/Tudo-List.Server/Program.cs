@@ -8,6 +8,8 @@ using Tudo_List.Server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile("secrets/secrets.json", optional: true, reloadOnChange: true);
+
 builder.Services
     .AddAuthentication(options =>
     {
@@ -19,7 +21,7 @@ builder.Services
         options.SaveToken = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetSection(SecretsKeys.JwtPrivateKey).Value)),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration[SecretsKeys.JwtPrivateKey]!)),
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = true,
