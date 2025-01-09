@@ -16,9 +16,9 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "1"
-      SA_PASSWORD: "tudolist@1234"
+      SA_PASSWORD: ${DB_PASSWORD}
       MSSQL_PID: Developer
     ports:
       - "1433:1433"
     volumes:
-      - C:\Users\Iglesias\Documents\volumes\mssql\mssql_data:/var/opt/mssql/data
+      - ${DB_VOLUME_PATH}:/var/opt/mssql/data
