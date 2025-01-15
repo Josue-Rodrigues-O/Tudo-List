@@ -23,7 +23,7 @@ namespace Tudo_List.Application.Services
             {
                 Subject = GenerateClaims(user),
                 SigningCredentials = credentials,
-                Expires = DateTime.UtcNow.AddYears(100)//.AddHours(8),
+                Expires = DateTime.UtcNow.AddHours(8),
             };
 
             var token = handler.CreateToken(tokenDescriptor);
