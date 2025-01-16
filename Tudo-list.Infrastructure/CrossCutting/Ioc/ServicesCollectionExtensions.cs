@@ -43,10 +43,8 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         {
             servicesCollection.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString(SecretsKeys.SqlServerConnectionString));
+                options.UseSqlServer(config[SecretsKeys.SqlServerConnectionString]);
             });
-
-            servicesCollection.AddScoped<ApplicationDbContext>();
 
             return servicesCollection;
         }

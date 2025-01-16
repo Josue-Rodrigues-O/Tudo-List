@@ -2,7 +2,7 @@
 {
     public class SecretsKeys
     {
-        public const string SqlServerConnectionString = "SqlServer";
+        public const string SqlServerConnectionString = "ConnectionString:SqlServer";
         public const string JwtPrivateKey = "JwtSettings:PrivateKey";
     }
 }
