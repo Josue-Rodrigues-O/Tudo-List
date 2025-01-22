@@ -48,6 +48,7 @@ builder.Services.AddApiVersioning(options =>
 
 var app = builder.Build();
 
+app.EnsureDatabaseCreated();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseDefaultFiles();
