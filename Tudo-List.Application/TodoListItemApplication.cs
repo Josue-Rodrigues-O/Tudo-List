@@ -4,6 +4,7 @@ using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Exceptions;
+using Tudo_List.Domain.Models;
 
 namespace Tudo_List.Application
 {
@@ -12,14 +13,14 @@ namespace Tudo_List.Application
         private readonly ITodoListItemService _todoListItemService = todoListItemService;
         private readonly IMapper _mapper = mapper;
 
-        public IEnumerable<TodoListItemDto> GetAll()
+        public IEnumerable<TodoListItemDto> GetAll(TodoListItemQueryFilter filter)
         {
-            return _mapper.Map<IEnumerable<TodoListItemDto>>(_todoListItemService.GetAll());
+            return _mapper.Map<IEnumerable<TodoListItemDto>>(_todoListItemService.GetAll(filter));
         }
 
-        public async Task<IEnumerable<TodoListItemDto>> GetAllAsync()
+        public async Task<IEnumerable<TodoListItemDto>> GetAllAsync(TodoListItemQueryFilter filter)
         {
-            return _mapper.Map<IEnumerable<TodoListItemDto>>(await _todoListItemService.GetAllAsync());
+            return _mapper.Map<IEnumerable<TodoListItemDto>>(await _todoListItemService.GetAllAsync(filter));
         }
 
         public TodoListItemDto GetById(Guid id)
