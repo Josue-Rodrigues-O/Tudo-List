@@ -5,6 +5,7 @@ using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Exceptions;
 using Tudo_List.Domain.Helpers;
+using Tudo_List.Domain.Models;
 using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Domain.Services
@@ -17,14 +18,14 @@ namespace Tudo_List.Domain.Services
 
         private int CurrentUserId => int.Parse(_currentUserService.Id);
 
-        public IEnumerable<TodoListItem> GetAll()
+        public IEnumerable<TodoListItem> GetAll(TodoListItemQueryFilter filter)
         {
-            return _itemRepository.GetAll(CurrentUserId);
+            return _itemRepository.GetAll(CurrentUserId, filter);
         }
 
-        public async Task<IEnumerable<TodoListItem>> GetAllAsync()
+        public async Task<IEnumerable<TodoListItem>> GetAllAsync(TodoListItemQueryFilter filter)
         {
-            return await _itemRepository.GetAllAsync(CurrentUserId);
+            return await _itemRepository.GetAllAsync(CurrentUserId, filter);
         }
 
         public TodoListItem? GetById(Guid id)

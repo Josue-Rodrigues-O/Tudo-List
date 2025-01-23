@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Tudo_List.Application.Dtos.TodoListItem;
 using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Domain.Entities;
+using Tudo_List.Domain.Models;
 
 namespace Tudo_List.Server.Controllers.V1
 {
@@ -15,15 +16,15 @@ namespace Tudo_List.Server.Controllers.V1
         private readonly ITodoListItemApplication _todoListItemApplication = todoListItemApplication;
 
         [HttpGet("get-all")]
-        public IActionResult GetAll()
+        public IActionResult GetAll([FromQuery] TodoListItemQueryFilter filter)
         {
-            return Ok(_todoListItemApplication.GetAll());
+            return Ok(_todoListItemApplication.GetAll(filter));
         }
 
         [HttpGet("get-all-async")]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] TodoListItemQueryFilter? filter = null)
         {
-            return Ok(await _todoListItemApplication.GetAllAsync());
+            return Ok(await _todoListItemApplication.GetAllAsync(filter));
         }
 
         [HttpGet("get-by-id/{id:guid}")]
