@@ -7,7 +7,7 @@ namespace Tudo_List.Server.Helpers
 {
     public static class ProblemDetailsHelper
     {
-        private static readonly Dictionary<Type, int> SpecialStatusCodeByExceptionType = new()
+        private static readonly Dictionary<Type, int> SpecialStatusCodeByExceptionType = new(7)
         {
             { typeof(ArgumentOutOfRangeException), StatusCodes.Status400BadRequest },
             { typeof(BadHttpRequestException), StatusCodes.Status400BadRequest },

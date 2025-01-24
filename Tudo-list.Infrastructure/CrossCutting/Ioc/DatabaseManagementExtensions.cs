@@ -9,9 +9,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         public static void EnsureDatabaseCreated(this IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
-
             var serviceDb = scope.ServiceProvider.GetService<ApplicationDbContext>();
-
             serviceDb!.Database.EnsureCreated();
         }
     }

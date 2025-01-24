@@ -10,7 +10,6 @@ namespace Tudo_List.Domain.Enums
         [Description("In Progress")]
         InProgress,
         
-        [Description(nameof(Completed))]
         Completed
     }
 }

@@ -4,6 +4,7 @@ using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Exceptions;
+using Tudo_List.Domain.Models;
 using Tudo_List.Test.Mock;
 
 namespace Tudo_List.Test.Domain.Services
@@ -18,14 +19,14 @@ namespace Tudo_List.Test.Domain.Services
             _itemService = _serviceProvider.GetRequiredService<ITodoListItemService>();
 
             _context.Users.Add(MockData.GetCurrentUser());
-            InitializeInMemoryDatabase(MockData.GetItems());
+            SaveInMemoryDatabase(MockData.GetItems());
         }
 
         [Fact]
         public void Can_Get_All_TodoListItems_From_Current_User_Synchronously()
         {
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = _itemService.GetAll();
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
         }
@@ -44,12 +45,11 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = _itemService.GetById(tudoListItem.Id);
 
-            tudoListItem.User = null;
+            tudoListItem.User = null!;
 
             Assert.Equivalent(tudoListItem, todoListItemInDatabase, true);
         }
@@ -88,7 +88,7 @@ namespace Tudo_List.Test.Domain.Services
                 Description = "Test",
                 Priority = Priority.Medium,
                 Status = Status.NotStarted,
-                Title = invalidTitle,
+                Title = invalidTitle!,
             };
 
             Assert.Throws<ValidationException>(() => _itemService.Add(tudoListItem));
@@ -107,8 +107,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             tudoListItem.Title = "Update test";
             tudoListItem.Description = "Update Test";
@@ -177,8 +176,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id,
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             _itemService.Delete(tudoListItem.Id);
 
@@ -225,7 +223,7 @@ namespace Tudo_List.Test.Domain.Services
         public async Task Can_Get_All_TodoListItems_From_Current_User_Asynchronously()
         {
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = await _itemService.GetAllAsync();
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
         }
@@ -244,8 +242,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = await _itemService.GetByIdAsync(tudoListItem.Id);
 
@@ -286,7 +283,7 @@ namespace Tudo_List.Test.Domain.Services
                 Description = "Test",
                 Priority = Priority.Medium,
                 Status = Status.NotStarted,
-                Title = invalidTitle,
+                Title = invalidTitle!,
             };
 
             await Assert.ThrowsAsync<ValidationException>(() => _itemService.AddAsync(tudoListItem));
@@ -305,8 +302,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             tudoListItem.Title = "Update test";
             tudoListItem.Description = "Update Test";
@@ -374,8 +370,7 @@ namespace Tudo_List.Test.Domain.Services
                 UserId = CurrentUser.Id,
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             await _itemService.DeleteAsync(tudoListItem.Id);
 

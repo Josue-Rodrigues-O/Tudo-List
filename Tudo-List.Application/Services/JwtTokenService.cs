@@ -10,26 +10,21 @@ namespace Tudo_List.Application.Services
 {
     public class JwtTokenService(ISecrets secrets) : ITokenService
     {
-        private readonly ISecrets _secrets = secrets;
-
         public string GenerateToken(UserDto user)
         {
             var handler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_secrets.JwtPrivateKey);
+            var key = Encoding.ASCII.GetBytes(secrets.JwtPrivateKey);
 
             var credentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor()
+            var token = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Subject = GenerateClaims(user),
                 SigningCredentials = credentials,
                 Expires = DateTime.UtcNow.AddHours(8),
-            };
+            });
 
-            var token = handler.CreateToken(tokenDescriptor);
-            var strToken = handler.WriteToken(token);
-
-            return strToken;
+            return handler.WriteToken(token);
         }
 
         public bool ValidateToken(string token)
@@ -37,7 +32,7 @@ namespace Tudo_List.Application.Services
             try
             {
                 var handler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_secrets.JwtPrivateKey);
+                var key = Encoding.ASCII.GetBytes(secrets.JwtPrivateKey);
 
                 var validationParameters = new TokenValidationParameters
                 {
@@ -50,7 +45,7 @@ namespace Tudo_List.Application.Services
                     ClockSkew = TimeSpan.Zero
                 };
 
-                var principal = handler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+                var principal = handler.ValidateToken(token, validationParameters, out var validatedToken);
 
                 return true;
             }

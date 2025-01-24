@@ -5,6 +5,7 @@ using Tudo_List.Application.Interfaces.Applications;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
 using Tudo_List.Domain.Exceptions;
+using Tudo_List.Domain.Models;
 using Tudo_List.Test.Mock;
 
 namespace Tudo_List.Test.Application
@@ -18,15 +19,15 @@ namespace Tudo_List.Test.Application
         {
             _todoListItemApplication = _serviceProvider.GetRequiredService<ITodoListItemApplication>();
 
-            _context.Users.Add(MockData.GetCurrentUser());
-            InitializeInMemoryDatabase(MockData.GetItems());
+            SaveInMemoryDatabase(MockData.GetCurrentUser());
+            SaveInMemoryDatabase(MockData.GetItems());
         }
 
         [Fact]
         public void Can_Get_All_TodoListItems_From_Current_User_Synchronously()
         {
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = _todoListItemApplication.GetAll();
+            var todoListItemsInDatabase = _todoListItemApplication.GetAll(new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
 
@@ -56,21 +57,20 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id
             };
 
-            var expectedItem = new TodoListItemDto()
-            {
-                Id = tudoListItem.Id,
-                CreationDate = tudoListItem.CreationDate,
-                Description = tudoListItem.Description,
-                Priority = (Priority)tudoListItem.Priority,
-                Status = (Status)tudoListItem.Status,
-                Title = tudoListItem.Title,
-            };
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            var expectedItem = new TodoListItemDto
+            (
+                Id: tudoListItem.Id,
+                CreationDate: tudoListItem.CreationDate,
+                Description: tudoListItem.Description,
+                Priority: (Priority)tudoListItem.Priority,
+                Status: (Status)tudoListItem.Status,
+                Title: tudoListItem.Title
+            );
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = _todoListItemApplication.GetById(tudoListItem.Id);
 
-            tudoListItem.User = null;
+            tudoListItem.User = null!;
 
             Assert.Equivalent(expectedItem, todoListItemInDatabase, true);
         }
@@ -84,13 +84,13 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Can_Add_A_TodoListItem_With_Valid_Properties_Synchronously()
         {
-            var tudoListItem = new AddItemDto()
-            {
-                Title = "Test add item dto 1",
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-            };
+            var tudoListItem = new AddItemDto
+            (
+                Title: "Test add item dto 1",
+                Description: "Test",
+                Priority: Priority.Medium,
+                Status: Status.NotStarted
+            );
 
             _todoListItemApplication.Add(tudoListItem);
 
@@ -108,13 +108,13 @@ namespace Tudo_List.Test.Application
         [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
         public void Cant_Add_A_TodoListItem_With_Invalid_Properties_Synchronously(string? invalidTitle)
         {
-            var tudoListItem = new AddItemDto()
-            {
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-                Title = invalidTitle,
-            };
+            var tudoListItem = new AddItemDto
+            (
+                Description: "Test",
+                Priority: Priority.Medium,
+                Status: Status.NotStarted,
+                Title: invalidTitle!
+            );
 
             Assert.Throws<ValidationException>(() => _todoListItemApplication.Add(tudoListItem));
         }
@@ -132,17 +132,16 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id
             };
 
-            var tudoListItem = new UpdateItemDto()
-            {
-                ItemId = newItem.Id,
-                Description = "Update test",
-                Priority = Priority.Medium,
-                Status = Status.Completed,
-                Title = "Update test",
-            };
+            var tudoListItem = new UpdateItemDto
+            (
+                Id: newItem.Id,
+                Description: "Update test",
+                Priority: Priority.Medium,
+                Status: Status.Completed,
+                Title: "Update test"
+            );
 
-            _context.Add(newItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(newItem);
 
             _todoListItemApplication.Update(tudoListItem);
 
@@ -164,14 +163,14 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id
             };
 
-            var tudoListItem = new UpdateItemDto()
-            {
-                ItemId = newItem.Id,
-                Description = "Update test",
-                Priority = Priority.Medium,
-                Status = Status.Completed,
-                Title = "Update test",
-            };
+            var tudoListItem = new UpdateItemDto
+            (
+                Id: newItem.Id,
+                Description: "Update test",
+                Priority: Priority.Medium,
+                Status: Status.Completed,
+                Title: "Update test"
+            );
             _context.Add(newItem);
 
             Assert.Throws<EntityNotFoundException>(() => _todoListItemApplication.Update(tudoListItem));
@@ -180,14 +179,14 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Cant_Update_A_Non_Existent_TodoListItem_Synchronously()
         {
-            var tudoListItem = new UpdateItemDto()
-            {
-                ItemId = Guid.NewGuid(),
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-                Title = "Test",
-            };
+            var tudoListItem = new UpdateItemDto
+            (
+                Id: Guid.NewGuid(),
+                Description: "Test",
+                Priority: Priority.Medium,
+                Status: Status.NotStarted,
+                Title: "Test"
+            );
 
             Assert.Throws<EntityNotFoundException>(() => _todoListItemApplication.Update(tudoListItem));
         }
@@ -206,8 +205,7 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id,
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             _todoListItemApplication.Delete(tudoListItem.Id);
 
@@ -254,7 +252,7 @@ namespace Tudo_List.Test.Application
         public async Task Can_Get_All_TodoListItems_From_Current_User_Asynchronously()
         {
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = await _todoListItemApplication.GetAllAsync();
+            var todoListItemsInDatabase = await _todoListItemApplication.GetAllAsync(new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
 
@@ -284,18 +282,17 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id
             };
 
-            var expectedItem = new TodoListItemDto()
-            {
-                Id = tudoListItem.Id,
-                CreationDate = tudoListItem.CreationDate,
-                Description = tudoListItem.Description,
-                Priority = (Priority)tudoListItem.Priority,
-                Status = (Status)tudoListItem.Status,
-                Title = tudoListItem.Title,
-            };
+            var expectedItem = new TodoListItemDto
+            (
+                Id: tudoListItem.Id,
+                CreationDate: tudoListItem.CreationDate,
+                Description: tudoListItem.Description,
+                Priority: (Priority)tudoListItem.Priority,
+                Status: (Status)tudoListItem.Status,
+                Title: tudoListItem.Title
+            );
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = await _todoListItemApplication.GetByIdAsync(tudoListItem.Id);
 
@@ -311,13 +308,13 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Can_Add_A_TodoListItem_With_Valid_Properties_Asynchronously()
         {
-            var tudoListItem = new AddItemDto()
-            {
-                Title = "Test add item",
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-            };
+            var tudoListItem = new AddItemDto
+            (
+                Title: "Test add item",
+                Description: "Test",
+                Priority: Priority.Medium,
+                Status: Status.NotStarted
+            );
 
             await _todoListItemApplication.AddAsync(tudoListItem);
 
@@ -335,13 +332,13 @@ namespace Tudo_List.Test.Application
         [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")]
         public async Task Cant_Add_A_TodoListItem_With_Invalid_Properties_Asynchronously(string? invalidTitle)
         {
-            var tudoListItem = new AddItemDto()
-            {
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-                Title = invalidTitle,
-            };
+            var tudoListItem = new AddItemDto
+            (
+                Description: "Test",
+                Priority: Priority.Medium,
+                Status: Status.NotStarted,
+                Title: invalidTitle!
+            );
 
             await Assert.ThrowsAsync<ValidationException>(async () => await _todoListItemApplication.AddAsync(tudoListItem));
         }
@@ -359,17 +356,16 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id
             };
 
-            var tudoListItem = new UpdateItemDto()
-            {
-                ItemId = newItem.Id,
-                Description = "Update test",
-                Priority = Priority.Medium,
-                Status = Status.Completed,
-                Title = "Update test",
-            };
+            var tudoListItem = new UpdateItemDto
+            (
+                Id: newItem.Id,
+                Description: "Update test",
+                Priority: Priority.Medium,
+                Status: Status.Completed,
+                Title: "Update test"
+            );
 
-            await _context.AddAsync(newItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(newItem);
 
             await _todoListItemApplication.UpdateAsync(tudoListItem);
 
@@ -381,14 +377,14 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Cant_Update_A_TodoListItem_If_User_Is_Not_Current_User_Asynchronously()
         {
-            var tudoListItem = new UpdateItemDto()
-            {
-                ItemId = Guid.NewGuid(),
-                Description = "Update test",
-                Priority = Priority.Medium,
-                Status = Status.Completed,
-                Title = "Update test",
-            };
+            var tudoListItem = new UpdateItemDto
+            (
+                Id: Guid.NewGuid(),
+                Description: "Update test",
+                Priority: Priority.Medium,
+                Status: Status.Completed,
+                Title: "Update test"
+            );
 
             await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _todoListItemApplication.UpdateAsync(tudoListItem));
         }
@@ -396,14 +392,14 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Cant_Update_A_Non_Existent_TodoListItem_Asynchronously()
         {
-            var tudoListItem = new UpdateItemDto()
-            {
-                ItemId = Guid.NewGuid(),
-                Description = "Test",
-                Priority = Priority.Medium,
-                Status = Status.NotStarted,
-                Title = "Test",
-            };
+            var tudoListItem = new UpdateItemDto
+            (
+                Id: Guid.NewGuid(),
+                Description: "Test",
+                Priority: Priority.Medium,
+                Status: Status.NotStarted,
+                Title: "Test"
+            );
 
             await Assert.ThrowsAsync<EntityNotFoundException>(async () => await _todoListItemApplication.UpdateAsync(tudoListItem));
         }
@@ -422,8 +418,7 @@ namespace Tudo_List.Test.Application
                 UserId = CurrentUser.Id,
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             await _todoListItemApplication.DeleteAsync(tudoListItem.Id);
 

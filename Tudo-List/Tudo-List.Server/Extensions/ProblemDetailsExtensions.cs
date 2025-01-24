@@ -16,19 +16,20 @@ namespace Tudo_List.Server.Extensions
                 builder.Run(async context =>
                 {
                     var exceptionHandlerFeature = context.Features.Get<IExceptionHandlerFeature>();
-
                     if (exceptionHandlerFeature is not null)
                     {
-                        var exception = exceptionHandlerFeature.Error;
-
-                        var problemDetails = exception is ValidationException validationException
+                        var problemDetails = exceptionHandlerFeature.Error is ValidationException validationException
                             ? ProblemDetailsHelper.GetValidationProblemDetails(validationException, context)
-                            : ProblemDetailsHelper.GetProblemDetails(exception, context);
+                            : ProblemDetailsHelper.GetProblemDetails(exceptionHandlerFeature.Error, context);
 
-                        context.Response.StatusCode = problemDetails.Status.Value;
+                        context.Response.StatusCode = problemDetails.Status!.Value;
                         context.Response.ContentType = "application/problem+json";
                         
-                        string json = JsonConvert.SerializeObject(problemDetails, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                        var json = JsonConvert.SerializeObject(problemDetails, new JsonSerializerSettings 
+                        { 
+                            ContractResolver = new CamelCasePropertyNamesContractResolver() 
+                        });
+
                         await context.Response.WriteAsync(json);
                     }
                 });
@@ -43,7 +44,11 @@ namespace Tudo_List.Server.Extensions
                 {
                     return new BadRequestObjectResult(ProblemDetailsHelper.GetValidationProblemDetails(context))
                     {
-                        ContentTypes = { "application/problem+json", "application/problem+xml" }
+                        ContentTypes = 
+                        { 
+                            "application/problem+json", 
+                            "application/problem+xml" 
+                        }
                     };
                 };
             });

@@ -17,18 +17,13 @@ namespace Tudo_List.Test.Domain.Helpers
         [Fact]
         public void Can_Get_Enum_Description_If_It_Is_Defined()
         {
-            var description = TestEnum.Foo.GetDescription();
-
-            Assert.Equal(TestDescription, description);
+            Assert.Equal(TestDescription, TestEnum.Foo.GetDescription());
         }
         
         [Fact]
         public void Can_Get_Enum_in_String_When_Description_If_It_Is_Not_Defined()
         {
-            var expectedDescription = TestEnum.NoDescriptionTest.ToString();
-            var description = TestEnum.NoDescriptionTest.GetDescription();
-
-            Assert.Equal(expectedDescription, description);
+            Assert.Equal(TestEnum.NoDescriptionTest.ToString(), TestEnum.NoDescriptionTest.GetDescription());
         }
 
         [Theory]
@@ -36,17 +31,13 @@ namespace Tudo_List.Test.Domain.Helpers
         [InlineData(1)]
         public void Can_Parse_Valid_Enum_Int_Value(int value)
         {
-            var status = value.AsEnum<TestEnum>();
-
-            Assert.Equal(typeof(TestEnum), status.GetType());
+            Assert.Equal(typeof(TestEnum), value.AsEnum<TestEnum>().GetType());
         }
 
         [Fact]
         public void Cant_Parse_Invalid_Status_Int_Value()
         {
-            const int invalidValue = 5;
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => invalidValue.AsEnum<TestEnum>());
+            Assert.Throws<ArgumentOutOfRangeException>(() => 5.AsEnum<TestEnum>());
         }
     }
 }
