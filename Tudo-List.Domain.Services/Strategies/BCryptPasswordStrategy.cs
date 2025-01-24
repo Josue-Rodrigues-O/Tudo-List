@@ -1,5 +1,4 @@
 ﻿using Tudo_List.Domain.Core.Interfaces.Strategies;
-using Tudo_List.Domain.Services.Constants;
 
 namespace Tudo_List.Domain.Services.Strategies
 {
@@ -9,7 +8,7 @@ namespace Tudo_List.Domain.Services.Strategies
 
         public string HashPassword(string password, string? salt = null)
         {
-            return BCrypt.Net.BCrypt.EnhancedHashPassword(password, PasswordConstants.BcryptWorkFactor);
+            return BCrypt.Net.BCrypt.EnhancedHashPassword(password, workFactor: 10);
         }
 
         public bool VerifyPassword(string password, string passwordHash, string? salt = null)

@@ -10,87 +10,77 @@ using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Application
 {
-    public class UserApplication(
-        IUserService userService, 
-        IMapper mapper, 
-        ICurrentUserService currentUserService) : IUserApplication
+    public class UserApplication(IUserService userService, IMapper mapper, ICurrentUserService currentUserService) : IUserApplication
     {
-        private readonly IUserService _userService = userService;
-        private readonly IMapper _mapper = mapper;
-        
         private int CurrentUserId 
             => int.Parse(currentUserService.Id);
 
         public IEnumerable<UserDto> GetAll()
         {
-            return _mapper.Map<IEnumerable<UserDto>>(_userService.GetAll());
+            return mapper.Map<IEnumerable<UserDto>>(userService.GetAll());
         }
         
         public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            return _mapper.Map<IEnumerable<UserDto>>(await _userService.GetAllAsync());
+            return mapper.Map<IEnumerable<UserDto>>(await userService.GetAllAsync());
         }
 
         public UserDto GetById(int id)
         {
-            var user = _userService.GetById(id)
+            var user = userService.GetById(id)
                 ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
 
-            return _mapper.Map<UserDto>(user);
+            return mapper.Map<UserDto>(user);
         }
         
         public async Task<UserDto> GetByIdAsync(int id)
         {
-            var user = await _userService.GetByIdAsync(id)
+            var user = await userService.GetByIdAsync(id)
                 ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
 
-            return _mapper.Map<UserDto>(user);
+            return mapper.Map<UserDto>(user);
         }
 
         public UserDto GetByEmail(string email)
         {
-            var user = _userService.GetByEmail(email)
+            var user = userService.GetByEmail(email)
                 ?? throw new EntityNotFoundException(nameof(User), nameof(User.Email), email);
 
-            return _mapper.Map<UserDto>(user);
+            return mapper.Map<UserDto>(user);
         }
         
         public async Task<UserDto> GetByEmailAsync(string email)
         {
-            var user = await _userService.GetByEmailAsync(email)
+            var user = await userService.GetByEmailAsync(email)
                 ?? throw new EntityNotFoundException(nameof(User), nameof(User.Email), email);
 
-            return _mapper.Map<UserDto>(user);
+            return mapper.Map<UserDto>(user);
         }
 
         public void Register(RegisterUserDto model)
         {
             if (model.Password != model.ConfirmPassword)
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(nameof(model.Password), ValidationMessageHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
 
-            _userService.Register(_mapper.Map<User>(model), model.Password);
+            userService.Register(mapper.Map<User>(model), model.Password);
         }
         
         public async Task RegisterAsync(RegisterUserDto model)
         {
             if (model.Password != model.ConfirmPassword)
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(nameof(model.Password), ValidationMessageHelper.GetMustBeEqualMessage(nameof(model.Password), nameof(model.ConfirmPassword)))
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
 
-            await _userService.RegisterAsync(_mapper.Map<User>(model), model.Password);
+            await userService.RegisterAsync(mapper.Map<User>(model), model.Password);
         }
 
         public void Update(UpdateUserDto model)
@@ -98,7 +88,7 @@ namespace Tudo_List.Application
             if (model.UserId != CurrentUserId)
                 throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Update)));
 
-            _userService.Update(model.UserId, model.NewName);
+            userService.Update(model.UserId, model.NewName);
         }
         
         public async Task UpdateAsync(UpdateUserDto model)
@@ -106,7 +96,7 @@ namespace Tudo_List.Application
             if (model.UserId != CurrentUserId)
                 throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateAsync)));
 
-            await _userService.UpdateAsync(model.UserId, model.NewName);
+            await userService.UpdateAsync(model.UserId, model.NewName);
         }
 
         public void UpdateEmail(UpdateEmailDto model)
@@ -114,7 +104,7 @@ namespace Tudo_List.Application
             if (model.UserId != CurrentUserId)
                 throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmail)));
 
-            _userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
+            userService.UpdateEmail(model.UserId, model.NewEmail, model.CurrentPassword);
         }
 
         public async Task UpdateEmailAsync(UpdateEmailDto model)
@@ -122,7 +112,7 @@ namespace Tudo_List.Application
             if (model.UserId != CurrentUserId)
                 throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(UpdateEmailAsync)));
 
-            await _userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
+            await userService.UpdateEmailAsync(model.UserId, model.NewEmail, model.CurrentPassword);
         }
 
         public void UpdatePassword(UpdatePasswordDto model)
@@ -140,7 +130,7 @@ namespace Tudo_List.Application
                 throw new ValidationException(error);
             }
 
-            _userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
+            userService.UpdatePassword(model.UserId, model.CurrentPassword, model.NewPassword);
         }
 
         public async Task UpdatePasswordAsync(UpdatePasswordDto model)
@@ -158,7 +148,7 @@ namespace Tudo_List.Application
                 throw new ValidationException(error);
             }
 
-            await _userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
+            await userService.UpdatePasswordAsync(model.UserId, model.CurrentPassword, model.NewPassword);
         }
 
         public void Delete(int id)
@@ -166,7 +156,7 @@ namespace Tudo_List.Application
             if (id != CurrentUserId)
                 throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
 
-            _userService.Delete(id);
+            userService.Delete(id);
         }
         
         public async Task DeleteAsync(int id)
@@ -174,7 +164,7 @@ namespace Tudo_List.Application
             if (id != CurrentUserId)
                 throw new UnauthorizedAccessException(ValidationMessageHelper.GetUnauthorizedOperationMessage(nameof(User), nameof(Delete)));
 
-            await _userService.DeleteAsync(id);
+            await userService.DeleteAsync(id);
         }
     }
 }

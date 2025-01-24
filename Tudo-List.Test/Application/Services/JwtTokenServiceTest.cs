@@ -32,11 +32,11 @@ namespace Tudo_List.Test.Application.Services
         public void Should_Create_Valid_Tokens()
         {
             var token = _jwtTokenService.GenerateToken(new UserDto
-            {
-                Id = 5,
-                Email = "test@test.com",
-                Name = "Test",
-            });
+            (
+                Id: 5,
+                Email: "test@test.com",
+                Name: "Test"
+            ));
 
             Assert.True(_jwtTokenService.ValidateToken(token));
         }

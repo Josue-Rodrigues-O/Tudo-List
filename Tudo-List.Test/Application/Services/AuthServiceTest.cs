@@ -57,8 +57,7 @@ namespace Tudo_List.Test.Application.Services
                 Salt = null
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             return user.Id;
         }

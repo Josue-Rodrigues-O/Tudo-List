@@ -14,16 +14,14 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         public UserRepositoryTest()
         {
             _userRepository = _serviceProvider.GetRequiredService<IUserRepository>();
-            InitializeInMemoryDatabase(MockData.GetUsers());
+            SaveInMemoryDatabase(MockData.GetUsers());
         }
 
         [Fact]
         public void Can_Get_All_Users_Synchronously()
         {
             var users = MockData.GetUsers();
-
             var usersInDatabase = _userRepository.GetAll();
-
             Assert.Equivalent(users.Count, usersInDatabase.Count());
         }
 
@@ -76,14 +74,12 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public void Can_Add_an_User_With_Valid_Properties_Synchronously()
         {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
             var user = new User
             {
                 Name = "Jesus",
                 Email = "Jesus@gmail.com",
                 PasswordHash = "ljYRhBNHu2",
-                PasswordStrategy = strategy
+                PasswordStrategy = PasswordStrategy.BCrypt
             };
 
             _userRepository.Add(user);
@@ -99,14 +95,12 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [InlineData(null, "teste@gmail.com", "12345678")]
         public void Cant_Add_an_User_With_Invalid_Properties_Synchronously(string? name, string? email, string? password)
         {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
             var user = new User
             {
-                Name = name,
-                Email = email,
-                PasswordHash = password,
-                PasswordStrategy = strategy
+                Name = name!,
+                Email = email!,
+                PasswordHash = password!,
+                PasswordStrategy = PasswordStrategy.BCrypt
             };
 
             Assert.Throws<DbUpdateException>(() => _userRepository.Add(user));
@@ -123,8 +117,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             user.Name = "UpdateTest";
 
@@ -146,8 +139,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             _userRepository.Remove(user);
 
@@ -229,14 +221,12 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [Fact]
         public async Task Can_Add_an_User_With_Valid_Properties_Asynchronously()
         {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
             var user = new User
             {
                 Name = "Jesus",
                 Email = "Jesus@gmail.com",
                 PasswordHash = "ljYRhBNHu2",
-                PasswordStrategy = strategy
+                PasswordStrategy = PasswordStrategy.BCrypt
             };
 
             await _userRepository.AddAsync(user);
@@ -252,14 +242,12 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         [InlineData(null, "teste@gmail.com", "12345678")]
         public async Task Cant_Add_an_User_With_Invalid_Properties_Asynchronously(string? name, string? email, string? password)
         {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
             var user = new User
             {
-                Name = name,
-                Email = email,
-                PasswordHash = password,
-                PasswordStrategy = strategy
+                Name = name!,
+                Email = email!,
+                PasswordHash = password!,
+                PasswordStrategy = PasswordStrategy.BCrypt
             };
 
             await Assert.ThrowsAsync<DbUpdateException>(() => _userRepository.AddAsync(user));
@@ -276,8 +264,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             user.Name = "UpdateTest";
 
@@ -299,8 +286,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await _userRepository.RemoveAsync(user);
 

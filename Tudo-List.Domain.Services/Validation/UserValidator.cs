@@ -19,11 +19,16 @@ namespace Tudo_List.Domain.Services.Validation
         private string? _email;
         private string? _password;
 
-        public UserValidator() { }
+        public UserValidator() 
+        {
+            _userRepository = null!;
+            _validationFailures = null!;
+        }
         
         public UserValidator(IUserRepository userRepository)
         {
             _userRepository = userRepository;
+            _validationFailures = null!;
         }
 
         public IUserValidator WithName(string name)
@@ -48,16 +53,16 @@ namespace Tudo_List.Domain.Services.Validation
         {
             _validationFailures = [];
 
-            if (_name is not null)
+            if (_name != null)
                 ValidateName(_name);
 
-            if (_email is not null)
+            if (_email != null)
                 ValidateEmail(_email);
 
-            if (_password is not null)
+            if (_password != null)
                 ValidatePassword(_password);
 
-            if (_validationFailures.Count != uint.MinValue)
+            if (_validationFailures.Count > 0)
             {
                 throw new ValidationException(_validationFailures);
             }
@@ -65,11 +70,9 @@ namespace Tudo_List.Domain.Services.Validation
 
         private void ValidateName(string name)
         {
-            const string nameProperty = nameof(User.Name);
-
-            if (string.IsNullOrWhiteSpace(name))
+            if (!name.ContainsValue())
             {
-                _validationFailures.Add(new ValidationFailure(nameProperty, ValidationMessageHelper.GetInvalidPropertyValueMessage(nameProperty, name)));
+                _validationFailures.Add(new ValidationFailure(nameof(User.Name), ValidationMessageHelper.GetInvalidPropertyValueMessage(nameof(User.Name), name)));
                 return;
             }
 
@@ -77,13 +80,11 @@ namespace Tudo_List.Domain.Services.Validation
             const int maximumLength = UserValidationConstants.NameMaximumLength;
 
             if (!name.TrimAndCondenseSpaces().IsLengthBetween(minimumLength, maximumLength))
-                _validationFailures.Add(new ValidationFailure(nameProperty ,ValidationMessageHelper.GetInvalidLengthMessage(nameProperty, minimumLength, maximumLength)));
+                _validationFailures.Add(new ValidationFailure(nameof(User.Name) ,ValidationMessageHelper.GetInvalidLengthMessage(nameof(User.Name), minimumLength, maximumLength)));
         }
 
         private void ValidateEmail(string email)
         {
-            const string emailProperty = nameof(User.Email);
-
             if (_userRepository is null)
                 throw new ArgumentNullException(nameof(_userRepository), "You must inject the repository dependency via constructor to validate email!");
 
@@ -96,9 +97,13 @@ namespace Tudo_List.Domain.Services.Validation
             var emailWithValidFormat = email.TrimAndCondenseSpaces();
 
             if (!ValidEmailRegex().IsMatch(emailWithValidFormat))
-                _validationFailures.Add(new ValidationFailure(emailProperty, ValidationMessageHelper.GetInvalidFormatMessage(emailProperty)));
+            {
+                _validationFailures.Add(new ValidationFailure(nameof(User.Email), ValidationMessageHelper.GetInvalidFormatMessage(nameof(User.Email))));
+            }
             else if (_userRepository.GetByEmail(emailWithValidFormat) != null)
-                _validationFailures.Add(new ValidationFailure(emailProperty,ValidationMessageHelper.GetUniquePropertyMessage(emailProperty)));
+            {
+                _validationFailures.Add(new ValidationFailure(nameof(User.Email), ValidationMessageHelper.GetUniquePropertyMessage(nameof(User.Email))));
+            }
         }
 
         private void ValidatePassword(string password)
@@ -114,9 +119,7 @@ namespace Tudo_List.Domain.Services.Validation
             const int minimumLength = UserValidationConstants.PasswordMinimumLength;
             const int maximumLength = UserValidationConstants.PasswordMaximumLength;
 
-            var passwordWithValidFormat = password.TrimAndCondenseSpaces();
-
-            if (!passwordWithValidFormat.IsLengthBetween(minimumLength, maximumLength))
+            if (!password.TrimAndCondenseSpaces().IsLengthBetween(minimumLength, maximumLength))
                 _validationFailures.Add(new ValidationFailure(passwordProperty ,ValidationMessageHelper.GetInvalidLengthMessage(passwordProperty, minimumLength, maximumLength)));
         }
 

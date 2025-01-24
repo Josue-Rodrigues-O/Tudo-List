@@ -2,13 +2,5 @@
 
 namespace Tudo_List.Domain.Models
 {
-    public record TodoListItemQueryFilter
-    {
-        public string? Title { get; init; }
-        public Status? Status { get; init; }
-        public Priority? Priority { get; init; }
-        public DateTime? CreationDate { get; init; }
-        public DateTime? InitialDate { get; init; }
-        public DateTime? FinalDate { get; init; }
-    }
+    public record TodoListItemQueryFilter(string? Title, Status? Status, Priority? Priority, DateTime? CreationDate, DateTime? InitialDate, DateTime? FinalDate);
 }

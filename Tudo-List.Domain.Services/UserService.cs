@@ -14,63 +14,60 @@ namespace Tudo_List.Domain.Services
 {
     public class UserService(IUserRepository userRepository, IPasswordStrategyFactory passwordStrategyFactory) : IUserService
     {
-        private readonly IUserRepository _userRepository = userRepository;
-        private readonly IPasswordStrategyFactory _passwordStrategyFactory = passwordStrategyFactory;
-
         private const string PasswordProperty = "Password";
 
         public IEnumerable<User> GetAll()
         {
-            return _userRepository.GetAll();
+            return userRepository.GetAll();
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _userRepository.GetAllAsync();
+            return await userRepository.GetAllAsync();
         }
 
         public User? GetById(int id)
         {
-            return _userRepository.GetById(id);
+            return userRepository.GetById(id);
         }
 
         public async Task<User?> GetByIdAsync(int id)
         {
-            return await _userRepository.GetByIdAsync(id);
+            return await userRepository.GetByIdAsync(id);
         }
 
         public User? GetByEmail(string email)
         {
-            return _userRepository.GetByEmail(email);
+            return userRepository.GetByEmail(email);
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _userRepository.GetByEmailAsync(email);
+            return await userRepository.GetByEmailAsync(email);
         }
 
         public void Register(User user, string password)
         {
-            new UserValidator(_userRepository)
+            new UserValidator(userRepository)
                 .WithName(user.Name)
                 .WithEmail(user.Email)
                 .WithPassword(password)
                 .Validate();
 
             DefineUserPasswordHash(user, password);
-            _userRepository.Add(user);
+            userRepository.Add(user);
         }
 
         public async Task RegisterAsync(User user, string password)
         {
-            new UserValidator(_userRepository)
+            new UserValidator(userRepository)
                 .WithName(user.Name)
                 .WithEmail(user.Email)
                 .WithPassword(password)
                 .Validate();
 
             DefineUserPasswordHash(user, password);
-            await _userRepository.AddAsync(user);
+            await userRepository.AddAsync(user);
         }
 
         public void Update(int id, string? newName)
@@ -80,7 +77,7 @@ namespace Tudo_List.Domain.Services
             if (newName is null || user.Name.Equals(newName))
                 throw new InvalidOperationException("No property is being updated!");
 
-            var userValidator = new UserValidator(_userRepository);
+            var userValidator = new UserValidator(userRepository);
 
             if (newName is not null)
             {
@@ -90,7 +87,7 @@ namespace Tudo_List.Domain.Services
 
             userValidator.Validate();
 
-            _userRepository.Update(user);
+            userRepository.Update(user);
         }
 
         public async Task UpdateAsync(int id, string? newName)
@@ -100,7 +97,7 @@ namespace Tudo_List.Domain.Services
             if (newName is null || user.Name.Equals(newName))
                 throw new InvalidOperationException("No property is being updated!");
 
-            var userValidator = new UserValidator(_userRepository);
+            var userValidator = new UserValidator(userRepository);
 
             if (newName is not null)
             {
@@ -109,7 +106,7 @@ namespace Tudo_List.Domain.Services
             }
 
             userValidator.Validate();
-            await _userRepository.UpdateAsync(user);
+            await userRepository.UpdateAsync(user);
         }
 
         public void UpdateEmail(int id, string newEmail, string currentPassword)
@@ -118,21 +115,19 @@ namespace Tudo_List.Domain.Services
 
             if (user.Email.Equals(newEmail))
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(nameof(User.Email), ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
-            new UserValidator(_userRepository)
+            new UserValidator(userRepository)
                 .WithEmail(newEmail)
                 .Validate();
 
             ValidateUserPassword(user, currentPassword);
             user.Email = newEmail;
             
-            _userRepository.Update(user);
+            userRepository.Update(user);
         }
 
         public async Task UpdateEmailAsync(int id, string newEmail, string currentPassword)
@@ -141,22 +136,20 @@ namespace Tudo_List.Domain.Services
 
             if (user.Email.Equals(newEmail))
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(nameof(User.Email), ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(nameof(User.Email)))
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
 
-            new UserValidator(_userRepository)
+            new UserValidator(userRepository)
                 .WithEmail(newEmail)
                 .Validate();
 
             ValidateUserPassword(user, currentPassword);
             user.Email = newEmail;
             
-            await _userRepository.UpdateAsync(user);
+            await userRepository.UpdateAsync(user);
         }
 
         public void UpdatePassword(int id, string currentPassword, string newPassword)
@@ -169,18 +162,16 @@ namespace Tudo_List.Domain.Services
 
             if (newPassword.Equals(currentPassword))
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(PasswordProperty, ValidationMessageHelper.GetCantBeTheSameAsCurrentPropertyMessage(PasswordProperty))
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
 
             ValidateUserPassword(user, currentPassword);
             DefineUserPasswordHash(user, newPassword);
             
-            _userRepository.Update(user);
+            userRepository.Update(user);
         }
 
         public async Task UpdatePasswordAsync(int id, string currentPassword, string newPassword)
@@ -204,52 +195,52 @@ namespace Tudo_List.Domain.Services
             ValidateUserPassword(user, currentPassword);
             DefineUserPasswordHash(user, newPassword);
 
-            await _userRepository.UpdateAsync(user);
+            await userRepository.UpdateAsync(user);
         }
 
         public void Delete(int id)
         {
             var user = GetUser(id);
-            _userRepository.Remove(user);
+            userRepository.Remove(user);
         }
 
         public async Task DeleteAsync(int id)
         {
             var user = await GetUserAsync(id);
-            await _userRepository.RemoveAsync(user);
+            await userRepository.RemoveAsync(user);
         }
         
         private User GetUser(int id)
         {
-            return _userRepository.GetById(id)
+            return userRepository.GetById(id)
                  ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
         }
 
         private async Task<User> GetUserAsync(int id)
         {
-            return await _userRepository.GetByIdAsync(id)
+            return await userRepository.GetByIdAsync(id)
                 ?? throw new EntityNotFoundException(nameof(User), nameof(User.Id), id);
         }
 
         private void ValidateUserPassword(User user, string password)
         {
-            var passwordStrategy = _passwordStrategyFactory.CreatePasswordStrategy(user.PasswordStrategy);
+            var isPasswordValid = passwordStrategyFactory
+                .CreatePasswordStrategy(user.PasswordStrategy)
+                .VerifyPassword(password, user.PasswordHash, user.Salt);
 
-            if (!passwordStrategy.VerifyPassword(password, user.PasswordHash, user.Salt))
+            if (!isPasswordValid)
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(PasswordProperty, $"The {PasswordProperty} is incorrect!")
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
         }
 
         private void DefineUserPasswordHash(User user, string password)
         {
             var strategyToUse = EnumHelper.GetRandomValue<PasswordStrategy>();
-            var strategy = _passwordStrategyFactory.CreatePasswordStrategy(strategyToUse);
+            var strategy = passwordStrategyFactory.CreatePasswordStrategy(strategyToUse);
             string? saltString = null;
 
             if (strategy.UsesSaltingParameter)

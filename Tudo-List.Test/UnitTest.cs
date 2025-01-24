@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections;
 using Tudo_list.Infrastructure.Context;
 using Tudo_list.Infrastructure.CrossCutting.Ioc;
 using Tudo_List.Domain.Core.Interfaces.Configuration;
@@ -15,8 +16,7 @@ namespace Tudo_List.Test
 
         public UnitTest()
         {
-            var serviceCollection = GetServiceCollection();
-            _serviceProvider = serviceCollection.BuildServiceProvider();
+            _serviceProvider = GetServiceCollection().BuildServiceProvider();
             _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
         }
 
@@ -43,11 +43,18 @@ namespace Tudo_List.Test
             return services;
         }
 
-        protected void InitializeInMemoryDatabase<T>(IEnumerable<T> collection) where T : class
+        protected void SaveInMemoryDatabase<T>(T entity) where T : class
         {
-            foreach (var item in collection)
+            if (entity is IEnumerable collection)
             {
-                _context.Add(item);
+                foreach (var item in collection)
+                {
+                    _context.Add(item);
+                }
+            }
+            else
+            {
+                _context.Add(entity);
             }
 
             _context.SaveChanges();
