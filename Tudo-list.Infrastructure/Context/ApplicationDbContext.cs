@@ -7,6 +7,7 @@ namespace Tudo_list.Infrastructure.Context
     {
         public DbSet<User> Users { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
+        public DbSet<UserImage> UserImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +18,12 @@ namespace Tudo_list.Infrastructure.Context
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .IsRequired();
+
+            modelBuilder.Entity<UserImage>()
+                .HasOne(i => i.User)
+                .WithOne(u => u.Image)
+                .HasForeignKey<UserImage>(i => i.UserId)
+                .IsRequired();  
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tudo_list.Infrastructure.Context;
 
@@ -11,9 +12,11 @@ using Tudo_list.Infrastructure.Context;
 namespace Tudo_list.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250126223852_AddingUserImageToProject")]
+    partial class AddingUserImageToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,17 +133,12 @@ namespace Tudo_list.Infrastructure.Migrations
             modelBuilder.Entity("Tudo_List.Domain.Entities.UserImage", b =>
                 {
                     b.HasOne("Tudo_List.Domain.Entities.User", "User")
-                        .WithOne("Image")
+                        .WithOne()
                         .HasForeignKey("Tudo_List.Domain.Entities.UserImage", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Tudo_List.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Image");
                 });
 #pragma warning restore 612, 618
         }
