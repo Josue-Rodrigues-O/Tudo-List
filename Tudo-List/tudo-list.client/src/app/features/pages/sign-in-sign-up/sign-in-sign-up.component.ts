@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { User } from '../../../core/models/user/user';
-import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/users/user.service';
 import { ToastService } from '../../../shared/services/toast/toast.service';
@@ -28,18 +27,9 @@ export class SignInSignUpComponent {
     private userService: UserService,
     private toastService: ToastService,
     private messageBox: MessageBoxService,
-    private translate: TranslateService,
     private requestService: RequestService,
     private problemDetailsMessagesService: ProblemDetailsMessagesService
-  ) {
-    this.translate.addLangs(['en', 'pt']);
-    this.translate.setDefaultLang('en');
-
-    const browserLang = this.translate.getBrowserLang();
-    this.translate.use(
-      browserLang && browserLang.match(/en|pt/) ? browserLang : 'en'
-    );
-  }
+  ) {}
 
   onClickTextSignUpSignIn(form: HTMLElement, image: HTMLElement) {
     if (this.isSignIn) {

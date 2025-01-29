@@ -3,30 +3,28 @@ import { User } from '../../../core/models/user/user';
 import { ToastService } from '../toast/toast.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RequestService } from '../requestService/request.service';
 import { UserValidatorService } from '../validations/userValidator/user-validator.service';
 import { MessageBoxService } from '../message-box/message-box.service';
 import { FieldsForUserValidation } from '../../../core/models/fields-for-user-validation/fields-for-user-validation';
 import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   private fieldsForUserValidation!: FieldsForUserValidation;
-
   private apiUrlLogin: string = 'api/Login';
   private apiUrlUser: string = 'api/Users';
 
   constructor(
     private http: HttpClient,
-    private requestService: RequestService,
     private toast: ToastService,
-    private messageBox: MessageBoxService
+    private messageBox: MessageBoxService,
+    private translate: TranslateService
   ) {}
 
   private validate(userValidator: UserValidatorService) {
-    userValidator.setIsGenericMessage(true);
     let userValidation = userValidator.validate();
 
     if (!userValidation.isValid) {
@@ -36,14 +34,22 @@ export class UserService {
     }
   }
 
-  private validationToRegister(user: User) {
+  private createValidator() {
     let userValidator = new UserValidatorService(this.fieldsForUserValidation);
+    userValidator.setIsGenericMessage(true);
+    userValidator.setTranslationService(this.translate);
+    return userValidator;
+  }
+
+  private validationToRegister(user: User) {
+    let userValidator = this.createValidator();
     userValidator.validationToRegister(user);
     this.validate(userValidator);
   }
 
   private validationToConnect(user: User) {
-    let userValidator = new UserValidatorService(this.fieldsForUserValidation);
+    let userValidator = this.createValidator();
+    userValidator.setTranslationService;
     userValidator.validationToConnect(user);
     this.validate(userValidator);
   }

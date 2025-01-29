@@ -14,5 +14,20 @@
             "password": "Senha",
             "confirmPassword": "Confirme sua senha"
         }
-    }
+    },
+    "login": "LOGIN",
+    "register": "CADASTRO",
+    "forgotPassword": "Esqueceu sua senha?",
+    "DontHaveAnAccount": "Não possui uma conta?",
+    "signIn": "Entrar",
+    "signUp": "Inscreva-se",
+    "alreadyHasAnAccount": "Já possui uma conta?",
+    "email": "E-mail",
+    "password": "Senha",
+    "confirmPassword": "Confirme sua senha",
+    "validationNotEmpty": "O campo '{{fieldName}}' não pode ficar vazio!",
+    "validationMaxLength": "O campo '{{fieldName}}' deve possuir no máximo '{{maxLength}}' caracteres!",
+    "validationMinLength": "O campo '{{fieldName}}' deve possuir no minimo '{{minLength}}' caracteres!",
+    "validationMatch": "O valor do campo '{{fieldName}}' é inválido!",
+    "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!"
 }

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { InputComponent } from '../../../../features/components/input/input.component';
 
 export class Validation {
@@ -5,12 +6,19 @@ export class Validation {
   private fieldName: string;
   private propertyValue: any;
   private rules: Array<RuleWithMessage>;
+  private translate: TranslateService;
 
-  constructor(propertyValue: any, fieldName: string, field: InputComponent) {
+  constructor(
+    propertyValue: any,
+    fieldName: string,
+    field: InputComponent,
+    translate: TranslateService
+  ) {
     this.field = field;
     this.fieldName = fieldName;
     this.propertyValue = propertyValue;
     this.rules = new Array<RuleWithMessage>();
+    this.translate = translate;
   }
 
   private addValidation(rule: () => boolean, message: string) {
@@ -36,7 +44,9 @@ export class Validation {
   }
 
   notEmpty() {
-    const message = `The value of the '${this.fieldName}' field cannot be empty!`;
+    const message = this.translate.instant('validationNotEmpty', {
+      fieldName: this.fieldName,
+    });
     const rule = () => this.propertyValue.length > 0;
 
     this.addValidation(rule, message);
@@ -44,7 +54,10 @@ export class Validation {
   }
 
   maxLength(maxLength: number) {
-    const message = `The value of the '${this.fieldName}' field must have a maximum of '${maxLength}' characters!`;
+    const message = this.translate.instant('validationMaxLength', {
+      fieldName: this.fieldName,
+      maxLength: maxLength,
+    });
     const rule = () => this.propertyValue.length <= maxLength;
 
     this.addValidation(rule, message);
@@ -52,7 +65,10 @@ export class Validation {
   }
 
   minLength(minLength: number) {
-    const message = `The value of the '${this.fieldName}' field must have at least '${minLength}' characters!`;
+    const message = this.translate.instant('validationMinLength', {
+      fieldName: this.fieldName,
+      minLength: minLength,
+    });
     const rule = () => this.propertyValue.length >= minLength;
 
     this.addValidation(rule, message);
@@ -60,7 +76,9 @@ export class Validation {
   }
 
   match(regex: RegExp) {
-    const message = `The value of the '${this.fieldName}' field is invalid!`;
+    const message = this.translate.instant('validationMatch', {
+      fieldName: this.fieldName,
+    });
     const rule = () => this.propertyValue.match(regex);
 
     this.addValidation(rule, message);
