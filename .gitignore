@@ -429,4 +429,4 @@ FodyWeavers.xsd
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Angular,VisualStudio,VisualStudioCode
 
-secrets/
+Secrets/

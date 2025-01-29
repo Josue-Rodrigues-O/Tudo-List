@@ -5,12 +5,10 @@ namespace Tudo_list.Infrastructure.Configuration.Constants
 {
     public class Secrets(IConfiguration configuration) : ISecrets
     {
-        private readonly IConfiguration _configuration = configuration;
+        public string ConnectionString => configuration[SecretsKeys.SqlServerConnectionString]
+            ?? throw new ArgumentNullException(nameof(ConnectionString), "The application does not have a connection string for Sql Server!");
 
-        public string SqlServerConnectionString => _configuration[SecretsKeys.SqlServerConnectionString]
-            ?? throw new ArgumentNullException(nameof(SqlServerConnectionString), "The application does not have a connection string for Sql Server!");
-
-        public string JwtPrivateKey => _configuration[SecretsKeys.JwtPrivateKey]
+        public string JwtPrivateKey => configuration[SecretsKeys.JwtPrivateKey]
             ?? throw new ArgumentNullException(nameof(JwtPrivateKey), "The application does not have a private key for JWT!");
     }
 }

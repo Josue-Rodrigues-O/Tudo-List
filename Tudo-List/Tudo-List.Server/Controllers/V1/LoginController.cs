@@ -12,46 +12,42 @@ namespace Tudo_List.Server.Controllers.V1
     [ApiVersion("1.0")]
     public class LoginController(IUserApplication userApplication, IAuthService authService, ITokenService tokenService) : ControllerBase
     {
-        private readonly IUserApplication _userApplication = userApplication;
-        private readonly IAuthService _authService = authService;
-        private readonly ITokenService _tokenService = tokenService;
-
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequestDto model)
         {
-            var user = _userApplication.GetByEmail(model.Email);
+            var user = userApplication.GetByEmail(model.Email);
 
-            if (!_authService.CheckPassword(user.Id, model.Password))
+            if (!authService.CheckPassword(user.Id, model.Password))
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(nameof(model.Password), $"The {nameof(model.Password)} is incorrect!")
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
 
-            var token = _tokenService.GenerateToken(user);
-            return Ok(new { Token = token });
+            return Ok(new
+            {
+                Token = tokenService.GenerateToken(user)
+            });
         }
 
         [HttpPost("login-async")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginRequestDto model)
         {
-            var user = await _userApplication.GetByEmailAsync(model.Email);
+            var user = await userApplication.GetByEmailAsync(model.Email);
 
-            if (!_authService.CheckPassword(user.Id, model.Password))
+            if (!authService.CheckPassword(user.Id, model.Password))
             {
-                var error = new ValidationFailure[]
-                {
+                throw new ValidationException(
+                [
                     new(nameof(model.Password), $"The {nameof(model.Password)} is incorrect!")
-                };
-
-                throw new ValidationException(error);
+                ]);
             }
 
-            var token = _tokenService.GenerateToken(user);
-            return Ok(new { Token = token });
+            return Ok(new 
+            { 
+                Token = tokenService.GenerateToken(user) 
+            });
         }
     }
 }

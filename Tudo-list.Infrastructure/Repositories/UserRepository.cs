@@ -7,73 +7,70 @@ namespace Tudo_list.Infrastructure.Repositories
 {
     public class UserRepository(ApplicationDbContext context) : IUserRepository
     {
-        private readonly ApplicationDbContext _context = context;
-        private readonly DbSet<User> _users = context.Users;
-
         public IEnumerable<User> GetAll()
         {
-            return _users.AsNoTracking();
+            return context.Users.AsNoTracking();
         }
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _users.AsNoTracking().ToListAsync();
+            return await context.Users.AsNoTracking().ToListAsync();
         }
 
         public User? GetById(int id)
         {
-            return _users.Find(id);
+            return context.Users.Find(id);
         }
 
         public async Task<User?> GetByIdAsync(int id)
         {
-            return await _users.FindAsync(id);
+            return await context.Users.FindAsync(id);
         }
 
         public User? GetByEmail(string email)
         {
-            return _users.FirstOrDefault(user => user.Email.Equals(email));
+            return context.Users.FirstOrDefault(user => user.Email.Equals(email));
         }
 
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _users.FirstOrDefaultAsync(user => user.Email.Equals(email));
+            return await context.Users.FirstOrDefaultAsync(user => user.Email.Equals(email));
         }
 
         public void Add(User user)
         {
-            _users.Add(user);
-            _context.SaveChanges();
+            context.Users.Add(user);
+            context.SaveChanges();
         }
 
         public async Task AddAsync(User user)
         {
-            await _users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await context.Users.AddAsync(user);
+            await context.SaveChangesAsync();
         }
 
         public void Update(User user)
         {
-            _users.Update(user);
-            _context.SaveChanges();
+            context.Users.Update(user);
+            context.SaveChanges();
         }
 
         public async Task UpdateAsync(User user)
         {
-            _users.Update(user);
-            await _context.SaveChangesAsync();
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
         }
 
         public void Remove(User user)
         {
-            _users.Remove(user);
-            _context.SaveChanges();
+            context.Users.Remove(user);
+            context.SaveChanges();
         }
 
         public async Task RemoveAsync(User user)
         {
-            _users.Remove(user);
-            await _context.SaveChangesAsync();
+            context.Users.Remove(user);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -16,8 +16,7 @@ namespace Tudo_List.Test.Domain.Helpers
         [Fact]
         public void Should_Return_True_When_I_Verify_If_Contains_String_With_Valid_Value()
         {
-            const string value = "Test";
-            Assert.True(value.ContainsValue());
+            Assert.True("Test".ContainsValue());
         }
 
         [Theory]

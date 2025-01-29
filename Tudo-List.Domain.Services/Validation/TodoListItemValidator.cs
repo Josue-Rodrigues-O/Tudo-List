@@ -8,50 +8,41 @@ namespace Tudo_List.Domain.Services.Validation
 {
     public class TodoListItemValidator : AbstractValidator<TodoListItem>
     {
-        private readonly ICurrentUserService _currentUser;
-
         public TodoListItemValidator(ICurrentUserService currentUserService)
         {
             RuleLevelCascadeMode = CascadeMode.Stop;
 
-            _currentUser = currentUserService;
-
             RuleSet(RuleSetNames.Register, ValidateItemTitle);
             RuleSet(RuleSetNames.Update, () =>
             {
-                When(item => item.Title is not null, ValidateItemTitle);
+                When(item => item.Title != null, ValidateItemTitle);
 
-                ValidateUserId(RuleSetNames.Update);
+                ValidateUserId(currentUserService, RuleSetNames.Update);
             });
 
             RuleSet(RuleSetNames.Delete, () =>
             {
-                ValidateUserId(RuleSetNames.Delete);
+                ValidateUserId(currentUserService, RuleSetNames.Delete);
             });
         }
 
         private void ValidateItemTitle()
         {
-            const string propertyName = "{PropertyName}";
-            const string propertyValue = "{PropertyValue}";
-
             const int titleMinimumLength = TodoListItemValidationContants.TitleMinimumLength;
             const int titleMaximumLength = TodoListItemValidationContants.TitleMaximumLength;
 
             RuleFor(item => item.Title)
                 .NotEmpty()
-                    .WithMessage(ValidationMessageHelper.GetInvalidPropertyValueMessage(propertyName, propertyValue))
+                    .WithMessage(ValidationMessageHelper.GetInvalidPropertyValueMessage("{PropertyName}", "{PropertyValue}"))
                 .Length(titleMinimumLength, titleMaximumLength)
-                    .WithMessage(ValidationMessageHelper.GetInvalidLengthMessage(propertyName, titleMinimumLength, titleMaximumLength));
+                    .WithMessage(ValidationMessageHelper.GetInvalidLengthMessage("{PropertyName}", titleMinimumLength, titleMaximumLength));
         }
 
-        private void ValidateUserId(string operation)
+        private void ValidateUserId(ICurrentUserService currentUserService, string operation)
         {
-            var userId = int.Parse(_currentUser.Id);
-
             RuleFor(item => item.UserId)
-                .Equal(userId)
-                    .WithMessage(ValidationMessageHelper.GetUnauthorizedItemOperationMessage(operation));
+                .Equal(int.Parse(currentUserService.Id))
+                .WithMessage(ValidationMessageHelper.GetUnauthorizedItemOperationMessage(operation));
         }
     }
 }

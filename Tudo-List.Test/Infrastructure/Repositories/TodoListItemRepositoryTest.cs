@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Tudo_list.Infrastructure.Repositories;
 using Tudo_List.Domain.Core.Interfaces.Repositories;
 using Tudo_List.Domain.Entities;
 using Tudo_List.Domain.Enums;
+using Tudo_List.Domain.Models;
 using Tudo_List.Test.Mock;
 
 namespace Tudo_List.Test.Infrastructure.Repositories
@@ -11,31 +11,21 @@ namespace Tudo_List.Test.Infrastructure.Repositories
     public class TodoListItemRepositoryTest : UnitTest
     {
         private readonly ITodoListItemRepository _itemRepository;
-        private User CurrentUser => MockData.GetCurrentUser();
+        private static User CurrentUser => MockData.GetCurrentUser();
 
         public TodoListItemRepositoryTest()
         {
             _itemRepository = _serviceProvider.GetRequiredService<ITodoListItemRepository>();
 
             _context.Users.Add(MockData.GetCurrentUser());
-            InitializeInMemoryDatabase(MockData.GetItems());
-        }
-
-
-        [Fact]
-        public void Can_Get_All_TodoListItems_Synchronously()
-        {
-            var todoListItems = MockData.GetItems();
-            var todoListItemsInDatabase = _itemRepository.GetAll();
-
-            Assert.Equal(todoListItems.Count, todoListItemsInDatabase.Count());
+            SaveInMemoryDatabase(MockData.GetItems());
         }
         
         [Fact]
         public void Can_Get_All_TodoListItems_From_An_User_Synchronously()
         {
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = _itemRepository.GetAll(CurrentUser.Id);
+            var todoListItemsInDatabase = _itemRepository.GetAll(CurrentUser.Id, new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
         }
@@ -54,8 +44,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id);
 
@@ -84,10 +73,9 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = CurrentUser.Id
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
-            tudoListItem.User = null;
+            tudoListItem.User = null!;
 
             var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id, CurrentUser.Id);
 
@@ -108,8 +96,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = _itemRepository.GetById(tudoListItem.Id, CurrentUser.Id);
 
@@ -147,7 +134,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 Description = "Test",
                 Priority = Priority.Medium,
                 Status = Status.NotStarted,
-                Title = null,
+                Title = null!,
                 UserId = 5
             };
 
@@ -168,8 +155,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             tudoListItem.Title = "Update test";
 
@@ -194,8 +180,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            _context.Add(tudoListItem);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(tudoListItem);
 
             _itemRepository.Remove(tudoListItem);
 
@@ -222,20 +207,10 @@ namespace Tudo_List.Test.Infrastructure.Repositories
         }
 
         [Fact]
-        public async Task Can_Get_All_TodoListItems_Asynchronously()
-        {
-            var tudoListItems = MockData.GetItems();
-
-            var tudoListItemsInDatabase = await _itemRepository.GetAllAsync();
-
-            Assert.Equal(tudoListItems.Count, tudoListItemsInDatabase.Count());
-        }
-
-        [Fact]
         public async Task Can_Get_All_TodoListItems_From_An_User_Asynchronously()
         {
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
-            var todoListItemsInDatabase = await _itemRepository.GetAllAsync(CurrentUser.Id);
+            var todoListItemsInDatabase = await _itemRepository.GetAllAsync(CurrentUser.Id, new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
         }
@@ -254,8 +229,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = await _itemRepository.GetByIdAsync(tudoListItem.Id);
 
@@ -284,10 +258,9 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = CurrentUser.Id
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
-            tudoListItem.User = null;
+            tudoListItem.User = null!;
 
             var todoListItemInDatabase = await _itemRepository.GetByIdAsync(tudoListItem.Id, CurrentUser.Id);
 
@@ -308,8 +281,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             var todoListItemInDatabase = await _itemRepository.GetByIdAsync(tudoListItem.Id, CurrentUser.Id);
 
@@ -347,7 +319,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 Description = "Test",
                 Priority = Priority.Medium,
                 Status = Status.NotStarted,
-                Title = null,
+                Title = null!,
                 UserId = 5
             };
 
@@ -368,8 +340,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             tudoListItem.Title = "Update test";
 
@@ -394,8 +365,7 @@ namespace Tudo_List.Test.Infrastructure.Repositories
                 UserId = 5
             };
 
-            await _context.AddAsync(tudoListItem);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(tudoListItem);
 
             await _itemRepository.RemoveAsync(tudoListItem);
 

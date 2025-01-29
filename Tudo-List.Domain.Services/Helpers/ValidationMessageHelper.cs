@@ -4,11 +4,9 @@
     {
         public static string GetInvalidPropertyValueMessage(string property, object? value)
         {
-            var message = string.IsNullOrWhiteSpace(value?.ToString())
+            return string.IsNullOrWhiteSpace(value?.ToString())
                 ? $"The field {property} can't be empty!"
                 : $"{value} value is invalid for field {property}!";
-
-            return message;
         }
 
         public static string GetInvalidLengthMessage(string property, int minLength, int maxLength)

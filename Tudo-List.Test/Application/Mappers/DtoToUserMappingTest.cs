@@ -24,11 +24,11 @@ namespace Tudo_List.Test.Application.Mappers
         public void Should_Map_UserDto_To_User_Ignoring_PasswordHash_Salt_And_PasswordStrategy_Properties()
         {
             var userDto = new UserDto
-            {
-                Id = 1,
-                Email = "test@test.com",
-                Name = "Test"
-            };
+            (
+                Id: 1,
+                Email: "test@test.com",
+                Name: "Test"
+            );
 
             var user = _mapper.Map<User>(userDto);
 
@@ -65,12 +65,12 @@ namespace Tudo_List.Test.Application.Mappers
         public void Should_Map_RegisterUserDto_To_User_Ignoring_Id_PasswordHash_Salt_And_PasswordStrategy_Properties()
         {
             var registerUserDto = new RegisterUserDto
-            {
-                Email = "test@test.com",
-                Name = "Test",
-                Password = "12345678",
-                ConfirmPassword = "12345678"
-            };
+            (
+                Email: "test@test.com",
+                Name: "Test",
+                Password: "12345678",
+                ConfirmPassword: "12345678"
+            );
 
             var user = _mapper.Map<User>(registerUserDto);
 

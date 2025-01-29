@@ -2,7 +2,7 @@
 {
     public interface ISecrets
     {
-        string SqlServerConnectionString { get; }
+        string ConnectionString { get; }
         string JwtPrivateKey { get; }
     }
 }

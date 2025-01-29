@@ -4,22 +4,10 @@ using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Application.Dtos.User
 {
-    public record RegisterUserDto
-    {
-        [RequiredProperty]
-        [EmailAddress]
-        public string Email { get; init; }
-
-        [RequiredProperty]
-        [Length(UserValidationConstants.NameMinimumLength, UserValidationConstants.NameMaximumLength)]
-        public string Name { get; init; }
-
-        [RequiredProperty]
-        [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
-        public string Password { get; init; }
-
-        [RequiredProperty]
-        [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
-        public string ConfirmPassword { get; init; }
-    }
+    public record RegisterUserDto(
+        [RequiredProperty][EmailAddress] string Email,
+        [RequiredProperty][Length(UserValidationConstants.NameMinimumLength, UserValidationConstants.NameMaximumLength)] string Name,
+        [RequiredProperty][Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)] string Password,
+        [RequiredProperty][Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)] string ConfirmPassword
+    );
 }

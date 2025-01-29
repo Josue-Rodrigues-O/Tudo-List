@@ -24,14 +24,14 @@ namespace Tudo_List.Test.Application.Mappers
         public void Should_Map_TodoListItemDto_To_TodoListItem_Ignoring_User_And_UserId_Properties()
         {
             var todoListItemDto = new TodoListItemDto
-            {
-                Id = Guid.NewGuid(),
-                CreationDate = DateTime.Now,
-                Description = "Description",
-                Priority = Priority.Low,
-                Status = Status.NotStarted,
-                Title = "Title"
-            };
+            (
+                Id: Guid.NewGuid(),
+                CreationDate: DateTime.Now,
+                Description: "Description",
+                Priority: Priority.Low,
+                Status: Status.NotStarted,
+                Title: "Title"
+            );
 
             var todoListItem = _mapper.Map<TodoListItem>(todoListItemDto);
 
@@ -74,12 +74,12 @@ namespace Tudo_List.Test.Application.Mappers
         public void Should_Map_AddItemDto_To_TodoListItem_Ignoring_Id_User_UserId_And_CreationDate_Properties()
         {
             var addItemDto = new AddItemDto
-            {
-                Description = "Description",
-                Priority = Priority.Low,
-                Status = Status.NotStarted,
-                Title = "Title",
-            };
+            (
+                Description: "Description",
+                Priority: Priority.Low,
+                Status: Status.NotStarted,
+                Title: "Title"
+            );
 
             var todoListItem = _mapper.Map<TodoListItem>(addItemDto);
 
@@ -98,17 +98,17 @@ namespace Tudo_List.Test.Application.Mappers
         public void Should_Map_UpdateItemDto_To_TodoListItem_Ignoring_User_UserId_And_CreationDate_Properties()
         {
             var updateItemDto = new UpdateItemDto
-            { 
-                ItemId = Guid.NewGuid(),
-                Description = "Description",
-                Priority = Priority.Low,
-                Status = Status.NotStarted,
-                Title = "Title",
-            };
+            (
+                Id: Guid.NewGuid(),
+                Description: "Description",
+                Priority: Priority.Low,
+                Status: Status.NotStarted,
+                Title: "Title"
+            );
 
             var todoListItem = _mapper.Map<TodoListItem>(updateItemDto);
 
-            Assert.Equal(updateItemDto.ItemId, todoListItem.Id);
+            Assert.Equal(updateItemDto.Id, todoListItem.Id);
             Assert.Equal(updateItemDto.Description, todoListItem.Description);
             Assert.Equal(updateItemDto.Priority, todoListItem.Priority);
             Assert.Equal(updateItemDto.Status, todoListItem.Status);

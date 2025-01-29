@@ -1,7 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Xml.Linq;
-
-namespace Tudo_List.Domain.Helpers
+﻿namespace Tudo_List.Domain.Helpers
 {
     public static class StringHelper
     {
@@ -12,20 +9,17 @@ namespace Tudo_List.Domain.Helpers
 
         public static bool IsLengthBetween(this string? value, int minimumLength, int maximumLength)
         {
-            if (value is null)
-                return false;
-
-            return value.Length >= minimumLength && value.Length <= maximumLength;
+            return value != null && value.Length >= minimumLength && value.Length <= maximumLength;
         }
 
         public static string TrimAndCondenseSpaces(this string? value)
         {
-            if (value is null)
+            if (value == null)
                 return string.Empty;
 
-            const char whiteSpace = ' ';
-            //return Regex.Replace(value.Trim(), @"\s+", whiteSpace)
-            return string.Join(whiteSpace, value.Split(whiteSpace, StringSplitOptions.RemoveEmptyEntries));
+            var allWords = value.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            //Regex.Replace(value.Trim(), @"\s+", ' ')
+            return string.Join(' ', allWords);
         }
     }
 }

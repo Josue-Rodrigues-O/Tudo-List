@@ -23,7 +23,7 @@ namespace Tudo_List.Test.Application
             _userApplication = _serviceProvider.GetRequiredService<IUserApplication>();
             _passwordStrategyFactory = _serviceProvider.GetRequiredService<IPasswordStrategyFactory>();
 
-            InitializeInMemoryDatabase(MockData.GetUsers());
+            SaveInMemoryDatabase(MockData.GetUsers());
         }
 
         [Fact]
@@ -96,12 +96,12 @@ namespace Tudo_List.Test.Application
         public void Can_Register_an_User_With_Valid_Properties_Synchronously()
         {
             var registerUserDto = new RegisterUserDto
-            {
-                Name = "Jesus",
-                Email = "Jesus@gmail.com",
-                Password = "12345678",
-                ConfirmPassword = "12345678"
-            };
+            (
+                Name: "Jesus",
+                Email: "Jesus@gmail.com",
+                Password: "12345678",
+                ConfirmPassword: "12345678"
+            );
 
             _userApplication.Register(registerUserDto);
 
@@ -123,12 +123,12 @@ namespace Tudo_List.Test.Application
         public void Cant_Register_an_User_With_Invalid_Properties_Synchronously(string? name, string? email, string? password, string? confirmPassword)
         {
             var registerUserDto = new RegisterUserDto
-            {
-                Name = name,
-                Email = email,
-                Password = password,
-                ConfirmPassword = confirmPassword
-            };
+            (
+                Name: name!,
+                Email: email!,
+                Password: password!,
+                ConfirmPassword: confirmPassword!
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.Register(registerUserDto));
         }
@@ -138,19 +138,19 @@ namespace Tudo_List.Test.Application
         {
             const string newName = "UpdateTest";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = CurrentUser.Id,
-                NewName = newName,
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewName: newName
+            );
 
             _userApplication.Update(updateUserDto);
 
             var userInDatabase = _context.Users.Find(CurrentUser.Id);
 
-            Assert.Equal(newName, userInDatabase.Name);
+            Assert.Equal(newName, userInDatabase!.Name);
         }
         
         [Fact]
@@ -158,13 +158,13 @@ namespace Tudo_List.Test.Application
         {
             const string newName = "UpdateTest";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = 10,
-                NewName = newName,
-            };
+            (
+                UserId: 10,
+                NewName: newName
+            );
 
             Assert.Throws<UnauthorizedAccessException>(() => _userApplication.Update(updateUserDto));
         }
@@ -175,13 +175,13 @@ namespace Tudo_List.Test.Application
         [InlineData("A")]
         public void Cant_Update_an_User_Name_With_Invalid_Value_Synchronously(string invalidName)
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = CurrentUser.Id,
-                NewName = invalidName,
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewName: invalidName
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.Update(updateUserDto));
         }
@@ -189,13 +189,13 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Cant_Update_an_User_Name_With_His_Own_Name_Synchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = CurrentUser.Id,
-                NewName = CurrentUser.Name,
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewName: CurrentUser.Name
+            );
 
             Assert.Throws<InvalidOperationException>(() => _userApplication.Update(updateUserDto));
         }
@@ -205,20 +205,20 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmail.com";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = newEmail,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: newEmail,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             _userApplication.UpdateEmail(updateEmailDto);
 
             var userInDatabase = _context.Users.Find(CurrentUser.Id);
 
-            Assert.Equal(newEmail, userInDatabase.Email);
+            Assert.Equal(newEmail, userInDatabase!.Email);
         }
 
         [Fact]
@@ -226,14 +226,14 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmail.com";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = 10,
-                NewEmail = newEmail,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: 10,
+                NewEmail: newEmail,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             Assert.Throws<UnauthorizedAccessException>(() => _userApplication.UpdateEmail(updateEmailDto));
         }
@@ -243,14 +243,14 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmail.com";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = newEmail,
-                CurrentPassword = "WrongPassword123",
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: newEmail,
+                CurrentPassword: "WrongPassword123"
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.UpdateEmail(updateEmailDto));
         }
@@ -258,14 +258,14 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Cant_Update_an_User_Email_With_Same_Email_Synchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = CurrentUser.Email,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: CurrentUser.Email,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.UpdateEmail(updateEmailDto));
         }
@@ -275,14 +275,14 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmailcom";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = newEmail,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: newEmail,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.UpdateEmail(updateEmailDto));
         }
@@ -292,21 +292,21 @@ namespace Tudo_List.Test.Application
         {
             const string newPassword = "UpdatePassword123";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = CurrentUser.Id,
-                NewPassword = newPassword,
-                ConfirmNewPassword = newPassword,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: CurrentUser.Id,
+                NewPassword: newPassword,
+                ConfirmNewPassword: newPassword,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             _userApplication.UpdatePassword(updateUserDto);
 
             var userInDatabase = _context.Users.Find(CurrentUser.Id);
 
-            Assert.NotEqual(CurrentUser.PasswordHash, userInDatabase.PasswordHash);
+            Assert.NotEqual(CurrentUser.PasswordHash, userInDatabase!.PasswordHash);
         }
 
         [Fact]
@@ -316,15 +316,15 @@ namespace Tudo_List.Test.Application
 
             var strategy = _passwordStrategyFactory.CreatePasswordStrategy(PasswordStrategy.BCrypt);
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = CurrentUser.Id,
-                NewPassword = invalidPassword,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-                ConfirmNewPassword = MockData.GetCurrentUserPassword()
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: CurrentUser.Id,
+                NewPassword: invalidPassword,
+                CurrentPassword: MockData.GetCurrentUserPassword(),
+                ConfirmNewPassword: MockData.GetCurrentUserPassword()
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.UpdatePassword(updateUserDto));
         }
@@ -332,15 +332,15 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Cant_Update_an_User_Password_With_The_Same_Value_Synchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = CurrentUser.Id,
-                NewPassword = MockData.GetCurrentUserPassword(),
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-                ConfirmNewPassword = MockData.GetCurrentUserPassword()
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: CurrentUser.Id,
+                NewPassword: MockData.GetCurrentUserPassword(),
+                CurrentPassword: MockData.GetCurrentUserPassword(),
+                ConfirmNewPassword: MockData.GetCurrentUserPassword()
+            );
 
             Assert.Throws<ValidationException>(() => _userApplication.UpdatePassword(updateUserDto));
         }
@@ -348,15 +348,15 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Cant_Update_Another_User_Password_Synchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = 10,
-                NewPassword = "NewPassword123",
-                ConfirmNewPassword = "NewPassword123",
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: 10,
+                NewPassword: "NewPassword123",
+                ConfirmNewPassword: "NewPassword123",
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             Assert.Throws<UnauthorizedAccessException>(() => _userApplication.UpdatePassword(updateUserDto));
         }
@@ -364,7 +364,7 @@ namespace Tudo_List.Test.Application
         [Fact]
         public void Can_Delete_An_User_Synchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             _userApplication.Delete(CurrentUser.Id);
 
@@ -384,8 +384,7 @@ namespace Tudo_List.Test.Application
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<UnauthorizedAccessException>(() => _userApplication.Delete(user.Id));
         }
@@ -460,12 +459,12 @@ namespace Tudo_List.Test.Application
         public async Task Can_Register_an_User_With_Valid_Properties_Asynchronously()
         {
             var registerUserDto = new RegisterUserDto
-            {
-                Name = "Jesus",
-                Email = "Jesus@gmail.com",
-                Password = "12345678",
-                ConfirmPassword = "12345678"
-            };
+            (
+                Name: "Jesus",
+                Email: "Jesus@gmail.com",
+                Password: "12345678",
+                ConfirmPassword: "12345678"
+            );
 
             await _userApplication.RegisterAsync(registerUserDto);
 
@@ -487,12 +486,12 @@ namespace Tudo_List.Test.Application
         public async Task Cant_Register_an_User_With_Invalid_Properties_Asynchronously(string? name, string? email, string? password, string? confirmPassword)
         {
             var registerUserDto = new RegisterUserDto
-            {
-                Name = name,
-                Email = email,
-                Password = password,
-                ConfirmPassword = confirmPassword
-            };
+            (
+                Name: name!,
+                Email: email!,
+                Password: password!,
+                ConfirmPassword: confirmPassword!
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.RegisterAsync(registerUserDto));
         }
@@ -502,19 +501,19 @@ namespace Tudo_List.Test.Application
         {
             const string newName = "UpdateTest";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = CurrentUser.Id,
-                NewName = newName,
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewName: newName
+            );
 
             await _userApplication.UpdateAsync(updateUserDto);
 
             var userInDatabase = await _context.Users.FindAsync(CurrentUser.Id);
 
-            Assert.Equal(newName, userInDatabase.Name);
+            Assert.Equal(newName, userInDatabase!.Name);
         }
 
         [Fact]
@@ -522,13 +521,13 @@ namespace Tudo_List.Test.Application
         {
             const string newName = "UpdateTest";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = 10,
-                NewName = newName,
-            };
+            (
+                UserId: 10,
+                NewName: newName
+            );
 
             await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _userApplication.UpdateAsync(updateUserDto));
         }
@@ -539,13 +538,13 @@ namespace Tudo_List.Test.Application
         [InlineData("A")]
         public async Task Cant_Update_an_User_Name_With_Invalid_Value_Asynchronously(string? invalidName)
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = CurrentUser.Id,
-                NewName = invalidName,
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewName: invalidName
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.UpdateAsync(updateUserDto));
         }
@@ -553,13 +552,13 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Cant_Update_an_User_Name_With_His_Own_Name_Asynchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateUserDto = new UpdateUserDto
-            {
-                UserId = CurrentUser.Id,
-                NewName = CurrentUser.Name,
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewName: CurrentUser.Name
+            );
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => _userApplication.UpdateAsync(updateUserDto));
         }
@@ -569,20 +568,20 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmail.com";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = newEmail,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: newEmail,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             await _userApplication.UpdateEmailAsync(updateEmailDto);
 
             var userInDatabase = _context.Users.Find(CurrentUser.Id);
 
-            Assert.Equal(newEmail, userInDatabase.Email);
+            Assert.Equal(newEmail, userInDatabase!.Email);
         }
 
         [Fact]
@@ -590,14 +589,14 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmail.com";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = 10,
-                NewEmail = newEmail,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: 10,
+                NewEmail: newEmail,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _userApplication.UpdateEmailAsync(updateEmailDto));
         }
@@ -607,14 +606,14 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmail.com";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = newEmail,
-                CurrentPassword = "WrongPassword123",
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: newEmail,
+                CurrentPassword: "WrongPassword123"
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.UpdateEmailAsync(updateEmailDto));
         }
@@ -622,14 +621,14 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Cant_Update_an_User_Email_With_Same_Email_Asynchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = CurrentUser.Email,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: CurrentUser.Email,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.UpdateEmailAsync(updateEmailDto));
         }
@@ -639,14 +638,14 @@ namespace Tudo_List.Test.Application
         {
             const string newEmail = "UpdateEmailTest@gmailcom";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             var updateEmailDto = new UpdateEmailDto
-            {
-                UserId = CurrentUser.Id,
-                NewEmail = newEmail,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            (
+                UserId: CurrentUser.Id,
+                NewEmail: newEmail,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.UpdateEmailAsync(updateEmailDto));
         }
@@ -656,21 +655,21 @@ namespace Tudo_List.Test.Application
         {
             const string newPassword = "UpdatePassword123";
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = CurrentUser.Id,
-                NewPassword = newPassword,
-                ConfirmNewPassword = newPassword,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: CurrentUser.Id,
+                NewPassword: newPassword,
+                ConfirmNewPassword: newPassword,
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             await _userApplication.UpdatePasswordAsync(updateUserDto);
 
             var userInDatabase = _context.Users.Find(CurrentUser.Id);
 
-            Assert.NotEqual(CurrentUser.PasswordHash, userInDatabase.PasswordHash);
+            Assert.NotEqual(CurrentUser.PasswordHash, userInDatabase!.PasswordHash);
         }
 
         [Fact]
@@ -680,15 +679,15 @@ namespace Tudo_List.Test.Application
 
             var strategy = _passwordStrategyFactory.CreatePasswordStrategy(PasswordStrategy.BCrypt);
 
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = CurrentUser.Id,
-                NewPassword = invalidPassword,
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-                ConfirmNewPassword = MockData.GetCurrentUserPassword()
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: CurrentUser.Id,
+                NewPassword: invalidPassword,
+                CurrentPassword: MockData.GetCurrentUserPassword(),
+                ConfirmNewPassword: MockData.GetCurrentUserPassword()
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.UpdatePasswordAsync(updateUserDto));
         }
@@ -696,15 +695,15 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Cant_Update_an_User_Password_With_The_Same_Value_Asynchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = CurrentUser.Id,
-                NewPassword = MockData.GetCurrentUserPassword(),
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-                ConfirmNewPassword = MockData.GetCurrentUserPassword()
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: CurrentUser.Id,
+                NewPassword: MockData.GetCurrentUserPassword(),
+                CurrentPassword: MockData.GetCurrentUserPassword(),
+                ConfirmNewPassword: MockData.GetCurrentUserPassword()
+            );
 
             await Assert.ThrowsAsync<ValidationException>(() => _userApplication.UpdatePasswordAsync(updateUserDto));
         }
@@ -712,15 +711,15 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Cant_Update_Another_User_Password_Asynchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
-            var updateUserDto = new UpdatePasswordDto()
-            {
-                UserId = 10,
-                NewPassword = "NewPassword123",
-                ConfirmNewPassword = "NewPassword123",
-                CurrentPassword = MockData.GetCurrentUserPassword(),
-            };
+            var updateUserDto = new UpdatePasswordDto
+            (
+                UserId: 10,
+                NewPassword: "NewPassword123",
+                ConfirmNewPassword: "NewPassword123",
+                CurrentPassword: MockData.GetCurrentUserPassword()
+            );
 
             await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _userApplication.UpdatePasswordAsync(updateUserDto));
         }
@@ -728,7 +727,7 @@ namespace Tudo_List.Test.Application
         [Fact]
         public async Task Can_Delete_An_User_Asynchronously()
         {
-            SaveCurrentUser();
+            SaveInMemoryDatabase(CurrentUser);
 
             await _userApplication.DeleteAsync(CurrentUser.Id);
 
@@ -748,16 +747,9 @@ namespace Tudo_List.Test.Application
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _userApplication.DeleteAsync(user.Id));
-        }
-
-        private void SaveCurrentUser()
-        {
-            _context.Add(CurrentUser);
-            _context.SaveChanges();
         }
     }
 }

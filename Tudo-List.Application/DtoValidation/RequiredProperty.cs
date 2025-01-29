@@ -11,7 +11,7 @@ namespace Tudo_List.Application.DtoValidation
             if (value is null)
                 return null;
 
-            bool isValidProperty = value switch
+            var isValidProperty = value switch
             {
                 string strValue => IsValidString(strValue),
                 int intValue => IsValidInt(intValue),

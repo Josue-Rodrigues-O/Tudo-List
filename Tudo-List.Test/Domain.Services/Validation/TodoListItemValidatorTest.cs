@@ -25,7 +25,7 @@ namespace Tudo_List.Test.Domain.Services.Validation
         {
             var item = new TodoListItem()
             {
-                Title = invalidTitle
+                Title = invalidTitle!
             };
 
             Assert.Throws<ValidationException>(() => _itemValidator.Validate(item, opt =>

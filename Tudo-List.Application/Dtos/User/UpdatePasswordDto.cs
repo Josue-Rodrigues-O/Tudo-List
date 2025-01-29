@@ -4,20 +4,10 @@ using Tudo_List.Domain.Services.Validation.Constants;
 
 namespace Tudo_List.Application.Dtos.User
 {
-    public record UpdatePasswordDto
-    {
-        [RequiredProperty]
-        public int UserId { get; init; }
-
-        [RequiredProperty]
-        public string CurrentPassword { get; init; }
-
-        [RequiredProperty]
-        [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
-        public string NewPassword { get; init; }
-
-        [RequiredProperty]
-        [Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)]
-        public string ConfirmNewPassword { get; init; }
-    }
+    public record UpdatePasswordDto(
+        [RequiredProperty] int UserId,
+        [RequiredProperty] string CurrentPassword,
+        [RequiredProperty][Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)] string NewPassword,
+        [RequiredProperty][Length(UserValidationConstants.PasswordMinimumLength, UserValidationConstants.PasswordMaximumLength)] string ConfirmNewPassword
+    );
 }

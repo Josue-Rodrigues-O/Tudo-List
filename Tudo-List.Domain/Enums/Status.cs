@@ -6,9 +6,10 @@ namespace Tudo_List.Domain.Enums
     {
         [Description("Not Started")]
         NotStarted,
+
         [Description("In Progress")]
         InProgress,
-        [Description(nameof(Completed))]
+        
         Completed
     }
 }

@@ -20,7 +20,7 @@ namespace Tudo_List.Test.Domain.Services
             _userService = _serviceProvider.GetRequiredService<IUserService>();
             _passwordStrategyFactory = _serviceProvider.GetRequiredService<IPasswordStrategyFactory>(); 
 
-            InitializeInMemoryDatabase(MockData.GetUsers());
+            SaveInMemoryDatabase(MockData.GetUsers());
         }
 
         [Fact]
@@ -52,7 +52,6 @@ namespace Tudo_List.Test.Domain.Services
         public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Id_Synchronously()
         {
             var user = _userService.GetById(120);
-
             Assert.Null(user);
         }
 
@@ -75,15 +74,12 @@ namespace Tudo_List.Test.Domain.Services
         public void Should_Return_Null_When_Trying_To_Get_an_Inexistent_User_By_Email_Synchronously()
         {
             var user = _userService.GetByEmail("invalid@invalid.com");
-
             Assert.Null(user);
         }
 
         [Fact]
         public void Can_Register_an_User_With_Valid_Properties_Synchronously()
         {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
             var user = new User
             {
                 Name = "Jesus",
@@ -108,11 +104,11 @@ namespace Tudo_List.Test.Domain.Services
         {
             var user = new User
             {
-                Name = name,
-                Email = email,
+                Name = name!,
+                Email = email!,
             };
 
-            Assert.Throws<ValidationException>(() => _userService.Register(user, password));
+            Assert.Throws<ValidationException>(() => _userService.Register(user, password!));
         }
 
         [Fact]
@@ -128,14 +124,13 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             _userService.Update(user.Id, newName);
 
             var userInDatabase = _context.Users.Find(user.Id);
 
-            Assert.Equal(newName, userInDatabase.Name);
+            Assert.Equal(newName, userInDatabase!.Name);
         }
         
         [Theory]
@@ -152,8 +147,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<ValidationException>(() => _userService.Update(user.Id, invalidName));
         }
@@ -169,8 +163,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<InvalidOperationException>(() => _userService.Update(user.Id, user.Name));
         }
@@ -191,14 +184,13 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             _userService.UpdateEmail(user.Id, newEmail, password);
 
             var userInDatabase = _context.Users.Find(user.Id);
 
-            Assert.Equal(newEmail, userInDatabase.Email);
+            Assert.Equal(newEmail, userInDatabase!.Email);
         }
         
         [Fact]
@@ -217,8 +209,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<ValidationException>(() => _userService.UpdateEmail(user.Id, newEmail, password + "123"));
         }
@@ -239,8 +230,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<ValidationException>(() => _userService.UpdateEmail(user.Id, userEmail, password + "123"));
         }
@@ -261,8 +251,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<ValidationException>(() => _userService.UpdateEmail(user.Id, newEmail, password + "123"));
         }
@@ -285,14 +274,13 @@ namespace Tudo_List.Test.Domain.Services
 
             var oldPasswordHash = user.PasswordHash;
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             _userService.UpdatePassword(user.Id, currentPassword, newPassword);
 
             var userInDatabase = _context.Users.Find(user.Id);
 
-           Assert.NotEqual(oldPasswordHash, userInDatabase.PasswordHash);
+           Assert.NotEqual(oldPasswordHash, userInDatabase!.PasswordHash);
         }
 
         [Fact]
@@ -311,8 +299,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<ValidationException>(() => _userService.UpdatePassword(user.Id, currentPassword, invalidPassword));
         }
@@ -332,8 +319,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             Assert.Throws<ValidationException>(() => _userService.UpdatePassword(user.Id, currentPassword, currentPassword));
         }
@@ -349,8 +335,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             _userService.Delete(user.Id);
 
@@ -432,8 +417,6 @@ namespace Tudo_List.Test.Domain.Services
         [Fact]
         public async Task Can_Register_an_User_With_Valid_Properties_Asynchronously()
         {
-            const PasswordStrategy strategy = PasswordStrategy.BCrypt;
-
             var user = new User
             {
                 Name = "Jesus",
@@ -458,11 +441,11 @@ namespace Tudo_List.Test.Domain.Services
         {
             var user = new User
             {
-                Name = name,
-                Email = email,
+                Name = name!,
+                Email = email!,
             };
 
-            await Assert.ThrowsAsync<ValidationException>(() => _userService.RegisterAsync(user, password));
+            await Assert.ThrowsAsync<ValidationException>(() => _userService.RegisterAsync(user, password!));
         }
 
         [Fact]
@@ -478,14 +461,13 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            _context.Add(user);
-            _context.SaveChanges();
+            SaveInMemoryDatabase(user);
 
             await _userService.UpdateAsync(user.Id, newName);
 
             var userInDatabase = await _context.Users.FindAsync(user.Id);
 
-            Assert.Equal(newName, userInDatabase.Name);
+            Assert.Equal(newName, userInDatabase!.Name);
         }
 
         [Theory]
@@ -502,8 +484,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdateAsync(user.Id, invalidName));
         }
@@ -519,8 +500,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<InvalidOperationException>(() => _userService.UpdateAsync(user.Id, user.Name));
         }
@@ -541,14 +521,13 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await _userService.UpdateEmailAsync(user.Id, newEmail, password);
 
             var userInDatabase = await _context.Users.FindAsync(user.Id);
 
-            Assert.Equal(newEmail, userInDatabase.Email);
+            Assert.Equal(newEmail, userInDatabase!.Email);
         }
 
         [Fact]
@@ -567,8 +546,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdateEmailAsync(user.Id, newEmail, password + "123"));
         }
@@ -589,8 +567,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<ValidationException>(async() => await _userService.UpdateEmailAsync(user.Id, userEmail, password + "123"));
         }
@@ -611,8 +588,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdateEmailAsync(user.Id, newEmail, password + "123"));
         }
@@ -635,14 +611,13 @@ namespace Tudo_List.Test.Domain.Services
 
             var oldPasswordHash = user.PasswordHash;
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await _userService.UpdatePasswordAsync(user.Id, currentPassword, newPassword);
 
             var userInDatabase = await _context.Users.FindAsync(user.Id);
 
-            Assert.NotEqual(oldPasswordHash, userInDatabase.PasswordHash);
+            Assert.NotEqual(oldPasswordHash, userInDatabase!.PasswordHash);
         }
 
         [Fact]
@@ -661,8 +636,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdatePasswordAsync(user.Id, currentPassword, invalidPassword));
         }
@@ -682,8 +656,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await Assert.ThrowsAsync<ValidationException>(() => _userService.UpdatePasswordAsync(user.Id, currentPassword, currentPassword));
         }
@@ -699,8 +672,7 @@ namespace Tudo_List.Test.Domain.Services
                 PasswordStrategy = PasswordStrategy.BCrypt
             };
 
-            await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            SaveInMemoryDatabase(user);
 
             await _userService.DeleteAsync(user.Id);
 
