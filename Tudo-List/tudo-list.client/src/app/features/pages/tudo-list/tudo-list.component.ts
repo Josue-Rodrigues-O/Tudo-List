@@ -4,6 +4,7 @@ import { StatusEnum } from '../../../core/enums/status-enum/status-enum';
 import { TodoListItemService } from '../../../shared/services/todo-list-items/todo-list-item.service';
 import { User } from '../../../core/models/user/user';
 import { UserService } from '../../../shared/services/users/user.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tudo-list',
@@ -20,6 +21,7 @@ export class TudoListComponent {
 
   constructor(
     private todoListItemService: TodoListItemService,
+    private translate: TranslateService,
     userService: UserService
   ) {
     let token = localStorage.getItem('token')?.split('.')[1] || '';
@@ -36,17 +38,17 @@ export class TudoListComponent {
     task.status = value;
     switch (value) {
       case this.statusEnum.notStarted:
-        statusSelect.value = 'Não iniciado';
+        statusSelect.value = this.translate.instant('notStarted');
         statusSelect.style.backgroundColor = '#F8D7DA';
         break;
 
       case this.statusEnum.inProgress:
-        statusSelect.value = 'Em progresso';
+        statusSelect.value = this.translate.instant('inProgress');
         statusSelect.style.backgroundColor = '#CFE2FF';
         break;
 
       case this.statusEnum.completed:
-        statusSelect.value = 'Completo';
+        statusSelect.value = this.translate.instant('completed');
         statusSelect.style.backgroundColor = '#D2F4EA';
         break;
     }

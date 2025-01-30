@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { User } from '../../../core/models/user/user';
-import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/users/user.service';
 import { ToastService } from '../../../shared/services/toast/toast.service';
@@ -9,6 +8,7 @@ import { InputComponent } from '../../components/input/input.component';
 import { MessageBoxService } from '../../../shared/services/message-box/message-box.service';
 import { ProblemDetailsMessagesService } from '../../../shared/services/problemDetailsMessages/problem-details-messages.service';
 import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -28,18 +28,10 @@ export class SignInSignUpComponent {
     private userService: UserService,
     private toastService: ToastService,
     private messageBox: MessageBoxService,
-    private translate: TranslateService,
     private requestService: RequestService,
+    private translate: TranslateService,
     private problemDetailsMessagesService: ProblemDetailsMessagesService
-  ) {
-    this.translate.addLangs(['en', 'pt']);
-    this.translate.setDefaultLang('en');
-
-    const browserLang = this.translate.getBrowserLang();
-    this.translate.use(
-      browserLang && browserLang.match(/en|pt/) ? browserLang : 'en'
-    );
-  }
+  ) {}
 
   onClickTextSignUpSignIn(form: HTMLElement, image: HTMLElement) {
     if (this.isSignIn) {
@@ -86,7 +78,10 @@ export class SignInSignUpComponent {
     this.userService.register(this.user).subscribe({
       next: () => {
         this.login();
-        this.toastService.show('Sucesso', ValueStateEnum.success);
+        this.toastService.show(
+          this.translate.instant('success'),
+          ValueStateEnum.success
+        );
       },
       error: (err) => {
         let errors = this.problemDetailsMessagesService.getMessages(err.error);
@@ -99,7 +94,10 @@ export class SignInSignUpComponent {
     this.userService.login(this.user).subscribe({
       next: (res) => {
         this.requestService.setToken(res);
-        this.toastService.show('Sucesso', ValueStateEnum.success);
+        this.toastService.show(
+          this.translate.instant('success'),
+          ValueStateEnum.success
+        );
         this.router.navigate(['/tudo-list']);
       },
       error: (err) => {

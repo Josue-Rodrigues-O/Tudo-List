@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Validation } from '../validation/validation';
 import { ValueStateEnum } from '../../../../core/enums/value-state/valueState-enum';
 import { InputComponent } from '../../../../features/components/input/input.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -9,13 +10,19 @@ import { InputComponent } from '../../../../features/components/input/input.comp
 export class BaseValidatorService {
   private validations: Array<Validation>;
   private isGenericMessage: boolean = false;
+  protected translate!: TranslateService;
 
   constructor() {
     this.validations = new Array<Validation>();
   }
 
   ruleFor(propertyValue: any, fieldName: string, field: InputComponent) {
-    const validation = new Validation(propertyValue, fieldName, field);
+    const validation = new Validation(
+      propertyValue,
+      fieldName,
+      field,
+      this.translate
+    );
     this.validations.push(validation);
     return validation;
   }
@@ -38,7 +45,7 @@ export class BaseValidatorService {
 
     return {
       isValid: errorMessages.length <= 0,
-      title: 'Validation failed',
+      title: this.translate.instant('success'),
       messages: errorMessages,
       isGenericMessage: this.isGenericMessage,
     };
@@ -46,5 +53,9 @@ export class BaseValidatorService {
 
   setIsGenericMessage(value: boolean) {
     this.isGenericMessage = value;
+  }
+
+  setTranslationService(translate: TranslateService) {
+    this.translate = translate;
   }
 }

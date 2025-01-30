@@ -12,8 +12,7 @@ export class UserValidatorService extends BaseValidatorService {
   validationToRegister(user: User) {
     const ruleForConfirmPassword = {
       rule: () => user.password == user.confirmPassword,
-      message:
-        "The values ​​of the 'Password' and 'Password Confirmation' fields must be the same!",
+      message: this.translate.instant('validationPasswordAndConfirmPassword'),
     };
 
     this.ruleFor(user.email, 'Email', this.fieldsForUserValidation.email)
