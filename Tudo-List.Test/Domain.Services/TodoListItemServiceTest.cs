@@ -18,17 +18,219 @@ namespace Tudo_List.Test.Domain.Services
         {
             _itemService = _serviceProvider.GetRequiredService<ITodoListItemService>();
 
-            _context.Users.Add(MockData.GetCurrentUser());
-            SaveInMemoryDatabase(MockData.GetItems());
+            SaveInMemoryDatabase(MockData.GetCurrentUser());
         }
 
         [Fact]
         public void Can_Get_All_TodoListItems_From_Current_User_Synchronously()
         {
+            SaveInMemoryDatabase(MockData.GetItems());
+
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
             var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
+        }
+
+        [Fact]
+        public void Can_Get_TodoListItems_From_An_User_Synchronously_Filtered_By_Title()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter("finish", null, null, null, null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = CurrentUser.Id,
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id,
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+        
+        [Fact]
+        public void Can_Get_TodoListItems_From_An_User_Synchronously_Filtered_By_Status()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, Status.InProgress, null, null, null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id,
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+        
+        [Fact]
+        public void Can_Get_TodoListItems_From_An_User_Synchronously_Filtered_By_Priority()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, null, Priority.High, null, null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the laundry",
+                    CreationDate = new(2025, 01, 07),
+                    Status = Status.Completed,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id,
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+        
+        [Fact]
+        public void Can_Get_TodoListItems_From_An_User_Synchronously_Filtered_By_CreationDate()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, null, null, new(2024, 01, 24), null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+        
+        [Fact]
+        public void Can_Get_TodoListItems_From_An_User_Synchronously_Filtered_By_InitialDate()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, null, null, null, new(2024, 05, 01), null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the laundry",
+                    CreationDate = new(2025, 01, 07),
+                    Status = Status.Completed,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+        
+        [Fact]
+        public void Can_Get_TodoListItems_From_An_User_Synchronously_Filtered_By_FinalDate()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = _itemService.GetAll(new TodoListItemQueryFilter(null, null, null, null, null, new(2024, 12, 31)));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
         }
 
         [Fact]
@@ -222,10 +424,213 @@ namespace Tudo_List.Test.Domain.Services
         [Fact]
         public async Task Can_Get_All_TodoListItems_From_Current_User_Asynchronously()
         {
+            SaveInMemoryDatabase(MockData.GetItems());
+
             var todoListItems = MockData.GetItems().Where(item => item.UserId == CurrentUser.Id);
             var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, null, null, null, null, null));
 
             Assert.Equal(todoListItems.Count(), todoListItemsInDatabase.Count());
+        }
+
+        [Fact]
+        public async Task Can_Get_TodoListItems_From_An_User_Asynchronously_Filtered_By_Title()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter("finish", null, null, null, null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = CurrentUser.Id,
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id,
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+
+        [Fact]
+        public async Task Can_Get_TodoListItems_From_An_User_Asynchronously_Filtered_By_Status()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, Status.InProgress, null, null, null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id,
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+
+        [Fact]
+        public async Task Can_Get_TodoListItems_From_An_User_Asynchronously_Filtered_By_Priority()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, null, Priority.High, null, null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the laundry",
+                    CreationDate = new(2025, 01, 07),
+                    Status = Status.Completed,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id,
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+
+        [Fact]
+        public async Task Can_Get_TodoListItems_From_An_User_Asynchronously_Filtered_By_CreationDate()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, null, null, new(2024, 01, 24), null, null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+
+        [Fact]
+        public async Task Can_Get_TodoListItems_From_An_User_Asynchronously_Filtered_By_InitialDate()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, null, null, null, new(2024, 05, 01), null));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the laundry",
+                    CreationDate = new(2025, 01, 07),
+                    Status = Status.Completed,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
+        }
+
+        [Fact]
+        public async Task Can_Get_TodoListItems_From_An_User_Asynchronously_Filtered_By_FinalDate()
+        {
+            SaveInMemoryDatabase(MockData.GetItemsForFiltering());
+
+            var todoListItemsInDatabase = await _itemService.GetAllAsync(new TodoListItemQueryFilter(null, null, null, null, null, new(2024, 12, 31)));
+
+            var expectedItems = new List<TodoListItem>()
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = CurrentUser.Id
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = CurrentUser.Id
+                },
+            };
+
+            Assert.Equivalent(expectedItems, todoListItemsInDatabase, true);
         }
 
         [Fact]

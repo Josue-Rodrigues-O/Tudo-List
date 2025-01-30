@@ -34,7 +34,7 @@ namespace Tudo_List.Test.Mock
                 { 
                     Id = Guid.NewGuid(), 
                     Title = "Do the dishes", 
-                    CreationDate = DateTime.Now, 
+                    CreationDate = DateTime.Now,
                     Status = Status.Completed, 
                     Priority = Priority.Low,
                     UserId = currentUserId
@@ -65,6 +65,51 @@ namespace Tudo_List.Test.Mock
                     Status = Status.Completed, 
                     Priority = Priority.Low,
                     UserId = 3
+                },
+            ];
+        }
+
+        internal static IEnumerable<TodoListItem> GetItemsForFiltering()
+        {
+            var currentUserId = GetCurrentUser().Id;
+
+            return
+            [
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Monster Manga",
+                    CreationDate = new(2024, 05, 02),
+                    Status = Status.NotStarted,
+                    Priority = Priority.Medium,
+                    UserId = currentUserId
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Finish Dandadan Anime",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.Low,
+                    UserId = currentUserId
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the laundry",
+                    CreationDate = new(2025, 01, 07),
+                    Status = Status.Completed,
+                    Priority = Priority.High,
+                    UserId = currentUserId
+                },
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Title = "Do the dishes",
+                    CreationDate = new(2024, 01, 24),
+                    Status = Status.InProgress,
+                    Priority = Priority.High,
+                    UserId = currentUserId
                 },
             ];
         }

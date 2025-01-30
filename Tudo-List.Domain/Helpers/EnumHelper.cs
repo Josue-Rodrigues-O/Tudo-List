@@ -12,7 +12,7 @@ namespace Tudo_List.Domain.Helpers
                 .GetField(description)?
                 .GetCustomAttributes(typeof(DescriptionAttribute), true);
 
-            if (attrs != null && attrs.Length > 0)
+            if (attrs is not null and { Length: > 0 })
             {
                 description = ((DescriptionAttribute)attrs[0]).Description;
             }

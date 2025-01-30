@@ -8,8 +8,8 @@ namespace Tudo_List.Domain.Core.Interfaces.Repositories
         IEnumerable<TodoListItem> GetAll(int userId, TodoListItemQueryFilter filter);
         Task<IEnumerable<TodoListItem>> GetAllAsync(int userId, TodoListItemQueryFilter filter);
 
-        TodoListItem? GetById(Guid id, int? userId = null);
-        Task<TodoListItem?> GetByIdAsync(Guid id, int? userId = null);
+        TodoListItem? GetById(Guid id, int userId);
+        Task<TodoListItem?> GetByIdAsync(Guid id, int userId);
 
         void Add(TodoListItem item);
         Task AddAsync(TodoListItem item);

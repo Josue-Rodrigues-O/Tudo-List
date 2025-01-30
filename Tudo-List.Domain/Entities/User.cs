@@ -10,5 +10,6 @@ namespace Tudo_List.Domain.Entities
         public string PasswordHash { get; set; } = null!;
         public string? Salt { get; set; }
         public PasswordStrategy PasswordStrategy { get; set; }
+        public UserImage? Image { get; set; }
     }
 }
