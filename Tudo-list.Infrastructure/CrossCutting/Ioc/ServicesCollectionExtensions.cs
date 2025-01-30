@@ -53,6 +53,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         {
             servicesCollection.AddScoped<IUserRepository, UserRepository>();
             servicesCollection.AddScoped<ITodoListItemRepository, TodoListItemRepository>();
+            servicesCollection.AddScoped<IUserImageRepository, UserImageRepository>();
 
             return servicesCollection;
         }
@@ -61,7 +62,9 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         {
             servicesCollection.AddScoped<IUserService, UserService>();
             servicesCollection.AddScoped<ITodoListItemService, TodoListItemService>();
+            servicesCollection.AddScoped<IUserImageService, UserImageService>();
             servicesCollection.AddScoped<IValidator<TodoListItem>, TodoListItemValidator>();
+            servicesCollection.AddScoped<IValidator<UserImage>, UserImageValidator>();
             servicesCollection.AddTransient<IPasswordStrategyFactory, PasswordStrategyFactory>();
 
             return servicesCollection;
@@ -71,6 +74,7 @@ namespace Tudo_list.Infrastructure.CrossCutting.Ioc
         {
             servicesCollection.AddScoped<IUserApplication, UserApplication>();
             servicesCollection.AddScoped<ITodoListItemApplication, TodoListItemApplication>();
+            servicesCollection.AddScoped<IUserImageApplication, UserImageApplication>();
             servicesCollection.AddScoped<IAuthService, AuthService>();
             servicesCollection.AddScoped<ICurrentUserService, CurrentUserService>();
             servicesCollection.AddTransient<ITokenService, JwtTokenService>();

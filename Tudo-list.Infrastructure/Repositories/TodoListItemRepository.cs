@@ -14,7 +14,7 @@ namespace Tudo_list.Infrastructure.Repositories
 
             if (filter.Title is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.Title.Contains(filter.Title));
+                itemsQuery = itemsQuery.Where(item => item.Title.Contains(filter.Title, StringComparison.OrdinalIgnoreCase));
             }
 
             if (filter.Status is not null)
@@ -29,17 +29,17 @@ namespace Tudo_list.Infrastructure.Repositories
 
             if (filter.CreationDate is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.CreationDate == filter.CreationDate);
+                itemsQuery = itemsQuery.Where(item => item.CreationDate.Date == filter.CreationDate.Value.Date);
             }
 
             if (filter.InitialDate is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.CreationDate >= filter.InitialDate);
+                itemsQuery = itemsQuery.Where(item => item.CreationDate.Date >= filter.InitialDate.Value.Date);
             }
 
             if (filter.FinalDate is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.CreationDate <= filter.FinalDate);
+                itemsQuery = itemsQuery.Where(item => item.CreationDate.Date <= filter.FinalDate.Value.Date);
             }
 
             return [.. itemsQuery];
@@ -51,7 +51,7 @@ namespace Tudo_list.Infrastructure.Repositories
 
             if (filter.Title is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.Title.Contains(filter.Title));
+                itemsQuery = itemsQuery.Where(item => item.Title.Contains(filter.Title, StringComparison.OrdinalIgnoreCase));
             }
 
             if (filter.Status is not null)
@@ -66,34 +66,30 @@ namespace Tudo_list.Infrastructure.Repositories
 
             if (filter.CreationDate is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.CreationDate == filter.CreationDate);
+                itemsQuery = itemsQuery.Where(item => item.CreationDate.Date == filter.CreationDate.Value.Date);
             }
 
             if (filter.InitialDate is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.CreationDate >= filter.InitialDate);
+                itemsQuery = itemsQuery.Where(item => item.CreationDate.Date >= filter.InitialDate.Value.Date);
             }
 
             if (filter.FinalDate is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.CreationDate <= filter.FinalDate);
+                itemsQuery = itemsQuery.Where(item => item.CreationDate.Date <= filter.FinalDate.Value.Date);
             }
 
             return await itemsQuery.ToListAsync();
         }
 
-        public TodoListItem? GetById(Guid id, int? userId = null)
+        public TodoListItem? GetById(Guid id, int userId)
         {
-            return userId is null
-                ? context.TodoListItems.Find(id)
-                : context.TodoListItems.FirstOrDefault(item => item.Id == id && item.UserId == userId);
+            return context.TodoListItems.FirstOrDefault(item => item.Id == id && item.UserId == userId);
         }
 
-        public async Task<TodoListItem?> GetByIdAsync(Guid id, int? userId = null)
+        public async Task<TodoListItem?> GetByIdAsync(Guid id, int userId)
         {
-            return userId is null
-                ? await context.TodoListItems.FindAsync(id)
-                : await context.TodoListItems.FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId);
+            return await context.TodoListItems.FirstOrDefaultAsync(item => item.Id == id && item.UserId == userId);
         }
 
         public void Add(TodoListItem item)
