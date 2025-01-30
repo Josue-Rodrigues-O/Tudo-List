@@ -3,9 +3,9 @@ using Tudo_List.Domain.Entities;
 
 namespace Tudo_List.Application.Helpers
 {
-    internal static class FileHelper
+    public static class FileHelper
     {
-        internal static UserImage ToUserImage(this IFormFile file, int userId)
+        public static UserImage ToUserImage(this IFormFile file, int userId)
         {
             using var memoryStream = new MemoryStream();
             file.CopyTo(memoryStream);
