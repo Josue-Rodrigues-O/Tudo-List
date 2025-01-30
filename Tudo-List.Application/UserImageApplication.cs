@@ -9,6 +9,16 @@ namespace Tudo_List.Application
 {
     public class UserImageApplication(IUserImageService userImageService) : IUserImageApplication
     {
+        public Image? GetByUserId(int userId)
+        {
+            return userImageService.GetByUserId(userId);
+        }
+
+        public async Task<Image?> GetByUserIdAsync(int userId)
+        {
+            return await userImageService.GetByUserIdAsync(userId);
+        }
+
         public Image Upload(int userId, IFormFile file)
         {
             ValidateFile(file);
