@@ -1,20 +1,5 @@
 {
-    "pageSignInSignUp": {
-        "titleSignIn": "LOGIN",
-        "titleSignUp": "CADASTRO",
-        "forgotPassword": "Esqueceu sua senha?",
-        "DontHaveAnAccount": "Não possui uma conta?",
-        "linkSignIn": "Entrar",
-        "linkSignUp": "Inscreva-se",
-        "buttonSignIn": "Entrar",
-        "buttonSignUp": "Increver-se",
-        "alreadyHasAnAccount": "Já possui uma conta?",
-        "placeholder": {
-            "email": "E-mail",
-            "password": "Senha",
-            "confirmPassword": "Confirme sua senha"
-        }
-    },
+    "titleWebApp": "Tudo-List",
     "login": "LOGIN",
     "register": "CADASTRO",
     "forgotPassword": "Esqueceu sua senha?",
@@ -29,5 +14,17 @@
     "validationMaxLength": "O campo '{{fieldName}}' deve possuir no máximo '{{maxLength}}' caracteres!",
     "validationMinLength": "O campo '{{fieldName}}' deve possuir no minimo '{{minLength}}' caracteres!",
     "validationMatch": "O valor do campo '{{fieldName}}' é inválido!",
-    "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!"
+    "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!",
+    "myTasks": "Minhas Tarefas",
+    "search": "Pesquisar",
+    "title": "Título",
+    "description": "Descrição",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "notStarted": "Não iniciado",
+    "inProgress": "Em progresso",
+    "completed": "Concluído",
+    "success": "Sucesso",
+    "error": "Erro",
+    "validationFailed": "Falha na validação"
 }

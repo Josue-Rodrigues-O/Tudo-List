@@ -8,6 +8,7 @@ import { InputComponent } from '../../components/input/input.component';
 import { MessageBoxService } from '../../../shared/services/message-box/message-box.service';
 import { ProblemDetailsMessagesService } from '../../../shared/services/problemDetailsMessages/problem-details-messages.service';
 import { ValueStateEnum } from '../../../core/enums/value-state/valueState-enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-sign-in-sign-up',
@@ -28,6 +29,7 @@ export class SignInSignUpComponent {
     private toastService: ToastService,
     private messageBox: MessageBoxService,
     private requestService: RequestService,
+    private translate: TranslateService,
     private problemDetailsMessagesService: ProblemDetailsMessagesService
   ) {}
 
@@ -76,7 +78,10 @@ export class SignInSignUpComponent {
     this.userService.register(this.user).subscribe({
       next: () => {
         this.login();
-        this.toastService.show('Sucesso', ValueStateEnum.success);
+        this.toastService.show(
+          this.translate.instant('success'),
+          ValueStateEnum.success
+        );
       },
       error: (err) => {
         let errors = this.problemDetailsMessagesService.getMessages(err.error);
@@ -89,7 +94,10 @@ export class SignInSignUpComponent {
     this.userService.login(this.user).subscribe({
       next: (res) => {
         this.requestService.setToken(res);
-        this.toastService.show('Sucesso', ValueStateEnum.success);
+        this.toastService.show(
+          this.translate.instant('success'),
+          ValueStateEnum.success
+        );
         this.router.navigate(['/tudo-list']);
       },
       error: (err) => {

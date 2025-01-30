@@ -45,7 +45,7 @@ export class BaseValidatorService {
 
     return {
       isValid: errorMessages.length <= 0,
-      title: 'Validation failed',
+      title: this.translate.instant('success'),
       messages: errorMessages,
       isGenericMessage: this.isGenericMessage,
     };

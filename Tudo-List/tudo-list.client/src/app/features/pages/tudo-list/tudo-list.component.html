@@ -4,14 +4,14 @@
             class="m-0 p-0 shadow-sm z-3 bg-white justify-content-center">
             <a #logo class="navbar-brand d-flex align-items-center justify-content-center my-3" href="#">
                 <img src="../../../assets/images/logo.png" alt="Tudo-List" width="30" height="30">
-                <h1 class="webapp-title m-0 ms-2">Tudo-List</h1>
+                <h1 class="webapp-title m-0 ms-2">{{'titleWebApp'|translate}}</h1>
             </a>
 
             <div class="mt-5">
                 <div class="lateral-menu-item d-flex px-3 py-2 justify-content-between align-items-center">
                     <div class="d-flex align-items-center">
                         <i class="bi bi-kanban me-2"></i>
-                        <p>Minhas Tarefas</p>
+                        <p>{{'myTasks'|translate}}</p>
                     </div>
                     <i class="bi bi-chevron-right"></i>
                 </div>
@@ -29,11 +29,11 @@
             </nav>
             <main #main_content style="max-height: 92vh; height: 100%; width: 100%;" class="bg-light m-0 p-0 pt-4 p-4">
                 <header class="d-flex justify-content-between align-items-center">
-                    <h3 class="m-0 p-0">Minhas Tarefas</h3>
+                    <h3 class="m-0 p-0">{{'myTasks'|translate}}</h3>
                     <div #filters class=" d-flex align-items-center" style="width: 40%;">
                         <div #search_input style="height: 5vh; width: 100%; overflow: hidden;"
                             class="d-flex border border-primary rounded-3 align-items-center me-2">
-                            <input type="text" placeholder="Pesquisar"
+                            <input type="text" placeholder="{{'search'|translate}}"
                                 style="background: none;height: 100%; width: 100%; border: none; outline: none;"
                                 class="ps-3">
                             <button style="background: none; border: none;" class="bi bi-search btn"></button>
@@ -67,15 +67,15 @@
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item items-select"
                                     (click)="onClickTaskStatusItem(statusEnum.notStarted, task, status)"
-                                    (click)="onClickSave(task.id)">Não iniciado
+                                    (click)="onClickSave(task.id)">{{'notStarted'|translate}}
                                 </li>
                                 <li class="dropdown-item items-select"
                                     (click)="onClickTaskStatusItem(statusEnum.inProgress, task, status)"
-                                    (click)="onClickSave(task.id)">Em progresso
+                                    (click)="onClickSave(task.id)">{{'inProgress'|translate}}
                                 </li>
                                 <li class="dropdown-item items-select"
                                     (click)="onClickTaskStatusItem(statusEnum.completed, task, status)"
-                                    (click)="onClickSave(task.id)">Concluído</li>
+                                    (click)="onClickSave(task.id)">{{'completed'|translate}}</li>
                             </ul>
                         </div>
                     </div>
@@ -100,19 +100,21 @@
                     <textarea disabled={{!isEditing}} maxlength="150" style="height: 15vh; resize: none;"
                         class="form-control" placeholder="Leave a comment here"
                         [(ngModel)]="currentTask.title"></textarea>
-                    <label for="floatingTextarea">Título</label>
+                    <label for="floatingTextarea">{{'title'|translate}}</label>
                 </div>
                 <div class="form-floating">
                     <textarea disabled={{!isEditing}} style="height: 30vh;" class="form-control"
                         placeholder="Leave a comment here" [(ngModel)]="currentTask.description"></textarea>
-                    <label for="floatingTextarea">Descrição</label>
+                    <label for="floatingTextarea">{{'description'|translate}}</label>
                 </div>
             </div>
             <div class="modal-footer">
                 <!-- data-bs-dismiss="modal"  //Fecha modal -->
                 @if (isEditing) {
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary btn-sm" (click)="onClickSave()">Salvar</button>
+                <button type="button" class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">{{'cancel'|translate}}</button>
+                <button type="button" class="btn btn-primary btn-sm"
+                    (click)="onClickSave()">{{'save'|translate}}</button>
                 }@else {
                 <button type="button" class="btn btn-primary btn-sm bi bi-pencil-fill"
                     (click)="onClickEditTask()"></button>
