@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
-using System.Diagnostics;
+using SixLabors.ImageSharp;
 using Tudo_List.Domain.Core.Interfaces.Services;
 using Tudo_List.Domain.Entities;
-using Tudo_List.Domain.Services.Helpers;
 
 namespace Tudo_List.Domain.Services.Validation
 {
@@ -26,13 +25,28 @@ namespace Tudo_List.Domain.Services.Validation
         private void ValidateData()
         {
             RuleFor(item => item.Data)
+                .Must(ValidateImageFormat)
+                    .WithMessage("The Image Format should be one of the followings:\n- TGA\n- PBM\n- QOI\n- TIFF\n- JPEG\n- Webp\n- BMP\n- PNG\n- GIF")
                 .Must(ValidateProportion)
-                .WithMessage("The proportion should be one of the followings:\n- 64x64\n- 128x128\n- 256x256\n- 512x512");
+                    .WithMessage("The proportion should be one of the followings:\n- 64x64\n- 128x128\n- 256x256\n- 512x512");
+        }
+
+        private bool ValidateImageFormat(byte[] imageBytes)
+        {
+            try
+            {
+                Image.Load(imageBytes);
+                return true;
+            }
+            catch(UnknownImageFormatException)
+            {
+                return false;
+            }
         }
 
         private bool ValidateProportion(byte[] imageBytes)
         {
-            using var image = SixLabors.ImageSharp.Image.Load(imageBytes);
+            using var image = Image.Load(imageBytes);
             int width = image.Width;
             int height = image.Height;
 

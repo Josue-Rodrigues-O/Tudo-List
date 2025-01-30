@@ -11,22 +11,22 @@ namespace Tudo_List.Server.Controllers.V1
     public class UserImagesController(IUserImageApplication userImageApplication) : ControllerBase
     {
         [HttpGet("get-by-user-id/{userId:int}")]
-        public FileContentResult? GetByUserId(int userId)
+        public IActionResult GetByUserId(int userId)
         {
             var image = userImageApplication.GetByUserId(userId);
             
             return image == null
-                ? null
+                ? NotFound()
                 : File(image.Data, image.ContentType);
         }
 
         [HttpGet("get-by-user-id-async/{userId:int}")]
-        public async Task<FileContentResult?> GetByUserIdAsync(int userId)
+        public async Task<IActionResult> GetByUserIdAsync(int userId)
         {
             var image = await userImageApplication.GetByUserIdAsync(userId);
-            
+
             return image == null
-                ? null
+                ? NotFound()
                 : File(image.Data, image.ContentType);
         }
 
