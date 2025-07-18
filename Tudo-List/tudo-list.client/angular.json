@@ -8,7 +8,7 @@
       "schematics": {
         "@schematics/angular:component": {
           "standalone": false,
-          "style": "scss"
+          "style": "css"
         },
         "@schematics/angular:directive": {
           "standalone": false
@@ -36,9 +36,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/app/styles/custom-bootstrap.scss",
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "src/app/styles/custom-bootstrap.css",
+              "src/styles.css"
             ],
             "scripts": []
           },
