@@ -7,13 +7,16 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ngxLoadingAnimationTypes, NgxLoadingModule } from 'ngx-loading';
+import { AuthComponent } from './pages/auth/auth.component';
+import { UserComponent } from './pages/user/user.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AuthComponent, UserComponent, TasksComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
