@@ -1,0 +1,16 @@
+:root {
+    --bg-primary-color: #FFFFFF;
+    --bg-secondary-color: #E8EAED;
+
+    --icon-color: #5F6368;
+    --icon-active-color: #1A73E8;
+
+    --title-color: #202124;
+
+    --error-color: #D93025;
+    --success-color: #34A853;
+
+    --input-bg-color: #F1F3F4;
+    --input-bg-color-hover: #E8EAED;
+    --input-color: #5F6368;
+}

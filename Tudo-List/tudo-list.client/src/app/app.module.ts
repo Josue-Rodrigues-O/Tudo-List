@@ -10,13 +10,16 @@ import { ngxLoadingAnimationTypes, NgxLoadingModule } from 'ngx-loading';
 import { AuthComponent } from './pages/auth/auth.component';
 import { UserComponent } from './pages/user/user.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
+import { UiKitComponent } from './pages/ui-kit/ui-kit.component';
+import { InputComponent } from './components/input/input.component';
+import { ButtonComponent } from './components/button/button.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent, UserComponent, TasksComponent],
+  declarations: [AppComponent, AuthComponent, UserComponent, TasksComponent, UiKitComponent, InputComponent, ButtonComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

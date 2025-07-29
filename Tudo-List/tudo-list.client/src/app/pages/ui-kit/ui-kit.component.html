@@ -1,0 +1,12 @@
+<div class="box">
+    <app-input 
+        placeholder="Pesquisar" 
+        icon="search" 
+        [iconIsClickable]="true" 
+        [onClickIcon]="aoClicar"
+        [(ngModel)]="testModel.model" />
+</div>
+<label>{{testModel.model}}</label>
+<hr style="border: 1px solid black;">
+<app-button />
+<hr style="border: 1px solid black;">
