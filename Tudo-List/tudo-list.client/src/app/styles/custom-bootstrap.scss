@@ -1,0 +1,48 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+// Custom.scss
+// Option B: Include parts of Bootstrap
+
+// Required
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+// Optional
+@import "../../../node_modules/bootstrap/scss/reboot";
+@import "../../../node_modules/bootstrap/scss/type";
+@import "../../../node_modules/bootstrap/scss/images";
+// @import "../../../node_modules/bootstrap/scss/code";
+@import "../../../node_modules/bootstrap/scss/grid";
+
+$primary:    #5C60F5;
+$light:      #e4f2fd;
+// $secondary:  #005aed;
+// $dark:       #020006;
+// $info:       #7e8abb;
+// $accent1:    #aec2c8;
+// $accent2:    #485e6b;
+// $accent3:    #96a7aa;
+// $success:    #00ad65;
+// $warning:    #e4ce00;
+// $danger:     #f41e00;
+
+$white: #ffffff;
+
+$theme-colors: (
+    "primary":    $primary,
+    "light":      $light,
+    // "dark":       $dark,
+    // "secondary":  $secondary,
+    // "info":       $info,
+    // "accent1":    $accent1,
+    // "accent2":    $accent2,
+    // "accent3":    $accent3,
+    // "success":    $success,
+    // "warning":    $warning,
+    // "danger":     $danger,
+);
+
+@import "../../../node_modules/bootstrap/scss/bootstrap";

@@ -1,0 +1,17 @@
+@for (toast of toastService.toasts; track $index) {
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+  <div class="toast align-items-center border-0 show" role="alert" aria-live="assertive" aria-atomic="true"
+    [ngClass]="{ 
+      'text-bg-primary': toast.class === 'text-bg-primary', 
+      'text-bg-success': toast.class === 'text-bg-success', 
+      'text-bg-danger': toast.class === 'text-bg-danger' }">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ toast.message }}
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="toastService.removeToast(toast)"
+        aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+}

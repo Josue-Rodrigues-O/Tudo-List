@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 interface WeatherForecast {
   date: string;
@@ -11,27 +11,16 @@ interface WeatherForecast {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+export class AppComponent {
+  constructor(private translate: TranslateService) {
+    this.translate.addLangs(['en', 'pt']);
+    this.translate.setDefaultLang('en');
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.getForecasts();
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
+    const browserLang = this.translate.getBrowserLang();
+    this.translate.use(
+      browserLang && browserLang.match(/en|pt/) ? browserLang : 'en'
     );
   }
-
-  title = 'tudo-list.client';
 }

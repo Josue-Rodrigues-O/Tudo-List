@@ -1,0 +1,127 @@
+<div #main_container style="height: 100vh; width: 100vw;">
+    <div style="height: 100%; width: 100%;" class="d-flex m-0 p-0">
+        <nav #lateral_menu style="height: 100%; width: 18vw;"
+            class="m-0 p-0 shadow-sm z-3 bg-white justify-content-center">
+            <a #logo class="navbar-brand d-flex align-items-center justify-content-center my-3" href="#">
+                <img src="../../../assets/images/logo.png" alt="Tudo-List" width="30" height="30">
+                <h1 class="webapp-title m-0 ms-2">{{'titleWebApp'|translate}}</h1>
+            </a>
+
+            <div class="mt-5">
+                <div class="lateral-menu-item d-flex px-3 py-2 justify-content-between align-items-center">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-kanban me-2"></i>
+                        <p>{{'myTasks'|translate}}</p>
+                    </div>
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+        </nav>
+        <div style="width: 82vw;">
+            <nav #top_bar style="max-height: 8vh; height: 100%; width: 100%;" class="navbar p-0 shadow-sm bg-white">
+                <div style="width: 100%;" class="container-fluid m-0 justify-content-end">
+                    <a #profile class="navbar-brand d-flex align-items-center m-0 me-3" href="#">
+                        <h2 class="profile-name m-0 me-2">{{user.name}}</h2>
+                        <img src="../../../assets/images/profile_teste.webp" alt="Tudo-List" width="33" height="33"
+                            class="rounded-5">
+                    </a>
+                </div>
+            </nav>
+            <main #main_content style="max-height: 92vh; height: 100%; width: 100%;" class="bg-light m-0 p-0 pt-4 p-4">
+                <header class="d-flex justify-content-between align-items-center">
+                    <h3 class="m-0 p-0">{{'myTasks'|translate}}</h3>
+                    <div #filters class=" d-flex align-items-center" style="width: 40%;">
+                        <div #search_input style="height: 5vh; width: 100%; overflow: hidden;"
+                            class="d-flex border border-primary rounded-3 align-items-center me-2">
+                            <input type="text" placeholder="{{'search'|translate}}"
+                                style="background: none;height: 100%; width: 100%; border: none; outline: none;"
+                                class="ps-3">
+                            <button style="background: none; border: none;" class="bi bi-search btn"></button>
+                        </div>
+                        <button style="height: max-content;" class="bi bi-funnel-fill btn btn-primary btn-sm"></button>
+                    </div>
+                </header>
+                <hr style="color: gray; border: solid gray 1px;">
+                <div #tasks_list>
+                    @for (task of tasks; track $index) {
+                    <div #task
+                        class="lateral-menu-item shadow-sm my-2 z-3 rounded-3 d-flex justify-content-between align-items-center">
+                        <div data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                            style="max-width: 85%; width: 100%;" class="p-2" (click)="onSelectedTask(task)">
+                            <p class="m-0 p-0">{{task.title}}</p>
+                        </div>
+                        <div class="dropdown">
+                            <input #status class="btn btn-light btn-select btn-sm dropdown-toggle rounded-5 me-3"
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false" value="Não iniciado" />
+                            @switch (task.status) {
+                            @case (statusEnum.notStarted) {
+                            {{onClickTaskStatusItem(statusEnum.notStarted, task, status)}}
+                            }
+                            @case (statusEnum.inProgress) {
+                            {{onClickTaskStatusItem(statusEnum.inProgress, task, status)}}
+                            }
+                            @case (statusEnum.completed) {
+                            {{onClickTaskStatusItem(statusEnum.completed, task, status)}}
+                            }
+                            }
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item items-select"
+                                    (click)="onClickTaskStatusItem(statusEnum.notStarted, task, status)"
+                                    (click)="onClickSave(task.id)">{{'notStarted'|translate}}
+                                </li>
+                                <li class="dropdown-item items-select"
+                                    (click)="onClickTaskStatusItem(statusEnum.inProgress, task, status)"
+                                    (click)="onClickSave(task.id)">{{'inProgress'|translate}}
+                                </li>
+                                <li class="dropdown-item items-select"
+                                    (click)="onClickTaskStatusItem(statusEnum.completed, task, status)"
+                                    (click)="onClickSave(task.id)">{{'completed'|translate}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </main>
+        </div>
+        <button class="bi bi-plus btn btn-primary float-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+            (click)="onClickAddTask()"></button>
+    </div>
+</div>
+<div #modal_task class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div style="width: 100%;" class="d-flex justify-content-end">
+                <i style="-webkit-text-stroke: 1px; cursor: pointer;" class="bi bi-x-lg mt-3 me-3"
+                    data-bs-dismiss="modal"></i>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating mb-3">
+                    <textarea disabled={{!isEditing}} maxlength="150" style="height: 15vh; resize: none;"
+                        class="form-control" placeholder="Leave a comment here"
+                        [(ngModel)]="currentTask.title"></textarea>
+                    <label for="floatingTextarea">{{'title'|translate}}</label>
+                </div>
+                <div class="form-floating">
+                    <textarea disabled={{!isEditing}} style="height: 30vh;" class="form-control"
+                        placeholder="Leave a comment here" [(ngModel)]="currentTask.description"></textarea>
+                    <label for="floatingTextarea">{{'description'|translate}}</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <!-- data-bs-dismiss="modal"  //Fecha modal -->
+                @if (isEditing) {
+                <button type="button" class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">{{'cancel'|translate}}</button>
+                <button type="button" class="btn btn-primary btn-sm"
+                    (click)="onClickSave()">{{'save'|translate}}</button>
+                }@else {
+                <button type="button" class="btn btn-primary btn-sm bi bi-pencil-fill"
+                    (click)="onClickEditTask()"></button>
+                <button type="button" class="btn btn-secondary btn-sm bi bi-trash3-fill" data-bs-dismiss="modal"
+                    (click)="onClickRemoveTask()"></button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

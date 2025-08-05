@@ -14,13 +14,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
-      <Version>8.*-*</Version>
+      <Version>8.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Tudo-List.Application\Tudo-List.Application.csproj" />
+    <ProjectReference Include="..\..\Tudo-List.Domain.Core\Tudo-List.Domain.Core.csproj" />
+    <ProjectReference Include="..\..\Tudo-List.Domain.Services\Tudo-List.Domain.Services.csproj" />
+    <ProjectReference Include="..\..\Tudo-List.Domain\Tudo-List.Domain.csproj" />
+    <ProjectReference Include="..\..\Tudo-list.Infrastructure\Tudo-list.Infrastructure.csproj" />
     <ProjectReference Include="..\tudo-list.client\Tudo-List.Client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
