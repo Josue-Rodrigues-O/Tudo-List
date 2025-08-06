@@ -1,12 +1,12 @@
 <div class="box">
-    <app-input 
-        placeholder="Pesquisar" 
-        icon="search" 
-        [iconIsClickable]="true" 
-        [onClickIcon]="aoClicar"
+    <app-input placeholder="Pesquisar" icon="search" [iconIsClickable]="true" [onClickIcon]="aoClicar"
         [(ngModel)]="testModel.model" />
+    <label>{{testModel.model}}</label>
 </div>
-<label>{{testModel.model}}</label>
 <hr style="border: 1px solid black;">
-<app-button />
+<div class="box">
+    <app-button [func]="aoClicar" [type]="btnType.secondary">
+        Teste botão
+    </app-button>
+</div>
 <hr style="border: 1px solid black;">

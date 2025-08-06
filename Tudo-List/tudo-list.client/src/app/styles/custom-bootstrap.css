@@ -13,4 +13,15 @@
     --input-bg-color: #F1F3F4;
     --input-bg-color-hover: #E8EAED;
     --input-color: #5F6368;
+
+    --btn-primary-bg-color: #1A73E8;
+    --btn-primary-bg-color-hover: #0966e0;
+    --btn-primary-color: #FFFFFF;
+    --btn-primary-color-hover: #FFFFFF;
+
+    --btn-secondary-bg-color: #FFFFFF;
+    --btn-secondary-bg-color-hover: #f6f6f6;
+    --btn-secondary-color: #555658;
+    --btn-secondary-color-hover: #1d1d1d;
+    --btn-secondary-border-color: #a4a7aa;
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BtnTypeEnum } from '../../core/enums/ui/btn-type-enum';
 
 @Component({
   selector: 'app-ui-kit',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './ui-kit.component.css',
 })
 export class UiKitComponent {
+  protected btnType = BtnTypeEnum;
+  constructor() {}
   testModel = {
     model: '',
   };

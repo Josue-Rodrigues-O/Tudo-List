@@ -1,0 +1,40 @@
+:host {
+    display: block;
+    margin: 0.5rem;
+    width: max-content;
+}
+
+button {
+    font-weight: 500;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4pt;
+    font-size: 14px;
+    width: 100%;
+    transition: filter 0.2, color 0.2s;
+}
+
+:host.primary {
+    button {
+        background-color: var(--btn-primary-bg-color);
+        color: var(--btn-primary-color);
+    }
+
+    button:hover {
+        color: var(--btn-primary-color-hover);
+        background-color: var(--btn-primary-bg-color-hover);
+    }
+}
+
+:host.secondary {
+    button {
+        background-color: var(--btn-secondary-bg-color);
+        color: var(--btn-secondary-color);
+        border: 1.5pt solid var(--btn-secondary-border-color)
+    }
+
+    button:hover {
+        color: var(--btn-secondary-color-hover);
+        background-color: var(--btn-secondary-bg-color-hover);
+    }
+}
