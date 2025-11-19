@@ -6,8 +6,7 @@ import { RouterOutlet } from '@angular/router';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrl: './app.component.scss',
-    standalone: true,
-    imports: [RouterOutlet, TranslateModule],
+    imports: [RouterOutlet, TranslateModule]
 })
 export class AppComponent {
   constructor(private translate: TranslateService) {
