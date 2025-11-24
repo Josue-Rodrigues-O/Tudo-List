@@ -41,3 +41,13 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.compact-form-field {
+  @include mat.form-field-density(-4);
+  width: 100%;
+}
+
+.compact-form-field mat-label,
+.compact-form-field input {
+  font-size: medium !important;
+}

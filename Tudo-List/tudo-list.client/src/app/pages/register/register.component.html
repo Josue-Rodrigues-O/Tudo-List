@@ -1,1 +1,74 @@
-<p>register works!</p>
+<main>
+    <figure>
+        <img src="assets/images/background_image.jpg" alt="banner">
+    </figure>
+
+    <form>
+        <h1>{{'register' | translate}}</h1>
+        <div>
+            <div class="controls">
+                <!-- Email -->
+                <mat-form-field class="compact-form-field" appearance="outline">
+                    <mat-label>{{'email' | translate}}</mat-label>
+                    <input matInput placeholder="pat@example.com" [formControl]="email" required />
+    
+                    @if (email.invalid && email.touched) {
+                    <mat-error>
+                        @if (email.hasError('required')) {
+                        {{'validationNotEmpty' | translate: {fieldName: 'email' | translate} }}
+                        }
+                        @else if (email.hasError('email')) {
+                        {{'validationEmailFormat' | translate}}
+                        }
+                    </mat-error>
+                    }
+                </mat-form-field>
+    
+                <!-- Senha -->
+                <mat-form-field class="compact-form-field" appearance="outline">
+                    <mat-label>{{'password' | translate}}</mat-label>
+                    <input matInput [formControl]="password" [type]="hide() ? 'password' : 'text'" required />
+                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword()" type="button">
+                        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+    
+                    @if (password.invalid && password.touched) {
+                    <mat-error>
+                        @if (password.hasError('required')) {
+                        {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
+                        }
+                        @else if (password.hasError('minlength')) {
+                        {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
+                        }
+                    </mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- Confirmação da senha -->
+                <mat-form-field class="compact-form-field" appearance="outline">
+                    <mat-label>{{'confirmPassword' | translate}}</mat-label>
+                    <input matInput [formControl]="confirmPassword" [type]="hide() ? 'password' : 'text'" required />
+                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword()" type="button">
+                        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+    
+                    @if (password.invalid && password.touched) {
+                    <mat-error>
+                        @if (password.hasError('required')) {
+                        {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
+                        }
+                        @else if (password.hasError('minlength')) {
+                        {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
+                        }
+                    </mat-error>
+                    }
+                </mat-form-field>
+            </div>
+    
+            <div class="butons">
+                <button type="button" (click)="onClickRegister()" matButton="filled">{{'signUp' | translate}}</button>
+                <button type="button" (click)="onClickLogin()" matButton="outlined">{{'signIn' | translate}}</button>
+            </div>
+        </div>
+    </form>
+</main>

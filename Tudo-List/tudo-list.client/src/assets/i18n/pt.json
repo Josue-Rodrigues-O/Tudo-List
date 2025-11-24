@@ -10,11 +10,6 @@
     "email": "E-mail",
     "password": "Senha",
     "confirmPassword": "Confirme sua senha",
-    "validationNotEmpty": "O campo '{{fieldName}}' não pode ficar vazio!",
-    "validationMaxLength": "O campo '{{fieldName}}' deve possuir no máximo '{{maxLength}}' caracteres!",
-    "validationMinLength": "O campo '{{fieldName}}' deve possuir no minimo '{{minLength}}' caracteres!",
-    "validationMatch": "O valor do campo '{{fieldName}}' é inválido!",
-    "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!",
     "myTasks": "Minhas Tarefas",
     "search": "Pesquisar",
     "title": "Título",
@@ -26,5 +21,11 @@
     "completed": "Concluído",
     "success": "Sucesso",
     "error": "Erro",
+    "validationNotEmpty": "O campo '{{fieldName}}' não pode ficar vazio!",
+    "validationMaxLength": "O campo '{{fieldName}}' deve possuir no máximo '{{maxLength}}' caracteres!",
+    "validationMinLength": "O campo '{{fieldName}}' deve possuir no minimo '{{minLength}}' caracteres!",
+    "validationMatch": "O valor do campo '{{fieldName}}' é inválido!",
+    "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!",
+    "validationEmailFormat": "Formato de e-mail inválido.",
     "validationFailed": "Falha na validação"
 }
