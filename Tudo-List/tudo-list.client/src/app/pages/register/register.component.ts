@@ -10,6 +10,8 @@ import { UserService } from '../../services/user/user.service';
 import { LoginRequest } from '../../core/models/login/login-request';
 import { RegisterUser } from '../../core/models/user/register-user';
 import { LoginService } from '../../services/login/login.service';
+import { LoadingState } from '../../states/loading-state';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +21,6 @@ import { LoginService } from '../../services/login/login.service';
   imports: [TranslateModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatButtonModule],
 })
 export class RegisterComponent {
-  hide = signal(true);
   readonly email = new FormControl('', [
     Validators.required,
     Validators.email
@@ -38,12 +39,11 @@ export class RegisterComponent {
   constructor(
     private router: Router,
     private userService: UserService,
-    private loginService: LoginService) {
+    private loginService: LoginService,
+    private loadingState: LoadingState) { }
 
-  }
-
-  togglePassword() {
-    this.hide.set(!this.hide());
+  togglePassword(input: HTMLInputElement) {
+    input.type = input.type === 'password' ? 'text' : 'password';
   }
 
   onClickLogin() {
@@ -59,17 +59,23 @@ export class RegisterComponent {
         name: (this.email.value || '').split('@')[0]
       };
 
-      this.userService.Register(user)
-        .subscribe({
-          next: () => {
-            this.login(user);
-          },
-          error: (err) => {
-            console.error(err.error);
-            alert(err.error.title);
-          }
-        });
+      this.register(user);
     }
+  }
+
+  private register(user: RegisterUser) {
+    this.loadingState.show();
+    this.userService.Register(user)
+      .pipe(finalize(() => this.loadingState.hide()))
+      .subscribe({
+        next: () => {
+          this.login(user);
+        },
+        error: (err) => {
+          console.error(err.error);
+          alert(err.error.title);
+        }
+      });
   }
 
   private login(user: LoginRequest) {

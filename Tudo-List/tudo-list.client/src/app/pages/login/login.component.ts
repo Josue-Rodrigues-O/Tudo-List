@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
 import { LoginRequest } from '../../core/models/login/login-request';
+import { LoadingState } from '../../states/loading-state';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,6 @@ import { LoginRequest } from '../../core/models/login/login-request';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  hide = signal(true);
   readonly email = new FormControl('', [
     Validators.required,
     Validators.email
@@ -28,12 +29,13 @@ export class LoginComponent {
     Validators.maxLength(256),
   ]);
 
-  constructor(private router: Router, private loginService: LoginService) {
+  constructor(
+    private router: Router,
+    private loginService: LoginService,
+    private loadingState: LoadingState) { }
 
-  }
-
-  togglePassword() {
-    this.hide.set(!this.hide());
+  togglePassword(input: HTMLInputElement) {
+    input.type = input.type === 'password' ? 'text' : 'password';
   }
 
   onClickLogin() {
@@ -51,7 +53,9 @@ export class LoginComponent {
   }
 
   private login(user: LoginRequest) {
+    this.loadingState.show();
     this.loginService.Login(user)
+      .pipe(finalize(() => this.loadingState.hide()))
       .subscribe({
         next: (result) => {
           localStorage.setItem('token', result.token);

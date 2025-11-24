@@ -27,9 +27,9 @@
                 <!-- Senha -->
                 <mat-form-field class="compact-form-field" appearance="outline">
                     <mat-label>{{'password' | translate}}</mat-label>
-                    <input matInput [formControl]="password" [type]="hide() ? 'password' : 'text'" required />
-                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword()" type="button">
-                        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    <input #inputPassword matInput [formControl]="password" type="password" required />
+                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword(inputPassword)" type="button">
+                        <mat-icon>{{ inputPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
     
                     @if (password.invalid && password.touched) {
@@ -47,9 +47,9 @@
                 <!-- Confirmação da senha -->
                 <mat-form-field class="compact-form-field" appearance="outline">
                     <mat-label>{{'confirmPassword' | translate}}</mat-label>
-                    <input matInput [formControl]="confirmPassword" [type]="hide() ? 'password' : 'text'" required />
-                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword()" type="button">
-                        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    <input #inputConfirmPassword matInput [formControl]="confirmPassword" type="password" required />
+                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword(inputConfirmPassword)" type="button">
+                        <mat-icon>{{ inputConfirmPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
     
                     @if (password.invalid && password.touched) {

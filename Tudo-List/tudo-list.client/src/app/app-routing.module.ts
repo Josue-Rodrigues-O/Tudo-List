@@ -3,8 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { TodoListComponent } from './pages/todo-list/todo-list.component';
 
 const routes: Routes = [
+  { path: '', component: TodoListComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '**', component: NotFoundComponent }

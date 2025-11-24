@@ -1,1 +1,6 @@
 ﻿<router-outlet></router-outlet>
+@if (loadinState.loading()) {
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
+}
