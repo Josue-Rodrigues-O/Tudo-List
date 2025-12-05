@@ -21,6 +21,7 @@
     "completed": "Concluído",
     "success": "Sucesso",
     "error": "Erro",
+    "newTask": "Nova tarefa",
     "validationNotEmpty": "O campo '{{fieldName}}' não pode ficar vazio!",
     "validationMaxLength": "O campo '{{fieldName}}' deve possuir no máximo '{{maxLength}}' caracteres!",
     "validationMinLength": "O campo '{{fieldName}}' deve possuir no minimo '{{minLength}}' caracteres!",

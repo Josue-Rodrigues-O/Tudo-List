@@ -1,1 +1,35 @@
-<p>todo-list works!</p>
+<mat-toolbar>
+  <span>{{ "titleWebApp" | translate }}</span>
+  <span class="example-spacer"></span>
+  <mat-icon
+    class="example-icon"
+    aria-hidden="false"
+    aria-label="Example user verified icon"
+    >verified_user</mat-icon
+  >
+</mat-toolbar>
+<main>
+  <h1>{{ "myTasks" | translate }}</h1>
+  <div class="list">
+    @for (item of tasks; track $index) {
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ item.title }}</mat-panel-title>
+        <!-- <mat-panel-description>
+          This is a summary of the content
+        </mat-panel-description> -->
+      </mat-expansion-panel-header>
+      <p>{{ item.description }}</p>
+    </mat-expansion-panel>
+    }
+  </div>
+</main>
+
+<button
+  id="idBtnAddTask"
+  (click)="onClickAddTask()"
+  matFab
+  aria-label="Add task"
+>
+  <mat-icon>add</mat-icon>
+</button>

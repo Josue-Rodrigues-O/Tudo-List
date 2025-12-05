@@ -52,12 +52,12 @@
                         <mat-icon>{{ inputConfirmPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
     
-                    @if (password.invalid && password.touched) {
+                    @if (confirmPassword.invalid && confirmPassword.touched) {
                     <mat-error>
-                        @if (password.hasError('required')) {
+                        @if (confirmPassword.hasError('required')) {
                         {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
                         }
-                        @else if (password.hasError('minlength')) {
+                        @else if (confirmPassword.hasError('minlength')) {
                         {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
                         }
                     </mat-error>

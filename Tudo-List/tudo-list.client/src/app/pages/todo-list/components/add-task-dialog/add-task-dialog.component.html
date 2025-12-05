@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>{{ "newTask" | translate }}</h2>
+<mat-dialog-content>
+  <!-- Titulo -->
+  <mat-form-field class="compact-form-field" appearance="outline">
+    <mat-label>{{ "email" | translate }}</mat-label>
+    <input
+      matInput
+      placeholder="pat@example.com"
+      [formControl]="title"
+      required
+    />
+
+    @if (title.invalid && title.touched) {
+    <mat-error>
+      @if (title.hasError('required')) {
+      {{
+        "validationNotEmpty" | translate : { fieldName: "title" | translate }
+      }}
+      }
+    </mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton>{{ "cancel" | translate }}</button>
+  <button matButton cdkFocusInitial>{{ "save" | translate }}</button>
+</mat-dialog-actions>
