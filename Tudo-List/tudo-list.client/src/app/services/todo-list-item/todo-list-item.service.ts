@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal, Signal } from '@angular/core';
 import { TodoListItem } from '../../core/models/todo-list-item/todo-list-item';
 import { TodoListItemQueryFilter } from '../../core/models/todo-list-item/todo-list-item-query-filter';
 import { AddItem } from '../../core/models/todo-list-item/add-item';
@@ -10,10 +10,12 @@ import { UpdateItem } from '../../core/models/todo-list-item/update-item';
 })
 export class TodoListItemService {
   private readonly baseUrl: string = 'api/TodoListItems';
+  private readonly itemsSignal = signal<TodoListItem[]>([]);
+  public readonly items: Signal<TodoListItem[]> = this.itemsSignal.asReadonly();
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  public GetAll(filter?: TodoListItemQueryFilter) {
+  public loadItens(filter?: TodoListItemQueryFilter) {
     const url = `${this.baseUrl}/get-all-async`;
     const params = new HttpParams({
       fromObject: {
@@ -26,7 +28,9 @@ export class TodoListItemService {
       }
     });
 
-    return this.httpClient.get<TodoListItem[]>(url, { params: params });
+    this.httpClient
+      .get<TodoListItem[]>(url, { params: params })
+      .subscribe(result => this.itemsSignal.update(() => result));
   }
 
   public GetById(id: string) {

@@ -14,8 +14,13 @@
     "search": "Pesquisar",
     "title": "Título",
     "description": "Descrição",
+    "priority": "Prioridade",
+    "status": "Status",
     "cancel": "Cancelar",
     "save": "Salvar",
+    "low": "Baixa",
+    "medium": "Média",
+    "high": "Alta",
     "notStarted": "Não iniciado",
     "inProgress": "Em progresso",
     "completed": "Concluído",
@@ -28,5 +33,65 @@
     "validationMatch": "O valor do campo '{{fieldName}}' é inválido!",
     "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!",
     "validationEmailFormat": "Formato de e-mail inválido.",
-    "validationFailed": "Falha na validação"
+    "validationFailed": "Falha na validação",
+    "todoList": {
+        "title": "Lista de Tarefas",
+        "addTask": "Adicionar Tarefa",
+        "editTask": "Editar Tarefa",
+        "deleteTask": "Excluir Tarefa",
+        "confirmDeleteTask": "Tem certeza que deseja excluir a tarefa '{{taskTitle}}'?",
+        "noTasksFound": "Nenhuma tarefa encontrada.",
+        "taskAddedSuccess": "Tarefa adicionada com sucesso!",
+        "taskUpdatedSuccess": "Tarefa atualizada com sucesso!",
+        "taskDeletedSuccess": "Tarefa excluída com sucesso!",
+        "taskOperationError": "Ocorreu um erro ao processar a tarefa. Por favor, tente novamente.",
+        "fields": {
+            "title": "Título",
+            "description": "Descrição",
+            "priority": "Prioridade",
+            "status": "Status"
+        },
+        "placeholders": {
+            "title": "Ex. Comprar mantimentos",
+            "description": "Ex. Comprar leite, pão e ovos",
+            "priority": "Selecione a prioridade",
+            "status": "Selecione o status"
+        },
+        "validations": {
+            "title": {
+                "required": "O título é obrigatório.",
+                "maxLength": "O título deve ter no máximo 100 caracteres."
+            },
+            "description": {
+                "maxLength": "A descrição deve ter no máximo 500 caracteres."
+            },
+            "priority": {
+                "required": "A prioridade é obrigatória."
+            },
+            "status": {
+                "required": "O status é obrigatório."
+            }
+        }
+    },
+    "enums": {
+        "priority": {
+            "low": "Baixa",
+            "medium": "Média",
+            "high": "Alta"
+        },
+        "status": {
+            "notStarted": "Não iniciado",
+            "inProgress": "Em progresso",
+            "completed": "Concluído"
+        }
+    },
+    "common": {
+        "loading": "Carregando...",
+        "yes": "Sim",
+        "no": "Não",
+        "ok": "Ok",
+        "cancel": "Cancelar",
+        "close": "Fechar",
+        "save": "Salvar"
+    }
 }

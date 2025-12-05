@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormControl,
@@ -10,6 +10,7 @@ import {
   MatDialogActions,
   MatDialogClose,
   MatDialogContent,
+  MatDialogRef,
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +20,9 @@ import { TodoListItemService } from '../../../../services/todo-list-item/todo-li
 import { AddItem } from '../../../../core/models/todo-list-item/add-item';
 import { PriorityEnum } from '../../../../core/enums/priority-enum';
 import { StatusEnum } from '../../../../core/enums/status-enum';
+import { MatSelectModule } from '@angular/material/select';
+import { LoadingState } from '../../../../states/loading-state';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-add-task-dialog',
@@ -36,24 +40,47 @@ import { StatusEnum } from '../../../../core/enums/status-enum';
     MatDialogClose,
     TranslateModule,
     ReactiveFormsModule,
+    MatSelectModule
   ],
 })
 export class AddTaskDialogComponent {
-  title = new FormControl('', [Validators.required]);
-  priority = new FormControl(PriorityEnum.Low);
-  status = new FormControl(StatusEnum.NotStarted)
+  readonly dialogRef = inject(MatDialogRef<AddTaskDialogComponent>);
+  title = new FormControl('', [Validators.required, Validators.maxLength(150)]);
+  priority = new FormControl(PriorityEnum.Low, [Validators.required]);
+  status = new FormControl(StatusEnum.NotStarted, [Validators.required]);
+  description = new FormControl('');
 
-  constructor(private todoListService: TodoListItemService) {}
+  priorityEnum = PriorityEnum;
+  statusEnum = StatusEnum;
+
+  constructor(private todoListService: TodoListItemService, private loadingState: LoadingState) { }
 
   onClickSave() {
-    if (this.title.valid) {
+    this.loadingState.loading();
+    if (this.title.valid && this.priority.valid && this.status.valid) {
       let task: AddItem = {
         title: this.title.value || '',
         priority: this.priority.value || PriorityEnum.Low,
-        status: this.status.
-  
+        status: this.status.value || StatusEnum.NotStarted,
+        description: this.description.value || '',
       };
-      this.todoListService.Add(task);
+      this.todoListService.Add(task)
+        .pipe(finalize(() => {
+          this.dialogRef.close();
+          this.loadingState.hide()
+        }))
+        .subscribe({
+          next: () => this.todoListService.loadItens(),
+          error: (err) => {
+            alert('Error adding task');
+            console.log(err)
+          },
+        });
+    } else {
+      this.title.markAsTouched();
+      this.priority.markAsTouched();
+      this.status.markAsTouched();
+      this.loadingState.hide();
     }
   }
 }

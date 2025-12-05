@@ -7,11 +7,12 @@ import { StatusEnum } from '../../core/enums/status-enum';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-dialog.component';
 
 @Component({
@@ -29,46 +30,25 @@ import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-di
     MatInputModule,
     FormsModule,
     MatButtonModule,
+    MatTooltipModule
   ],
 })
 export class TodoListComponent {
-  readonly dialog = inject(MatDialog);
-  tasks: TodoListItem[] = [
-    {
-      id: 'asdasdasd',
-      creationDate: new Date(),
-      priority: PriorityEnum.High,
-      status: StatusEnum.InProgress,
-      title: 'Testessss',
-      description: 'Descrição para testessssss',
-    },
-    {
-      id: 'asdasdasd',
-      creationDate: new Date(),
-      priority: PriorityEnum.High,
-      status: StatusEnum.InProgress,
-      title: 'Testessss',
-      description: 'Descrição para testessssss',
-    },
-  ];
+  readonly tasks: Signal<TodoListItem[]> = this.todoListService.items;
+  readonly dialog: MatDialog = inject(MatDialog);
+
   constructor(private todoListService: TodoListItemService) {
-    // this.UpdateList();
+    todoListService.loadItens();
   }
 
   onClickAddTask(): void {
-    const dialogRef = this.dialog.open(AddTaskDialogComponent, {});
+    const dialogRef = this.dialog.open(AddTaskDialogComponent, {
+      height: '500px',
+      width: '600px',
+    });
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
-    });
-  }
-
-  private UpdateList() {
-    this.todoListService.GetAll().subscribe({
-      next: (result) => {
-        this.tasks = result;
-        console.log(this.tasks.length);
-      },
     });
   }
 }
