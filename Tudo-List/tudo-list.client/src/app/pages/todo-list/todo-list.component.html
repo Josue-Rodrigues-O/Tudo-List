@@ -1,22 +1,9 @@
-<mat-toolbar>
-  <span>{{ "titleWebApp" | translate }}</span>
-  <span class="example-spacer"></span>
-  <mat-icon class="example-icon" aria-hidden="false" aria-label="Example user verified icon">verified_user</mat-icon>
-</mat-toolbar>
+<app-toolbar></app-toolbar>
 <main>
   <h1>{{ "todoList.title" | translate }}</h1>
-  <div class="list">
-    @for (item of tasks(); track $index) {
-    <mat-expansion-panel hideToggle>
-      <mat-expansion-panel-header>
-        <mat-panel-title>{{ item.title }}</mat-panel-title>
-        <!-- <mat-panel-description>
-          This is a summary of the content
-        </mat-panel-description> -->
-      </mat-expansion-panel-header>
-      <p>{{ item.description }}</p>
-    </mat-expansion-panel>
-    }
+  <div class="main-content">
+    <app-task-list></app-task-list>
+    <app-filter-panel></app-filter-panel>
   </div>
 </main>
 

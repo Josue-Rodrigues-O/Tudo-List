@@ -10,8 +10,26 @@ export class LoginService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  public Login(user: LoginRequest) {
+  public login(user: LoginRequest) {
     const url = `${this.baseUrl}/login-async`;
-    return this.httpClient.post<{ token: string }>(url, user);
+    return this.httpClient.post<Token>(url, user);
   }
+
+  public setToken(token: Token) {
+    localStorage.setItem('token', token.token);
+  }
+
+  public getToken(): Token {
+    return {
+      token: localStorage.getItem("token") || ''
+    }
+  }
+
+  public isAuthenticated(): boolean {
+    return !!localStorage.getItem("token");
+  }
+}
+
+interface Token {
+  token: string;
 }

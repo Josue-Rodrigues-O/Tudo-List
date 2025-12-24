@@ -49,7 +49,8 @@
             "title": "Título",
             "description": "Descrição",
             "priority": "Prioridade",
-            "status": "Status"
+            "status": "Status",
+            "actions": "Ações"
         },
         "placeholders": {
             "title": "Ex. Comprar mantimentos",
@@ -74,6 +75,7 @@
         }
     },
     "enums": {
+        "none": "Nenhum",
         "priority": {
             "low": "Baixa",
             "medium": "Média",
@@ -92,6 +94,7 @@
         "ok": "Ok",
         "cancel": "Cancelar",
         "close": "Fechar",
-        "save": "Salvar"
+        "save": "Salvar",
+        "edit": "Editar"
     }
 }

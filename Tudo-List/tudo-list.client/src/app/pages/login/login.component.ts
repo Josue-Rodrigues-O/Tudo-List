@@ -54,11 +54,11 @@ export class LoginComponent {
 
   private login(user: LoginRequest) {
     this.loadingState.show();
-    this.loginService.Login(user)
+    this.loginService.login(user)
       .pipe(finalize(() => this.loadingState.hide()))
       .subscribe({
         next: (result) => {
-          localStorage.setItem('token', result.token);
+          this.loginService.setToken(result);
           this.router.navigate(['']);
         },
         error: (err) => {

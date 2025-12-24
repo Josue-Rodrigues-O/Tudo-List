@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>{{ "todoList.editTask" | translate }}</h2>
+<mat-dialog-content>
+  <form id="idFormEditTask" [formGroup]="form" (ngSubmit)="onClickSave()">
+    <!-- Titulo -->
+    <mat-form-field class="compact-form-field" appearance="outline">
+      <mat-label>{{ "todoList.fields.title" | translate }}</mat-label>
+      <input matInput placeholder="{{ 'todoList.placeholders.title' | translate }}" formControlName="title" required />
+
+      @if (form.get('title')?.invalid && form.get('title')?.touched) {
+      <mat-error>
+        @if (form.get('title')?.hasError('required')) {
+        {{ "todoList.validations.title.required" | translate }}
+        }
+        @if (form.get('title')?.hasError('maxLength')) {
+        {{ "todoList.validations.title.maxLength" | translate }}
+        }
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Prioridade -->
+    <mat-form-field appearance="outline" class="compact-form-field">
+      <mat-label>{{ "todoList.fields.priority" | translate }}</mat-label>
+      <mat-select formControlName="priority" required>
+        <mat-option [value]="priorityEnum.Low">{{ 'enums.priority.low' | translate }}</mat-option>
+        <mat-option [value]="priorityEnum.Medium">{{ 'enums.priority.medium'| translate }}</mat-option>
+        <mat-option [value]="priorityEnum.High">{{ 'enums.priority.high'| translate }}</mat-option>
+      </mat-select>
+
+      @if (form.get('priority')?.invalid && form.get('priority')?.touched) {
+      <mat-error>
+        @if (form.get('priority')?.hasError('required')) {
+        {{ 'todoList.validations.priority.required' | translate }}
+        }
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Status -->
+    <mat-form-field appearance="outline" class="compact-form-field">
+      <mat-label>{{ "todoList.fields.status" | translate }}</mat-label>
+      <mat-select formControlName="status" required>
+        <mat-option [value]="statusEnum.NotStarted">{{ 'enums.status.notStarted' | translate }}</mat-option>
+        <mat-option [value]="statusEnum.InProgress">{{ 'enums.status.inProgress' | translate }}</mat-option>
+        <mat-option [value]="statusEnum.Completed">{{ 'enums.status.completed' | translate }}</mat-option>
+      </mat-select>
+
+      @if (form.get('status')?.invalid && form.get('status')?.touched) {
+      <mat-error>
+        @if (form.get('status')?.hasError('required')) {
+        {{ "todoList.validations.status.required" | translate }}
+        }
+      </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Descrição -->
+    <mat-form-field appearance="outline" class="compact-form-field">
+      <mat-label>{{ "todoList.fields.description" | translate }}</mat-label>
+      <textarea formControlName="description" placeholder="{{ 'todoList.placeholders.description' | translate }}"
+        matInput></textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  @if (isEditMode) {
+  <button matButton mat-dialog-close>{{ "common.cancel" | translate }}</button>
+  <button matButton cdkFocusInitial type="submit" form="idFormEditTask">{{ "common.save" | translate }}</button>
+  }@else {
+  <button matButton mat-dialog-close>{{ "common.close" | translate }}</button>
+  <button matButton cdkFocusInitial (click)="onClickEdit()">{{ "common.edit" | translate }}</button>
+  }
+</mat-dialog-actions>

@@ -1,0 +1,24 @@
+:host {
+    display: block;
+    position: sticky;
+    top: 5rem;
+    align-self: flex-start;
+}
+
+.vertical-group mat-radio-button {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.right-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+mat-card mat-card-content {
+    padding: 1rem;
+}
+
+mat-card mat-card-actions {
+    padding: 1rem;
+}

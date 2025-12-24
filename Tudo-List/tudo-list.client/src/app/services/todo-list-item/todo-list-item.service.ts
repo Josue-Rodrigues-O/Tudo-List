@@ -4,6 +4,7 @@ import { TodoListItem } from '../../core/models/todo-list-item/todo-list-item';
 import { TodoListItemQueryFilter } from '../../core/models/todo-list-item/todo-list-item-query-filter';
 import { AddItem } from '../../core/models/todo-list-item/add-item';
 import { UpdateItem } from '../../core/models/todo-list-item/update-item';
+import { finalize } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class TodoListItemService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  public loadItens(filter?: TodoListItemQueryFilter) {
+  public loadItens(filter?: TodoListItemQueryFilter, finalizeAction?: Function) {
     const url = `${this.baseUrl}/get-all-async`;
     const params = new HttpParams({
       fromObject: {
@@ -30,6 +31,7 @@ export class TodoListItemService {
 
     this.httpClient
       .get<TodoListItem[]>(url, { params: params })
+      .pipe(finalize(() => finalizeAction?.()))
       .subscribe(result => this.itemsSignal.update(() => result));
   }
 

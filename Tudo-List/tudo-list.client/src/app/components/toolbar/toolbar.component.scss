@@ -1,0 +1,22 @@
+:host {
+    position: sticky;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+mat-toolbar {
+    background-color: #005cbb;
+    color: white;
+    height: 4rem;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+img {
+  max-width: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+}

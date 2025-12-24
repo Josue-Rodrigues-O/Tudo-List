@@ -79,10 +79,10 @@ export class RegisterComponent {
   }
 
   private login(user: LoginRequest) {
-    this.loginService.Login(user)
+    this.loginService.login(user)
       .subscribe({
         next: (result) => {
-          localStorage.setItem('token', result.token);
+          this.loginService.setToken(result);
           this.router.navigate(['']);
         },
         error: (err) => {
