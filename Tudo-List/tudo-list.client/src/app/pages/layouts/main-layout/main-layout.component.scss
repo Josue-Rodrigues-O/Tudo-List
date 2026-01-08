@@ -1,0 +1,33 @@
+app-toolbar {
+    z-index: 999;
+}
+
+mat-sidenav-container {
+    height: calc(100% - 4rem);
+}
+
+mat-sidenav {
+    background-color: #d7e3ff;
+    border-radius: 0;
+    max-width: 15vw;
+}
+
+mat-sidenav-content {
+    overflow: auto;
+    padding: 3rem;
+}
+
+.active-link {
+    background-color: rgba(25, 118, 210, 0.12);
+    font-weight: 500;
+}
+
+.item-list {
+    display: flex;
+    align-items: center;
+
+    // justify-content: space-between;
+    p {
+        margin-left: 0.5rem;
+    }
+}

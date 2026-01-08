@@ -7,7 +7,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-dialog.component';
 import { FilterPanelComponent } from './components/filter-panel/filter-panel.component';
 import { TaskListComponent } from "./components/task-list/task-list.component";
-import { ToolbarComponent } from "../../components/toolbar/toolbar.component";
 
 @Component({
   selector: 'app-todo-list',
@@ -21,8 +20,7 @@ import { ToolbarComponent } from "../../components/toolbar/toolbar.component";
     MatTooltipModule,
     FilterPanelComponent,
     TaskListComponent,
-    ToolbarComponent
-],
+  ],
 })
 export class TodoListComponent {
   readonly dialog: MatDialog = inject(MatDialog);

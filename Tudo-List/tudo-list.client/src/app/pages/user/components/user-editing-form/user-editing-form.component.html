@@ -1,0 +1,86 @@
+<div class="field-img">
+    <div class="image-upload" (click)="fileInput.click()">
+        <input #fileInput type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
+
+        @if (previewUrl) {
+        <img [src]="previewUrl" alt="Preview da imagem" />
+        }
+        @else {
+        <div class="placeholder">
+            <mat-icon>cloud_upload</mat-icon>
+            <span>Enviar imagem</span>
+        </div>
+        }
+    </div>
+    <div class="btns-img">
+        <button matButton="text" (click)="onClickSaveImg()" [disabled]="(fileInput.files?.length || 0) < 1 && !imgFile">Salvar</button>
+        <button matButton="text" (click)="onClickClearImg(fileInput)">Limpar</button>
+    </div>
+</div>
+
+<div class="fields-text">
+    <div class="input-with-button">
+        <!-- Nome -->
+        <mat-form-field class="compact-form-field" appearance="outline">
+            <mat-label>{{'userEdit.fields.name' | translate}}</mat-label>
+            <input matInput placeholder="Seu Nome" [formControl]="userName" required />
+
+            @if (userName.invalid && userName.touched) {
+            <mat-error>
+                @if (userName.hasError('required')) {
+                {{'validationNotEmpty' | translate: {fieldName: 'email' | translate} }}
+                }
+                @else if (userName.hasError('maxLength')) {
+                {{'validationEmailFormat' | translate}}
+                }
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <button class="btn-field" matButton="filled" (click)="onClickSaveName()">Alterar nome</button>
+    </div>
+
+    <div class="input-with-button">
+        <!-- Email -->
+        <mat-form-field class="compact-form-field" appearance="outline">
+            <mat-label>{{'email' | translate}}</mat-label>
+            <input matInput placeholder="pat@example.com" [formControl]="userEmail" required />
+
+            @if (userEmail.invalid && userEmail.touched) {
+            <mat-error>
+                @if (userEmail.hasError('required')) {
+                {{'validationNotEmpty' | translate: {fieldName: 'email' | translate} }}
+                }
+                @else if (userEmail.hasError('email')) {
+                {{'validationEmailFormat' | translate}}
+                }
+            </mat-error>
+            }
+        </mat-form-field>
+        <button class="btn-field" matButton="filled" (click)="onClickSaveEmail()">Alterar email</button>
+    </div>
+
+    <div class="input-with-button">
+        <!-- Senha -->
+        <mat-form-field class="compact-form-field" appearance="outline">
+            <mat-label>{{'password' | translate}}</mat-label>
+            <input #inputPassword matInput [formControl]="userPassword" type="password" required />
+            <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword(inputPassword)"
+                type="button">
+                <mat-icon>{{ inputPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+
+            @if (userPassword.invalid && userPassword.touched) {
+            <mat-error>
+                @if (userPassword.hasError('required')) {
+                {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
+                }
+                @else if (userPassword.hasError('minlength')) {
+                {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
+                }
+            </mat-error>
+            }
+        </mat-form-field>
+        <button class="btn-field" matButton="filled" (click)="onClickSavePassword()">Alterar senha</button>
+    </div>
+</div>

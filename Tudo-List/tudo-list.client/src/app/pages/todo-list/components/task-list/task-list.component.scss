@@ -30,3 +30,7 @@ mat-panel-description {
 .mat-mdc-row .mat-mdc-cell {
     cursor: pointer;
 }
+
+.mat-mdc-row:hover {
+    background-color: #d7e3ff;
+}

@@ -1,0 +1,40 @@
+<app-toolbar>
+    <button mat-button (click)="sidenav.toggle()">
+        @if (sidenav.opened) {
+        <mat-icon style="color: white;">menu_open</mat-icon>
+        }@else {
+        <mat-icon style="color: white;">menu</mat-icon>
+        }
+    </button>
+</app-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" opened>
+        <mat-nav-list>
+            <a mat-list-item href="/" routerLink="/">
+                <div class="item-list">
+                    <mat-icon>checklist</mat-icon>
+                    <p>{{ 'todoList.title' | translate }}</p>
+                </div>
+            </a>
+
+            <a mat-list-item href="/user" routerLink="/users">
+                <div class="item-list">
+                    <mat-icon>account_circle</mat-icon>
+                    <p>{{ 'userEdit.title' | translate }}</p>
+                </div>
+            </a>
+
+            <a mat-list-item (click)="logout()">
+                <div class="item-list">
+                    <mat-icon>exit_to_app</mat-icon>
+                    <p>{{ 'common.exit' | translate }}</p>
+                </div>
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

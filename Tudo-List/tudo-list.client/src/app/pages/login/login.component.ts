@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,12 +9,15 @@ import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
 import { LoginRequest } from '../../core/models/login/login-request';
 import { LoadingState } from '../../states/loading-state';
-import { finalize } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs';
+import { AuthService } from '../../services/auth/auth.service';
+import { UserService } from '../../services/user/user.service';
+import { UserImageService } from '../../services/user-image/user-image.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [TranslateModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatButtonModule],
+  imports: [TranslateModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatButtonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -26,13 +29,16 @@ export class LoginComponent {
   readonly password = new FormControl('', [
     Validators.required,
     Validators.minLength(8),
-    Validators.maxLength(256),
+    Validators.maxLength(255),
   ]);
 
   constructor(
     private router: Router,
     private loginService: LoginService,
-    private loadingState: LoadingState) { }
+    private loadingState: LoadingState,
+    private authService: AuthService,
+    private userService: UserService,
+    private userImgService: UserImageService) { }
 
   togglePassword(input: HTMLInputElement) {
     input.type = input.type === 'password' ? 'text' : 'password';
@@ -54,17 +60,25 @@ export class LoginComponent {
 
   private login(user: LoginRequest) {
     this.loadingState.show();
-    this.loginService.login(user)
-      .pipe(finalize(() => this.loadingState.hide()))
-      .subscribe({
-        next: (result) => {
-          this.loginService.setToken(result);
-          this.router.navigate(['']);
-        },
-        error: (err) => {
-          console.error(err.error);
-          alert(err.error.title);
-        }
-      });
+
+    this.loginService.login(user).pipe(
+      tap(token => this.authService.setToken(token)),
+
+      switchMap(() => {
+        const decodedToken = this.authService.getDecodedToken();
+        return this.userService.getById(decodedToken.nameid);
+      }),
+      tap(user => this.authService.setCurrentUser(user)),
+
+      switchMap(user => this.userImgService.GetByUserId(user.id)),
+      tap(img => this.userImgService.saveImgLocally(img)),
+      finalize(() => this.loadingState.hide())
+    ).subscribe({
+      next: () => this.router.navigate(['']),
+      error: (err) => {
+        console.error(err.error);
+        alert(err.error.title);
+      }
+    });
   }
 }

@@ -1,0 +1,74 @@
+:host {
+    display: flex;
+}
+
+// classes usadas na seção de seleção de imagem
+.field-img {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btns-img {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0.5rem 1rem;
+    max-width: 300px;
+}
+
+.image-upload {
+    width: 100%;
+    max-width: 300px;
+    aspect-ratio: 1/1;
+    margin: 0 1rem;
+    border: 2px dashed #cfcfcf;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background-color: #fafafa;
+}
+
+.image-upload:hover {
+    border-color: #1976d2;
+}
+
+.image-upload img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #9e9e9e;
+}
+
+.placeholder mat-icon {
+    font-size: 40px;
+    margin-bottom: 8px;
+    width: auto;
+    height: auto;
+}
+
+// classes usadas nos campos de texto
+.fields-text {
+    width: 70%;
+}
+
+.input-with-button {
+    display: flex;
+}
+
+.btn-field {
+    width: 10rem;
+    margin-left: 1rem;
+}

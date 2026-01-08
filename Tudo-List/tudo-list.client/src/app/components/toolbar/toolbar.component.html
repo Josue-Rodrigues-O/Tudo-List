@@ -1,5 +1,15 @@
 <mat-toolbar>
+    <ng-content select="button"></ng-content>
     <span>{{ "titleWebApp" | translate }}</span>
     <span class="example-spacer"></span>
-    <img src="assets/images/user.jpg" alt="user image">
+    <div class="profile">
+        <p>{{user()?.name}}</p>
+        <a href="/user">
+            @if (imgProfile) {
+                <img [src]="imgProfile" alt="user image">
+            }@else {
+                <mat-icon>account_circle</mat-icon>
+            }
+        </a>
+    </div>
 </mat-toolbar>

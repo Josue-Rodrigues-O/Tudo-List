@@ -1,14 +1,14 @@
 :host {
-    position: sticky;
-    left: 0;
-    right: 0;
-    top: 0;
+  position: sticky;
+  left: 0;
+  right: 0;
+  top: 0;
 }
 
 mat-toolbar {
-    background-color: #005cbb;
-    color: white;
-    height: 4rem;
+  background-color: #005cbb;
+  color: white;
+  height: 4rem;
 }
 
 .example-spacer {
@@ -16,7 +16,32 @@ mat-toolbar {
 }
 
 img {
-  max-width: 35px;
+  max-width: 2.5rem;
+  aspect-ratio: 1/1;
   border-radius: 50%;
   cursor: pointer;
+}
+
+a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-icon {
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-size: 3rem;
+  }
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: large;
+    margin-right: 0.5rem;
+  }
 }
