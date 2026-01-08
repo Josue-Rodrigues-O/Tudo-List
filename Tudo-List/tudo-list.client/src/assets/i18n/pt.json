@@ -34,8 +34,38 @@
     "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!",
     "validationEmailFormat": "Formato de e-mail inválido.",
     "validationFailed": "Falha na validação",
+    "userEdit": {
+        "title": "Usuário",
+        "fields": {
+            "name": "Nome",
+            "email": "E-mail",
+            "password": "Senha",
+            "avatar": "Avatar"
+        },
+        "placeholders": {
+            "title": "Ex. Comprar mantimentos",
+            "description": "Ex. Comprar leite, pão e ovos",
+            "priority": "Selecione a prioridade",
+            "status": "Selecione o status"
+        },
+        "validations": {
+            "name": {
+                "required": "O nome é obrigatório.",
+                "maxLength": "O nome deve ter no máximo 255 caracteres."
+            },
+            "email": {
+                "required": "O e-mail é obrigatório.",
+                "invalidFormat": "Formato de e-mail inválido."
+            },
+            "password": {
+                "required": "A senha é obrigatório.",
+                "minLength": "A senha deve ter, pelo menos, 8 caracteres.",
+                "maxLength": "A senha deve ter, no máximo, 255 caracteres."
+            }
+        }
+    },
     "todoList": {
-        "title": "Lista de Tarefas",
+        "title": "Tarefas",
         "addTask": "Adicionar Tarefa",
         "editTask": "Editar Tarefa",
         "deleteTask": "Excluir Tarefa",
@@ -95,6 +125,7 @@
         "cancel": "Cancelar",
         "close": "Fechar",
         "save": "Salvar",
-        "edit": "Editar"
+        "edit": "Editar",
+        "exit": "Sair"
     }
 }
