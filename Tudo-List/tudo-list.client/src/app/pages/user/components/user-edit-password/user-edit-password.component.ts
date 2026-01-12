@@ -7,9 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { UpdatePassword } from '../../../../core/models/user/update-password';
+import { MessageToastService } from '../../../../services/message-toast/message-toast.service';
 
 @Component({
   selector: 'app-user-edit-password',
@@ -40,6 +41,8 @@ export class UserEditPasswordComponent implements OnInit {
   constructor(
     private userService: UserService,
     private loadingState: LoadingState,
+    private messageToastService: MessageToastService,
+    private translate: TranslateService,
     private authService: AuthService) { }
 
   ngOnInit(): void {
@@ -58,9 +61,10 @@ export class UserEditPasswordComponent implements OnInit {
         .updatePassword(userPassword)
         .pipe(finalize(() => this.loadingState.hide()))
         .subscribe({
+          next: () => this.messageToastService.show(this.translate.instant('userEdit.messages.passwordUpdatedSuccess'), 'success'),
           error: (err) => {
+            this.messageToastService.show(err.error.title, 'error');
             console.error(err.error);
-            alert(err.error.title);
           }
         });
     } else {

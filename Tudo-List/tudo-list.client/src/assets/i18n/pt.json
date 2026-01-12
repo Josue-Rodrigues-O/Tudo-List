@@ -65,6 +65,13 @@
                 "minLength": "A senha deve ter, pelo menos, 8 caracteres.",
                 "maxLength": "A senha deve ter, no máximo, 255 caracteres."
             }
+        },
+        "messages": {
+            "nameUpdatedSuccess": "Nome atualizado com sucesso!",
+            "emailUpdatedSuccess": "E-mail atualizado com sucesso!",
+            "passwordUpdatedSuccess": "Senha atualizada com sucesso!",
+            "avatarUpdatedSuccess": "Avatar atualizado com sucesso!",
+            "userOperationError": "Ocorreu um erro ao atualizar o usuário. Por favor, tente novamente."
         }
     },
     "todoList": {

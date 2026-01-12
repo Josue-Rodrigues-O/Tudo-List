@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { finalize } from 'rxjs';
 import { UserImageService } from '../../../../services/user-image/user-image.service';
 import { LoadingState } from '../../../../states/loading-state';
+import { MessageToastService } from '../../../../services/message-toast/message-toast.service';
 
 @Component({
   selector: 'app-user-edit-img',
@@ -21,6 +22,8 @@ export class UserEditImgComponent implements OnInit, OnDestroy {
 
   constructor(
     private userImgService: UserImageService,
+    private messageToastService: MessageToastService,
+    private translate: TranslateService,
     private loadingState: LoadingState) { }
 
   async ngOnInit(): Promise<void> {
@@ -76,10 +79,11 @@ export class UserEditImgComponent implements OnInit, OnDestroy {
         next: async (result) => {
           console.log(result instanceof Blob);
           await this.userImgService.saveImgLocally(result);
+          this.messageToastService.show(this.translate.instant('userEdit.messages.avatarUpdatedSuccess'), 'success');
         },
         error: (err) => {
-          console.error(err.error ?? err);
-          alert(err.error.title);
+          this.messageToastService.show(err.error.title, 'error');
+          console.error(err.error);
         }
       });
   }

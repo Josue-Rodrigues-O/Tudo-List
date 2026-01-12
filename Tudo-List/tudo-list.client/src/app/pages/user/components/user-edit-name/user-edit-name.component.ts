@@ -4,11 +4,12 @@ import { finalize } from 'rxjs';
 import { AuthService } from '../../../../services/auth/auth.service';
 import { UserService } from '../../../../services/user/user.service';
 import { LoadingState } from '../../../../states/loading-state';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MessageToastService } from '../../../../services/message-toast/message-toast.service';
 
 @Component({
   selector: 'app-user-edit-name',
@@ -26,6 +27,8 @@ export class UserEditNameComponent implements OnInit {
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private messageToastService: MessageToastService,
+    private translate: TranslateService,
     private loadingState: LoadingState) { }
 
   ngOnInit(): void {
@@ -42,10 +45,11 @@ export class UserEditNameComponent implements OnInit {
           next: () => {
             const currentUser = this.authService.getCurrentUser();
             this.authService.setCurrentUser({ ...currentUser()!, name: this.userName.value });
+            this.messageToastService.show(this.translate.instant('userEdit.messages.nameUpdatedSuccess'), 'success');
           },
           error: (err) => {
+            this.messageToastService.show(err.error.title, 'error');
             console.error(err.error);
-            alert(err.error.title);
           }
         });
     else
