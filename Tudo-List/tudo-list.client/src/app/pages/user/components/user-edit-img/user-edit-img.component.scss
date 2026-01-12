@@ -1,14 +1,10 @@
 :host {
-    display: flex;
-}
-
-// classes usadas na seção de seleção de imagem
-.field-img {
     width: 30%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0 0.5rem;
 }
 
 .btns-img {
@@ -57,18 +53,4 @@
     margin-bottom: 8px;
     width: auto;
     height: auto;
-}
-
-// classes usadas nos campos de texto
-.fields-text {
-    width: 70%;
-}
-
-.input-with-button {
-    display: flex;
-}
-
-.btn-field {
-    width: 10rem;
-    margin-left: 1rem;
 }

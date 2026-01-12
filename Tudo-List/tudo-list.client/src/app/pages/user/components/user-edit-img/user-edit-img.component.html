@@ -1,0 +1,18 @@
+<div class="image-upload" (click)="fileInput.click()">
+    <input #fileInput type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
+
+    @if (previewUrl) {
+    <img [src]="previewUrl" alt="Preview da imagem" />
+    }
+    @else {
+    <div class="placeholder">
+        <mat-icon>cloud_upload</mat-icon>
+        <span>{{'userEdit.fields.uploadImage' | translate}}</span>
+    </div>
+    }
+</div>
+<div class="btns-img">
+    <button matButton="text" (click)="onClickSaveImg()"
+        [disabled]="(fileInput.files?.length || 0) < 1 && !imgFile">{{'common.save'|translate}}</button>
+    <button matButton="text" (click)="onClickClearImg(fileInput)">{{'common.clear'|translate}}</button>
+</div>

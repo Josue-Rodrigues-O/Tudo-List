@@ -11,7 +11,7 @@ import { LoginRequest } from '../../core/models/login/login-request';
 import { RegisterUser } from '../../core/models/user/register-user';
 import { LoginService } from '../../services/login/login.service';
 import { LoadingState } from '../../states/loading-state';
-import { finalize } from 'rxjs';
+import { finalize, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { Token } from '../../core/models/login/token';
 
@@ -68,42 +68,25 @@ export class RegisterComponent {
 
   private register(user: RegisterUser) {
     this.loadingState.show();
-    this.userService.register(user)
-      .pipe(finalize(() => this.loadingState.hide()))
+    this.userService
+      .register(user)
+      .pipe(
+        switchMap(() => this.loginService.login(user)),
+        tap(token => this.authService.setToken(token)),
+        switchMap(() => {
+          const decodedToken = this.authService.getDecodedToken();
+          return this.userService.getById(decodedToken.nameid);
+        }),
+        tap(user => this.authService.setCurrentUser(user)),
+        finalize(() => this.loadingState.hide()))
       .subscribe({
         next: () => {
-          this.login(user);
+          this.router.navigate(['']);
         },
         error: (err) => {
           console.error(err.error);
           alert(err.error.title);
         }
       });
-  }
-
-  private login(user: LoginRequest) {
-    this.loginService.login(user)
-      .subscribe({
-        next: (result) => this.setAuthenticationData(result),
-        error: (err) => {
-          console.error(err.error);
-          alert(err.error.title);
-        }
-      });
-  }
-
-  private setAuthenticationData(token: Token) {
-    this.authService.setToken(token);
-    const decodedToken = this.authService.getDecodedToken();
-    this.userService.getById(decodedToken.nameid).subscribe({
-      next: (user) => {
-        this.authService.setCurrentUser(user);
-        this.router.navigate(['']);
-      },
-      error: (err) => {
-        console.error(err.error);
-        alert(err.error.title);
-      }
-    });
   }
 }

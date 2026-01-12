@@ -14,6 +14,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { A11yModule } from "@angular/cdk/a11y";
 import { MatDialog } from '@angular/material/dialog';
 import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
+import { tap, switchMap, finalize } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -37,18 +38,18 @@ export class TaskListComponent {
   readonly tasks: Signal<TodoListItem[]> = this.todoListService.items;
   displayedColumns: string[] = ['title', 'priority', 'status'];
 
-  constructor(private todoListService: TodoListItemService, route: ActivatedRoute, private loadingState: LoadingState) {
-    loadingState.show();
-    route.queryParams.subscribe(params => this.loadItemsWithFilters(params));
-  }
-
-  private loadItemsWithFilters(params: Params) {
-    const filter = {
-      title: params['title'],
-      priority: params['priority'],
-      status: params['status']
-    };
-    this.todoListService.loadItens(filter, () => this.loadingState.hide());
+  constructor(private todoListService: TodoListItemService, route: ActivatedRoute, loadingState: LoadingState) {
+    route.queryParams.pipe(
+      tap(() => loadingState.show()),
+      switchMap(params => {
+        const filter = {
+          title: params['title'],
+          priority: params['priority'],
+          status: params['status']
+        };
+        return this.todoListService.loadItens$(filter).pipe(finalize(() => loadingState.hide()));
+      })
+    ).subscribe();
   }
 
   onClickTask(task: TodoListItem): void {

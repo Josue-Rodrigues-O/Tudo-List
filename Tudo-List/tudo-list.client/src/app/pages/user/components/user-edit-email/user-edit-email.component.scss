@@ -1,0 +1,17 @@
+:host {
+    display: flex;
+}
+
+.btn-field {
+    width: 10rem;
+    margin-left: 1rem;
+}
+
+.circular-icon-button {
+    background: none;
+    border: none;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+}

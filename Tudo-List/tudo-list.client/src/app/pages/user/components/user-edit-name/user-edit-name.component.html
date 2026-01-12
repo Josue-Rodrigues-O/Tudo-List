@@ -1,0 +1,20 @@
+<mat-form-field class="compact-form-field" appearance="outline">
+    <mat-label>{{'userEdit.fields.name' | translate}}</mat-label>
+    <input matInput placeholder="Seu Nome" [formControl]="userName" required />
+
+    @if (userName.invalid && userName.touched) {
+    <mat-error>
+        @if (userName.hasError('required')) {
+        {{'userEdit.validations.name.required' | translate}}
+        }
+        @else if (userName.hasError('maxLength')) {
+        {{'userEdit.validations.name.maxLength' | translate}}
+        }
+    </mat-error>
+    }
+</mat-form-field>
+@if (userName.enabled) {
+<button matButton="filled" (click)="onClickSaveName()">{{'common.save'|translate}}</button>
+}@else {
+<button matButton="text" (click)="onClickEditing(userName)">{{'common.edit'|translate}}</button>
+}

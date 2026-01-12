@@ -25,7 +25,7 @@ import { PriorityEnum } from '../../../../core/enums/priority-enum';
 import { StatusEnum } from '../../../../core/enums/status-enum';
 import { MatSelectModule } from '@angular/material/select';
 import { LoadingState } from '../../../../states/loading-state';
-import { finalize } from 'rxjs';
+import { finalize, switchMap, take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TodoListItem } from '../../../../core/models/todo-list-item/todo-list-item';
 import { UpdateItem } from '../../../../core/models/todo-list-item/update-item';
@@ -76,34 +76,40 @@ export class EditTaskDialogComponent {
   }
 
   onClickSave() {
-    this.loadingState.show();
-    if (this.form.valid) {
-      let task: UpdateItem = this.form.value;
-      task.id = this.data.id;
-      this.todoListService.Update(task)
-        .pipe(finalize(() => this.dialogRef.close()))
-        .subscribe({
-          next: () => this.loadItemsWithFilters(),
-          error: (err) => {
-            this.loadingState.hide();
-            alert('Error adding task');
-            console.log(err)
-          },
-        });
-    } else {
-      this.form.markAsTouched();
-      this.loadingState.hide();
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-  }
 
-  private loadItemsWithFilters() {
-    this.route.queryParams.subscribe(params => {
-      const filter = {
-        title: params['title'],
-        priority: params['priority'],
-        status: params['status']
-      };
-      this.todoListService.loadItens(filter, () => this.loadingState.hide());
+    this.loadingState.show();
+
+    const task: UpdateItem = {
+      ...this.form.value,
+      id: this.data.id
+    };
+
+    this.todoListService.Update(task).pipe(
+      switchMap(() =>
+        this.route.queryParams.pipe(take(1))
+      ),
+      switchMap(params => {
+        const filter = {
+          title: params['title'],
+          priority: params['priority'],
+          status: params['status']
+        };
+
+        return this.todoListService.loadItens$(filter);
+      }),
+      finalize(() => {
+        this.loadingState.hide();
+        this.dialogRef.close();
+      })
+    ).subscribe({
+      error: (err) => {
+        console.error(err);
+        alert('Error adding task');
+      }
     });
   }
 }

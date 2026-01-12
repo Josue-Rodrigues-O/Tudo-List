@@ -39,8 +39,11 @@
         "fields": {
             "name": "Nome",
             "email": "E-mail",
-            "password": "Senha",
-            "avatar": "Avatar"
+            "currentPassword": "Senha atual",
+            "newPassword": "Nova senha",
+            "confirmNewPassword": "Confirme sua senha",
+            "avatar": "Avatar",
+            "uploadImage": "Enviar imagem"
         },
         "placeholders": {
             "title": "Ex. Comprar mantimentos",
@@ -58,7 +61,7 @@
                 "invalidFormat": "Formato de e-mail inválido."
             },
             "password": {
-                "required": "A senha é obrigatório.",
+                "required": "A senha é obrigatória.",
                 "minLength": "A senha deve ter, pelo menos, 8 caracteres.",
                 "maxLength": "A senha deve ter, no máximo, 255 caracteres."
             }
@@ -126,6 +129,7 @@
         "close": "Fechar",
         "save": "Salvar",
         "edit": "Editar",
-        "exit": "Sair"
+        "exit": "Sair",
+        "clear": "Limpar"
     }
 }

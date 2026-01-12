@@ -1,0 +1,50 @@
+@if (userEmail.enabled) {
+<!-- Email -->
+<mat-form-field style="width: 49%; margin-right: 1%;" class="compact-form-field" appearance="outline">
+    <mat-label>{{'userEdit.fields.email' | translate}}</mat-label>
+    <input matInput placeholder="pat@example.com" [formControl]="userEmail" required />
+
+    @if (userEmail.invalid && userEmail.touched) {
+    <mat-error>
+        @if (userEmail.hasError('required')) {
+        {{'userEdit.validations.email.required' | translate}}
+        }
+        @else if (userEmail.hasError('email')) {
+        {{'userEdit.validations.email.invalidFormat' | translate}}
+        }
+    </mat-error>
+    }
+</mat-form-field>
+<!-- Senha atualização email -->
+<mat-form-field style="width: 50%;" class="compact-form-field" appearance="outline">
+    <mat-label>{{'userEdit.fields.currentPassword' | translate}}</mat-label>
+    <input #inputPasswordUpdateEmail matInput [formControl]="userPasswordUpdateEmail" type="password" required />
+    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword(inputPasswordUpdateEmail)"
+        type="button">
+        <mat-icon>{{ inputPasswordUpdateEmail.type === 'password' ? 'visibility_off' : 'visibility'
+            }}</mat-icon>
+    </button>
+
+    @if (userPasswordUpdateEmail.invalid && userPasswordUpdateEmail.touched) {
+    <mat-error>
+        @if (userPasswordUpdateEmail.hasError('required')) {
+        {{'userEdit.validations.password.required' | translate}}
+        }
+        @else if (userPasswordUpdateEmail.hasError('minlength')) {
+        {{'userEdit.validations.password.minlength' | translate}}
+        }
+        @else if (userPasswordUpdateEmail.hasError('maxlength')) {
+        {{'userEdit.validations.password.maxlength' | translate}}
+        }
+    </mat-error>
+    }
+</mat-form-field>
+<button class="btn-field" matButton="filled" (click)="onClickSaveEmail()">{{'common.save'|translate}}</button>
+}@else {
+<!-- Email -->
+<mat-form-field class="compact-form-field" appearance="outline">
+    <mat-label>{{'userEdit.fields.email' | translate}}</mat-label>
+    <input matInput placeholder="pat@example.com" disabled required [value]="userEmail.value" />
+</mat-form-field>
+<button class="btn-field" matButton="text" (click)="onClickEditing(userEmail)">{{'common.edit'|translate}}</button>
+}

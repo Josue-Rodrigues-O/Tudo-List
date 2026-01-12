@@ -4,7 +4,7 @@ import { TodoListItem } from '../../core/models/todo-list-item/todo-list-item';
 import { TodoListItemQueryFilter } from '../../core/models/todo-list-item/todo-list-item-query-filter';
 import { AddItem } from '../../core/models/todo-list-item/add-item';
 import { UpdateItem } from '../../core/models/todo-list-item/update-item';
-import { finalize } from 'rxjs';
+import { finalize, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,9 @@ export class TodoListItemService {
 
   constructor(private readonly httpClient: HttpClient) { }
 
-  public loadItens(filter?: TodoListItemQueryFilter, finalizeAction?: Function) {
+  public loadItens$(filter?: TodoListItemQueryFilter): Observable<TodoListItem[]> {
     const url = `${this.baseUrl}/get-all-async`;
+
     const params = new HttpParams({
       fromObject: {
         title: filter?.title ?? '',
@@ -29,10 +30,11 @@ export class TodoListItemService {
       }
     });
 
-    this.httpClient
-      .get<TodoListItem[]>(url, { params: params })
-      .pipe(finalize(() => finalizeAction?.()))
-      .subscribe(result => this.itemsSignal.update(() => result));
+    return this.httpClient
+      .get<TodoListItem[]>(url, { params })
+      .pipe(
+        tap(items => this.itemsSignal.set(items))
+      );
   }
 
   public GetById(id: string) {

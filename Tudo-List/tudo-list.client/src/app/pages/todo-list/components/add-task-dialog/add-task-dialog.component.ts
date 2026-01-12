@@ -22,7 +22,7 @@ import { PriorityEnum } from '../../../../core/enums/priority-enum';
 import { StatusEnum } from '../../../../core/enums/status-enum';
 import { MatSelectModule } from '@angular/material/select';
 import { LoadingState } from '../../../../states/loading-state';
-import { finalize } from 'rxjs';
+import { finalize, switchMap, take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -57,39 +57,43 @@ export class AddTaskDialogComponent {
   constructor(private todoListService: TodoListItemService, private loadingState: LoadingState, private route: ActivatedRoute) { }
 
   onClickSave() {
-    this.loadingState.show();
-    if (this.title.valid && this.priority.valid && this.status.valid) {
-      let task: AddItem = {
-        title: this.title.value || '',
-        priority: this.priority.value || PriorityEnum.Low,
-        status: this.status.value || StatusEnum.NotStarted,
-        description: this.description.value || '',
-      };
-      this.todoListService.Add(task)
-        .pipe(finalize(() => this.dialogRef.close()))
-        .subscribe({
-          next: () => this.loadItemsWithFilters(),
-          error: (err) => {
-            alert('Error adding task');
-            console.log(err)
-          },
-        });
-    } else {
+    if (this.title.invalid || this.priority.invalid || this.status.invalid) {
       this.title.markAsTouched();
       this.priority.markAsTouched();
       this.status.markAsTouched();
-      this.loadingState.hide();
+      return;
     }
-  }
 
-  private loadItemsWithFilters() {
-    this.route.queryParams.subscribe(params => {
-      const filter = {
-        title: params['title'],
-        priority: params['priority'],
-        status: params['status']
-      };
-      this.todoListService.loadItens(filter, () => this.loadingState.hide());
+    this.loadingState.show();
+    const task: AddItem = {
+      title: this.title.value ?? '',
+      priority: this.priority.value ?? PriorityEnum.Low,
+      status: this.status.value ?? StatusEnum.NotStarted,
+      description: this.description.value ?? '',
+    };
+
+    this.todoListService.Add(task).pipe(
+      switchMap(() =>
+        this.route.queryParams.pipe(take(1))
+      ),
+      switchMap(params => {
+        const filter = {
+          title: params['title'],
+          priority: params['priority'],
+          status: params['status']
+        };
+
+        return this.todoListService.loadItens$(filter);
+      }),
+      finalize(() => {
+        this.loadingState.hide();
+        this.dialogRef.close();
+      })
+    ).subscribe({
+      error: (err) => {
+        console.error(err);
+        alert('Error adding task');
+      }
     });
   }
 }
