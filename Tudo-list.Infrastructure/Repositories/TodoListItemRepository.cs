@@ -51,7 +51,7 @@ namespace Tudo_list.Infrastructure.Repositories
 
             if (filter.Title is not null)
             {
-                itemsQuery = itemsQuery.Where(item => item.Title.Contains(filter.Title, StringComparison.OrdinalIgnoreCase));
+                itemsQuery = itemsQuery.Where(item => item.Title.ToLower().Contains(filter.Title.ToLower()));
             }
 
             if (filter.Status is not null)
