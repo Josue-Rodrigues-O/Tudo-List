@@ -3,22 +3,22 @@
         <img src="assets/images/background_image.jpg" alt="banner">
     </figure>
 
-    <form id="idFormLogin" (ngSubmit)="onClickLogin()">
-        <h1>{{'login' | translate}}</h1>
+    <form id="idFormLogin" [formGroup]="formLogin" (ngSubmit)="onClickLogin()">
+        <h1>{{'login.title' | translate}}</h1>
         <div>
             <div class="controls">
                 <!-- Email -->
                 <mat-form-field class="compact-form-field" appearance="outline">
-                    <mat-label>{{'email' | translate}}</mat-label>
-                    <input matInput placeholder="pat@example.com" [formControl]="email" required />
+                    <mat-label>{{'login.fields.email' | translate}}</mat-label>
+                    <input matInput placeholder="pat@example.com" formControlName="email" required />
 
-                    @if (email.invalid && email.touched) {
+                    @if (formLogin.get('email')?.invalid && formLogin.get('email')?.touched) {
                     <mat-error>
-                        @if (email.hasError('required')) {
-                        {{'validationNotEmpty' | translate: {fieldName: 'email' | translate} }}
+                        @if (formLogin.get('email')?.hasError('required')) {
+                        {{'login.validations.email.required' | translate}}
                         }
-                        @else if (email.hasError('email')) {
-                        {{'validationEmailFormat' | translate}}
+                        @else if (formLogin.get('email')?.hasError('email')) {
+                        {{'login.validations.email.format' | translate}}
                         }
                     </mat-error>
                     }
@@ -26,20 +26,20 @@
 
                 <!-- Senha -->
                 <mat-form-field class="compact-form-field" appearance="outline">
-                    <mat-label>{{'password' | translate}}</mat-label>
-                    <input #inputPassword matInput [formControl]="password" type="password" required />
+                    <mat-label>{{'login.fields.password' | translate}}</mat-label>
+                    <input #inputPassword matInput formControlName="password" type="password" required />
                     <button class="circular-icon-button" mat-icon-button matSuffix
                         (click)="togglePassword(inputPassword)" type="button">
                         <mat-icon>{{ inputPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
 
-                    @if (password.invalid && password.touched) {
+                    @if (formLogin.get('password')?.invalid && formLogin.get('password')?.touched) {
                     <mat-error>
-                        @if (password.hasError('required')) {
-                        {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
+                        @if (formLogin.get('password')?.hasError('required')) {
+                        {{'login.validations.password.required' | translate}}
                         }
-                        @else if (password.hasError('minlength')) {
-                        {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
+                        @else if (formLogin.get('password')?.hasError('minlength')) {
+                        {{'login.validations.password.minlength' | translate}}
                         }
                     </mat-error>
                     }

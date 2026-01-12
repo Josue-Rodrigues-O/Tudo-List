@@ -3,42 +3,43 @@
         <img src="assets/images/background_image.jpg" alt="banner">
     </figure>
 
-    <form>
-        <h1>{{'register' | translate}}</h1>
+    <form id="idFormRegister" [formGroup]="formRegister" (ngSubmit)="onClickRegister()">
+        <h1>{{'register.title' | translate}}</h1>
         <div>
             <div class="controls">
                 <!-- Email -->
                 <mat-form-field class="compact-form-field" appearance="outline">
-                    <mat-label>{{'email' | translate}}</mat-label>
-                    <input matInput placeholder="pat@example.com" [formControl]="email" required />
-    
-                    @if (email.invalid && email.touched) {
+                    <mat-label>{{'register.fields.email' | translate}}</mat-label>
+                    <input matInput placeholder="pat@example.com" formControlName="email" required />
+
+                    @if (formRegister.get('email')?.invalid && formRegister.get('email')?.touched) {
                     <mat-error>
-                        @if (email.hasError('required')) {
-                        {{'validationNotEmpty' | translate: {fieldName: 'email' | translate} }}
+                        @if (formRegister.get('email')?.hasError('required')) {
+                        {{'register.validations.email.required' | translate}}
                         }
-                        @else if (email.hasError('email')) {
-                        {{'validationEmailFormat' | translate}}
+                        @else if (formRegister.get('email')?.hasError('email')) {
+                        {{'register.validations.email.format' | translate}}
                         }
                     </mat-error>
                     }
                 </mat-form-field>
-    
+
                 <!-- Senha -->
                 <mat-form-field class="compact-form-field" appearance="outline">
-                    <mat-label>{{'password' | translate}}</mat-label>
-                    <input #inputPassword matInput [formControl]="password" type="password" required />
-                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword(inputPassword)" type="button">
+                    <mat-label>{{'register.fields.password' | translate}}</mat-label>
+                    <input #inputPassword matInput formControlName="password" type="password" required />
+                    <button class="circular-icon-button" mat-icon-button matSuffix
+                        (click)="togglePassword(inputPassword)" type="button">
                         <mat-icon>{{ inputPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
-    
-                    @if (password.invalid && password.touched) {
+
+                    @if (formRegister.get('password')?.invalid && formRegister.get('password')?.touched) {
                     <mat-error>
-                        @if (password.hasError('required')) {
-                        {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
+                        @if (formRegister.get('password')?.hasError('required')) {
+                        {{'register.validations.password.required' | translate}}
                         }
-                        @else if (password.hasError('minlength')) {
-                        {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
+                        @else if (formRegister.get('password')?.hasError('minlength')) {
+                        {{'register.validations.password.minlength' | translate}}
                         }
                     </mat-error>
                     }
@@ -47,27 +48,33 @@
                 <!-- Confirmação da senha -->
                 <mat-form-field class="compact-form-field" appearance="outline">
                     <mat-label>{{'confirmPassword' | translate}}</mat-label>
-                    <input #inputConfirmPassword matInput [formControl]="confirmPassword" type="password" required />
-                    <button class="circular-icon-button" mat-icon-button matSuffix (click)="togglePassword(inputConfirmPassword)" type="button">
-                        <mat-icon>{{ inputConfirmPassword.type === 'password' ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    <input #inputConfirmPassword matInput formControlName="confirmPassword" type="password" required />
+                    <button class="circular-icon-button" mat-icon-button matSuffix
+                        (click)="togglePassword(inputConfirmPassword)" type="button">
+                        <mat-icon>{{ inputConfirmPassword.type === 'password' ? 'visibility_off' : 'visibility'
+                            }}</mat-icon>
                     </button>
-    
-                    @if (confirmPassword.invalid && confirmPassword.touched) {
+
+                    @if (formRegister.get('confirmPassword')?.invalid && formRegister.get('confirmPassword')?.touched) {
                     <mat-error>
-                        @if (confirmPassword.hasError('required')) {
-                        {{'validationNotEmpty' | translate: {fieldName: 'password' | translate} }}
+                        @if (formRegister.get('confirmPassword')?.hasError('required')) {
+                        {{'register.validations.confirmPassword.required' | translate}}
                         }
-                        @else if (confirmPassword.hasError('minlength')) {
-                        {{'validationMinLength' | translate: {fieldName: 'password' | translate, minLength: '8'} }}
+                        @else if (formRegister.get('confirmPassword')?.hasError('passwordMismatch')) {
+                        {{'register.validations.confirmPassword.mustMatch' | translate}}
                         }
                     </mat-error>
                     }
                 </mat-form-field>
             </div>
-    
+
             <div class="butons">
-                <button type="button" (click)="onClickRegister()" matButton="filled">{{'signUp' | translate}}</button>
-                <button type="button" (click)="onClickLogin()" matButton="outlined">{{'signIn' | translate}}</button>
+                <button type="submit" form="idFormRegister" matButton="filled">
+                    {{'register.actions.signUp' | translate}}
+                </button>
+                <button type="button" (click)="onClickLogin()" matButton="outlined">
+                    {{'register.actions.signIn' | translate}}
+                </button>
             </div>
         </div>
     </form>

@@ -15,7 +15,7 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TodoListItemService } from '../../../../services/todo-list-item/todo-list-item.service';
 import { AddItem } from '../../../../core/models/todo-list-item/add-item';
 import { PriorityEnum } from '../../../../core/enums/priority-enum';
@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { LoadingState } from '../../../../states/loading-state';
 import { finalize, switchMap, take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { MessageToastService } from '../../../../services/message-toast/message-toast.service';
 
 @Component({
   selector: 'app-add-task-dialog',
@@ -54,7 +55,12 @@ export class AddTaskDialogComponent {
   priorityEnum = PriorityEnum;
   statusEnum = StatusEnum;
 
-  constructor(private todoListService: TodoListItemService, private loadingState: LoadingState, private route: ActivatedRoute) { }
+  constructor(
+    private todoListService: TodoListItemService,
+    private loadingState: LoadingState,
+    private messageToastService: MessageToastService,
+    private translate: TranslateService,
+    private route: ActivatedRoute) { }
 
   onClickSave() {
     if (this.title.invalid || this.priority.invalid || this.status.invalid) {
@@ -90,9 +96,10 @@ export class AddTaskDialogComponent {
         this.dialogRef.close();
       })
     ).subscribe({
+      next: () => this.messageToastService.show(this.translate.instant('todoList.messages.taskAddedSuccess'), 'success'),
       error: (err) => {
-        console.error(err);
-        alert('Error adding task');
+        this.messageToastService.show(err.error.title, 'error');
+        console.error(err.error);
       }
     });
   }

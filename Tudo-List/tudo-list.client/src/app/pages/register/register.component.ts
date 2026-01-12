@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,13 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserService } from '../../services/user/user.service';
-import { LoginRequest } from '../../core/models/login/login-request';
 import { RegisterUser } from '../../core/models/user/register-user';
 import { LoginService } from '../../services/login/login.service';
 import { LoadingState } from '../../states/loading-state';
 import { finalize, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
-import { Token } from '../../core/models/login/token';
+import { MessageToastService } from '../../services/message-toast/message-toast.service';
+import { passwordMatchValidator } from '../../validators/password-match-validator';
 
 @Component({
   selector: 'app-register',
@@ -23,26 +23,27 @@ import { Token } from '../../core/models/login/token';
   imports: [TranslateModule, MatFormFieldModule, MatInputModule, MatIconModule, ReactiveFormsModule, MatButtonModule],
 })
 export class RegisterComponent {
-  readonly email = new FormControl('', [
-    Validators.required,
-    Validators.email
-  ]);
-  readonly password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(8),
-    Validators.maxLength(255),
-  ]);
-  readonly confirmPassword = new FormControl('', [
-    Validators.required,
-    Validators.minLength(8),
-    Validators.maxLength(255),
-  ]);
+  protected readonly formRegister = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(255),
+    ]),
+    confirmPassword: new FormControl('', [
+      Validators.required,
+    ])
+  }, { validators: [passwordMatchValidator] });
 
   constructor(
     private router: Router,
     private userService: UserService,
     private loginService: LoginService,
     private loadingState: LoadingState,
+    private messageToastService: MessageToastService,
     private authService: AuthService) { }
 
   togglePassword(input: HTMLInputElement) {
@@ -54,14 +55,10 @@ export class RegisterComponent {
   }
 
   onClickRegister() {
-    if (this.email.valid && this.password.valid) {
-      let user: RegisterUser = {
-        email: this.email.value || '',
-        password: this.password.value || '',
-        confirmPassword: this.confirmPassword.value || '',
-        name: (this.email.value || '').split('@')[0]
-      };
-
+    this.formRegister.markAllAsTouched();
+    if (this.formRegister.valid) {
+      const name = (this.formRegister.get('email')?.value || '').split('@')[0];
+      let user = { ...this.formRegister.value, name: name } as RegisterUser;
       this.register(user);
     }
   }
@@ -84,8 +81,13 @@ export class RegisterComponent {
           this.router.navigate(['']);
         },
         error: (err) => {
+          if (err.error.errors instanceof Object) {
+            const firstError = Object.keys(err.error.errors)[0];
+            this.messageToastService.show(err.error.errors[firstError], 'error');
+          } else {
+            this.messageToastService.show(err.error.title, 'error');
+          }
           console.error(err.error);
-          alert(err.error.title);
         }
       });
   }

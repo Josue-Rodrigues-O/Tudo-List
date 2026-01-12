@@ -1,39 +1,61 @@
 {
     "titleWebApp": "Tudo-List",
-    "login": "LOGIN",
-    "register": "CADASTRO",
-    "forgotPassword": "Esqueceu sua senha?",
-    "DontHaveAnAccount": "Não possui uma conta?",
-    "signIn": "Entrar",
-    "signUp": "Inscreva-se",
-    "alreadyHasAnAccount": "Já possui uma conta?",
-    "email": "E-mail",
-    "password": "Senha",
-    "confirmPassword": "Confirme sua senha",
-    "myTasks": "Minhas Tarefas",
-    "search": "Pesquisar",
-    "title": "Título",
-    "description": "Descrição",
-    "priority": "Prioridade",
-    "status": "Status",
-    "cancel": "Cancelar",
-    "save": "Salvar",
-    "low": "Baixa",
-    "medium": "Média",
-    "high": "Alta",
-    "notStarted": "Não iniciado",
-    "inProgress": "Em progresso",
-    "completed": "Concluído",
-    "success": "Sucesso",
-    "error": "Erro",
-    "newTask": "Nova tarefa",
-    "validationNotEmpty": "O campo '{{fieldName}}' não pode ficar vazio!",
-    "validationMaxLength": "O campo '{{fieldName}}' deve possuir no máximo '{{maxLength}}' caracteres!",
-    "validationMinLength": "O campo '{{fieldName}}' deve possuir no minimo '{{minLength}}' caracteres!",
-    "validationMatch": "O valor do campo '{{fieldName}}' é inválido!",
-    "validationPasswordAndConfirmPassword": "Os valores dos campos 'Senha' e 'Confimação de Senha' devem ser iguais!",
-    "validationEmailFormat": "Formato de e-mail inválido.",
-    "validationFailed": "Falha na validação",
+    "register": {
+        "title": "Registrar",
+        "fields": {
+            "name": "Nome",
+            "email": "E-mail",
+            "password": "Senha",
+            "confirmPassword": "Confirme sua senha"
+        },
+        "actions": {
+            "signIn": "Entrar",
+            "signUp": "Inscreva-se"
+        },
+        "validations": {
+            "name": {
+                "required": "O nome é obrigatório.",
+                "maxLength": "O nome deve ter no máximo 255 caracteres."
+            },
+            "email": {
+                "required": "O e-mail é obrigatório.",
+                "format": "Formato de e-mail inválido."
+            },
+            "password": {
+                "required": "A senha é obrigatória.",
+                "minlength": "A senha deve ter, pelo menos, 8 caracteres."
+            },
+            "confirmPassword": {
+                "required": "A confirmação de senha é obrigatória.",
+                "mustMatch": "As senhas devem ser iguais."
+            }
+        },
+        "messages": {
+            "registerSuccess": "Registro realizado com sucesso! Você já está logado.",
+            "registerError": "Erro ao realizar o registro. Por favor, tente novamente."
+        }
+    },
+    "login": {
+        "title": "Login",
+        "fields": {
+            "email": "E-mail",
+            "password": "Senha"
+        },
+        "validations": {
+            "email": {
+                "required": "O e-mail é obrigatório.",
+                "format": "Formato de e-mail inválido."
+            },
+            "password": {
+                "required": "A senha é obrigatória.",
+                "minlength": "A senha deve ter, pelo menos, 8 caracteres."
+            }
+        },
+        "messages": {
+            "loginSuccess": "Login realizado com sucesso!",
+            "loginError": "Erro ao realizar o login. Por favor, verifique suas credenciais e tente novamente."
+        }
+    },
     "userEdit": {
         "title": "Usuário",
         "fields": {
@@ -76,15 +98,6 @@
     },
     "todoList": {
         "title": "Tarefas",
-        "addTask": "Adicionar Tarefa",
-        "editTask": "Editar Tarefa",
-        "deleteTask": "Excluir Tarefa",
-        "confirmDeleteTask": "Tem certeza que deseja excluir a tarefa '{{taskTitle}}'?",
-        "noTasksFound": "Nenhuma tarefa encontrada.",
-        "taskAddedSuccess": "Tarefa adicionada com sucesso!",
-        "taskUpdatedSuccess": "Tarefa atualizada com sucesso!",
-        "taskDeletedSuccess": "Tarefa excluída com sucesso!",
-        "taskOperationError": "Ocorreu um erro ao processar a tarefa. Por favor, tente novamente.",
         "fields": {
             "title": "Título",
             "description": "Descrição",
@@ -112,6 +125,12 @@
             "status": {
                 "required": "O status é obrigatório."
             }
+        },
+        "messages": {
+            "taskAddedSuccess": "Tarefa adicionada com sucesso!",
+            "taskUpdatedSuccess": "Tarefa atualizada com sucesso!",
+            "confirmDeleteTask": "Tem certeza que deseja excluir a tarefa '{{taskTitle}}'?",
+            "taskDeletedSuccess": "Tarefa excluída com sucesso!"
         }
     },
     "enums": {
@@ -137,6 +156,9 @@
         "save": "Salvar",
         "edit": "Editar",
         "exit": "Sair",
-        "clear": "Limpar"
+        "clear": "Limpar",
+        "delete": "Excluir",
+        "update": "Atualizar",
+        "add": "Adicionar"
     }
 }

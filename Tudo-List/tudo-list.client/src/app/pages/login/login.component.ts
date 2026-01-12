@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, Validators, FormsModule, FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
@@ -13,6 +13,7 @@ import { finalize, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from '../../services/user/user.service';
 import { UserImageService } from '../../services/user-image/user-image.service';
+import { MessageToastService } from '../../services/message-toast/message-toast.service';
 
 @Component({
   selector: 'app-login',
@@ -22,15 +23,17 @@ import { UserImageService } from '../../services/user-image/user-image.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  readonly email = new FormControl('', [
-    Validators.required,
-    Validators.email
-  ]);
-  readonly password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(8),
-    Validators.maxLength(255),
-  ]);
+  protected readonly formLogin = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(255),
+    ])
+  });
 
   constructor(
     private router: Router,
@@ -38,6 +41,8 @@ export class LoginComponent {
     private loadingState: LoadingState,
     private authService: AuthService,
     private userService: UserService,
+    private messageToastService: MessageToastService,
+    private translate: TranslateService,
     private userImgService: UserImageService) { }
 
   togglePassword(input: HTMLInputElement) {
@@ -45,17 +50,15 @@ export class LoginComponent {
   }
 
   onClickLogin() {
-    if (this.email.valid && this.password.valid) {
-      let user: LoginRequest = {
-        email: this.email.value || '',
-        password: this.password.value || ''
-      };
+    this.formLogin.markAsTouched();
+    if (this.formLogin.valid) {
+      let user = this.formLogin.value as LoginRequest;
       this.login(user);
     }
   }
 
   onClickRegister() {
-    this.router.navigate(['/register']);
+    this.router.navigate(['/auth/register']);
   }
 
   private login(user: LoginRequest) {
@@ -76,8 +79,8 @@ export class LoginComponent {
     ).subscribe({
       next: () => this.router.navigate(['']),
       error: (err) => {
+        this.messageToastService.show(this.translate.instant('login.messages.loginError'), 'error');
         console.error(err.error);
-        alert(err.error.title);
       }
     });
   }

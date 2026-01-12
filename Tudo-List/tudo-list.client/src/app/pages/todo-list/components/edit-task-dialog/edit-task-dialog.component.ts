@@ -18,7 +18,7 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TodoListItemService } from '../../../../services/todo-list-item/todo-list-item.service';
 import { AddItem } from '../../../../core/models/todo-list-item/add-item';
 import { PriorityEnum } from '../../../../core/enums/priority-enum';
@@ -29,6 +29,7 @@ import { finalize, switchMap, take } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { TodoListItem } from '../../../../core/models/todo-list-item/todo-list-item';
 import { UpdateItem } from '../../../../core/models/todo-list-item/update-item';
+import { MessageToastService } from '../../../../services/message-toast/message-toast.service';
 
 @Component({
   selector: 'app-edit-task-dialog',
@@ -66,6 +67,8 @@ export class EditTaskDialogComponent {
   constructor(
     private todoListService: TodoListItemService,
     private loadingState: LoadingState,
+    private messageToastService: MessageToastService,
+    private translate: TranslateService,
     private route: ActivatedRoute) {
     this.form.disable();
   }
@@ -106,9 +109,10 @@ export class EditTaskDialogComponent {
         this.dialogRef.close();
       })
     ).subscribe({
+      next: () => this.messageToastService.show(this.translate.instant('todoList.messages.taskUpdatedSuccess'), 'success'),
       error: (err) => {
-        console.error(err);
-        alert('Error adding task');
+        this.messageToastService.show(err.error.title, 'error');
+        console.error(err.error);
       }
     });
   }
