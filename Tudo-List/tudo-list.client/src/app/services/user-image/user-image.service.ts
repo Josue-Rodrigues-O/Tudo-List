@@ -40,6 +40,10 @@ export class UserImageService {
     });
   }
 
+  clearImgLocally() {
+    indexedDB.deleteDatabase('imgProfileDb');
+  }
+
   async saveImgLocally(blob: Blob): Promise<void> {
     if (!(blob instanceof Blob) || blob.size === 0) {
       throw new Error('Blob inválido');
