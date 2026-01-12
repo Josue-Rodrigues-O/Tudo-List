@@ -11,6 +11,7 @@ import {
 } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { authInterceptor } from './app/interceptors/auth/auth.interceptor';
+import { unauthorizedInterceptor } from './app/interceptors/unauthorized/unauthorized.interceptor';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -27,6 +28,6 @@ bootstrapApplication(AppComponent, {
         },
       })
     ),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor, unauthorizedInterceptor])),
   ],
 }).catch((err) => console.error(err));

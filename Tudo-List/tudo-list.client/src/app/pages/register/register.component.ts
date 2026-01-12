@@ -51,7 +51,7 @@ export class RegisterComponent {
   }
 
   onClickLogin() {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   onClickRegister() {
